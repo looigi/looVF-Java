@@ -32,7 +32,7 @@ public class DBRemoto {
 				"RitornaListe",
 				NS,
 				SA,
-				60000,
+				120000,
 				true);
 		g.Esegue();
 	}

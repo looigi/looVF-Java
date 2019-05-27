@@ -1,8 +1,7 @@
 package com.looigi.loovf;
 
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
+
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -20,7 +19,7 @@ import java.io.File;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         VariabiliGlobali.getInstance().setvView((VideoView) findViewById(R.id.myVideo));
         VariabiliGlobali.getInstance().setiView((ImageView) findViewById(R.id.imgImmagine));
         final LinearLayout laySettingsPanel = findViewById(R.id.laySettingsPanel);
-
         final ImageView mImageIndietro = findViewById(R.id.imgIndietro);
         mImageIndietro.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -56,6 +54,13 @@ public class MainActivity extends AppCompatActivity {
                 Utility.getInstance().AvanzaMultimedia();
             }
         });
+
+        VariabiliGlobali.getInstance().setModalita("VIDEO");
+        VariabiliGlobali.getInstance().getvView().setVisibility(LinearLayout.VISIBLE);
+        laySettingsPanel.setVisibility(LinearLayout.GONE);
+        VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.GONE);
+        mImageAvanti.setVisibility(LinearLayout.VISIBLE);
+        mImageIndietro.setVisibility(LinearLayout.VISIBLE);
 
         LinearLayout layPhoto = findViewById(R.id.layPhoto);
         layPhoto.setOnClickListener(new View.OnClickListener() {

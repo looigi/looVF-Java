@@ -39,7 +39,7 @@
                         android:id="@+id/imgVideo"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        app:srcCompat="@drawable/video" />
+                        android:background="@drawable/video" />
 
                     <TextView
                         android:paddingLeft="5dp"
@@ -62,7 +62,7 @@
                         android:id="@+id/imgFoto"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        app:srcCompat="@drawable/photo" />
+                        android:background="@drawable/photo" />
 
                     <TextView
                         android:paddingLeft="5dp"
@@ -85,7 +85,7 @@
                         android:id="@+id/imgRefresh"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        app:srcCompat="@drawable/refresh" />
+                        android:background="@drawable/refresh" />
 
                     <TextView
                         android:paddingLeft="5dp"
@@ -108,7 +108,7 @@
                         android:id="@+id/imgSettings"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        app:srcCompat="@drawable/settings" />
+                        android:background="@drawable/settings" />
 
                     <TextView
                         android:paddingLeft="5dp"
@@ -131,7 +131,7 @@
                         android:id="@+id/imgAbout"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        app:srcCompat="@drawable/about" />
+                        android:background="@drawable/about" />
 
                     <TextView
                         android:paddingLeft="5dp"
@@ -185,7 +185,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"
-                    app:srcCompat="@drawable/completed" />
+                    android:background="@drawable/completed" />
 
                 <VideoView
                     android:id="@+id/myVideo"
@@ -206,7 +206,7 @@
                 android:id="@+id/imgIndietro"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                app:srcCompat="@drawable/indietro" />
+                android:background="@drawable/indietro" />
         </LinearLayout>
 
         <LinearLayout
@@ -219,7 +219,7 @@
                 android:id="@+id/imgAvanti"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                app:srcCompat="@drawable/avanti" />
+                android:background="@drawable/avanti" />
         </LinearLayout>
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

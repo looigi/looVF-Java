@@ -1,8 +1,8 @@
 package com.looigi.loovf;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Environment;
-import android.support.v4.app.FragmentActivity;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,7 +22,7 @@ public class VariabiliGlobali {
     }
 
     private Context context;
-    private FragmentActivity FragmentActivityPrincipale;
+    private Activity FragmentActivityPrincipale;
     private List<StrutturaFiles> listaVideo = new ArrayList<>();
     private List<StrutturaFiles> listaImmagini = new ArrayList<>();
     private int ImmagineVisualizzata;
@@ -50,11 +50,11 @@ public class VariabiliGlobali {
         this.context = context;
     }
 
-    public FragmentActivity getFragmentActivityPrincipale() {
+    public Activity getFragmentActivityPrincipale() {
         return FragmentActivityPrincipale;
     }
 
-    public void setFragmentActivityPrincipale(FragmentActivity fragmentActivityPrincipale) {
+    public void setFragmentActivityPrincipale(Activity fragmentActivityPrincipale) {
         FragmentActivityPrincipale = fragmentActivityPrincipale;
     }
 

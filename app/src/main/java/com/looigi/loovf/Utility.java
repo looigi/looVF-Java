@@ -106,6 +106,18 @@ public class Utility {
         VariabiliGlobali.getInstance().setListaImmagini(listaImmagini);
         VariabiliGlobali.getInstance().setCategoriaImmagini(categoriaImmagini);
         VariabiliGlobali.getInstance().setCategoriaVideo(categoriaVideo);
+
+        db_dati db = new db_dati();
+        int QualeVideo = db.LeggeUltimaVista("VIDEO");
+        if (QualeVideo > -1) {
+            VariabiliGlobali.getInstance().setVideoVisualizzato(QualeVideo);
+        }
+        int QualePic = db.LeggeUltimaVista("PHOTO");
+        if (QualePic>-1) {
+            VariabiliGlobali.getInstance().setImmagineVisualizzata(QualePic);
+            Utility.getInstance().CaricaMultimedia();
+        }
+
     }
 
     public void ScriveInformazioni() {

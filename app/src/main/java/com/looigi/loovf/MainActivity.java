@@ -33,27 +33,6 @@ public class MainActivity extends Activity {
         db_dati db = new db_dati();
         db.CreazioneTabellaVisti();
 
-        int QualeVideo = db.LeggeUltimaVista("VIDEO");
-        if (QualeVideo > -1) {
-            VariabiliGlobali.getInstance().setVideoVisualizzato(QualeVideo);
-        }
-        int QualePic = db.LeggeUltimaVista("PHOTO");
-        if (QualePic>-1) {
-            VariabiliGlobali.getInstance().setImmagineVisualizzata(QualePic);
-            Utility.getInstance().CaricaMultimedia();
-        }
-
-        VariabiliGlobali.getInstance().setDatiCaricati(false);
-        GestioneFiles.getInstance().CreaCartella(VariabiliGlobali.getInstance().getPercorsoDIR());
-        File f = new File(VariabiliGlobali.getInstance().getPercorsoDIR() + "/Lista.dat");
-        if (f.exists()) {
-            String Ritorno = GestioneFiles.getInstance().LeggeFileDiTesto(VariabiliGlobali.getInstance().getPercorsoDIR() + "/Lista.dat");
-            Utility.getInstance().CreaListaFiles(Ritorno);
-            VariabiliGlobali.getInstance().setDatiCaricati(true);
-        }
-
-        VariabiliGlobali.getInstance().setvView((VideoView) findViewById(R.id.myVideo));
-        VariabiliGlobali.getInstance().setiView((ImageView) findViewById(R.id.imgImmagine));
         final LinearLayout laySettingsPanel = findViewById(R.id.laySettingsPanel);
         final ImageView mImageIndietro = findViewById(R.id.imgIndietro);
         mImageIndietro.setOnClickListener(new View.OnClickListener() {
@@ -69,12 +48,24 @@ public class MainActivity extends Activity {
             }
         });
 
-        VariabiliGlobali.getInstance().setModalita("VIDEO");
+        VariabiliGlobali.getInstance().setModalita("PHOTO");
+        VariabiliGlobali.getInstance().setvView((VideoView) findViewById(R.id.myVideo));
+        VariabiliGlobali.getInstance().setiView((ImageView) findViewById(R.id.imgImmagine));
+
         VariabiliGlobali.getInstance().getvView().setVisibility(LinearLayout.VISIBLE);
         laySettingsPanel.setVisibility(LinearLayout.GONE);
         VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.GONE);
         mImageAvanti.setVisibility(LinearLayout.VISIBLE);
         mImageIndietro.setVisibility(LinearLayout.VISIBLE);
+
+        VariabiliGlobali.getInstance().setDatiCaricati(false);
+        GestioneFiles.getInstance().CreaCartella(VariabiliGlobali.getInstance().getPercorsoDIR());
+        File f = new File(VariabiliGlobali.getInstance().getPercorsoDIR() + "/Lista.dat");
+        if (f.exists()) {
+            String Ritorno = GestioneFiles.getInstance().LeggeFileDiTesto(VariabiliGlobali.getInstance().getPercorsoDIR() + "/Lista.dat");
+            Utility.getInstance().CreaListaFiles(Ritorno);
+            VariabiliGlobali.getInstance().setDatiCaricati(true);
+        }
 
         LinearLayout layPhoto = findViewById(R.id.layPhoto);
         layPhoto.setOnClickListener(new View.OnClickListener() {

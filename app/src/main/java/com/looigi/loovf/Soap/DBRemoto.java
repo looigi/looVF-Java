@@ -8,10 +8,6 @@ public class DBRemoto {
 	private String ws = "looVF.asmx/";
 	private String NS="http://looVF.org/";
 	private String SA="http://looVF.org/";
-    private Runnable rAttendeRispostaCheckURL;
-    private Handler hAttendeRispostaCheckURL;
-    private int Secondi;
-    private int MaxAttesa = 60;
 
     private String ToglieCaratteriStrani(String Cosa) {
 		if (Cosa!=null) {
@@ -25,14 +21,14 @@ public class DBRemoto {
 	}
 
 	public void RitornaListe() {
-		String Urletto="RitornaListe";
+		String Urletto="RitornaFiles?Aggiorna=N";
 
 		GestioneWEBServiceSOAP g = new GestioneWEBServiceSOAP(
 				RadiceWS + ws + Urletto,
-				"RitornaListe",
+				"RitornaFiles",
 				NS,
 				SA,
-				120000,
+				1420000,
 				true);
 		g.Esegue();
 	}

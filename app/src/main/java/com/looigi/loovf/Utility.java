@@ -1,20 +1,32 @@
 package com.looigi.loovf;
 
+import android.app.ProgressDialog;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URL;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import uk.co.senab.photoview.PhotoViewAttacher;
+import static java.security.AccessController.getContext;
 
 public class Utility {
     private static final Utility ourInstance = new Utility();
@@ -55,30 +67,37 @@ public class Utility {
             String[] ccc = cc.split(";");
             switch (ccc[0].toUpperCase().trim()) {
                 case "CATEGORIAVIDEO":
-                    categoriaVideo.add(ccc[1]);
+                    categoriaVideo.add(ccc[1].replace("***PV***",";").replace("***COSO***","§"));
                     break;
                 case "CATEGORIAIMMAGINI":
-                    categoriaImmagini.add(ccc[1]);
+                    categoriaImmagini.add(ccc[1].replace("***PV***",";").replace("***COSO***","§"));
                     break;
                 case "PIC":
-                    StrutturaFiles sfP = new StrutturaFiles();
-                    sfP.setCategoria(Integer.parseInt(ccc[0]));
-                    sfP.setTipologia(ccc[1]);
-                    sfP.setNomeFile(ccc[2]);
-                    sfP.setDimeFile(Long.parseLong(ccc[3]));
-                    sfP.setDataFile(Date.valueOf(ccc[4]));
+                    try {
+                        StrutturaFiles sfP = new StrutturaFiles();
+                        sfP.setCategoria(Integer.parseInt(ccc[1]));
+                        sfP.setTipologia(ccc[0]);
+                        sfP.setNomeFile(ccc[2].replace("***PV***",";").replace("***COSO***","§"));
+                        sfP.setDimeFile(Long.parseLong(ccc[3]));
+                        // sfP.setDataFile(Date.valueOf(ccc[4]));
 
-                    listaVideo.add(sfP);
+                        listaImmagini.add(sfP);
+                    } catch (Exception ignored) {
+
+                    }
                     break;
                 case "VIDEO":
-                    StrutturaFiles sfV = new StrutturaFiles();
-                    sfV.setCategoria(Integer.parseInt(ccc[0]));
-                    sfV.setTipologia(ccc[1]);
-                    sfV.setNomeFile(ccc[2]);
-                    sfV.setDimeFile(Long.parseLong(ccc[3]));
-                    sfV.setDataFile(Date.valueOf(ccc[4]));
+                    try {
+                        StrutturaFiles sfV = new StrutturaFiles();
+                        sfV.setCategoria(Integer.parseInt(ccc[1]));
+                        sfV.setTipologia(ccc[0]);
+                        sfV.setNomeFile(ccc[2].replace("***PV***",";").replace("***COSO***","§"));
+                        sfV.setDimeFile(Long.parseLong(ccc[3]));
+                        // sfV.setDataFile(Date.valueOf(ccc[4]));
 
-                    listaImmagini.add(sfV);
+                        listaVideo.add(sfV);
+                    } catch (Exception ignored) {
+                    }
                     break;
             }
         }
@@ -172,28 +191,85 @@ public class Utility {
 
             int Quale = VariabiliGlobali.getInstance().getVideoVisualizzato();
             StrutturaFiles sf = VariabiliGlobali.getInstance().getListaVideo().get(Quale);
-            String vidAddress = sf.getNomeFile();
+            String vidAddress = sf.getNomeFile().replace("\\", "/");
+            int Categoria = sf.getCategoria()-1;
+            String sCategoria = VariabiliGlobali.getInstance().getCategoriaVideo().get(Categoria);
+            vidAddress = VariabiliGlobali.getInstance().getPercorsoURL() + "/" + sCategoria + "/" + vidAddress;
 
-            Uri vidUri = Uri.parse(vidAddress);
-            vidView.setVideoURI(vidUri);
+            // Uri vidUri = Uri.parse(vidAddress);
+            // vidView.setVideoURI(vidUri);
+            LoadVideo(vidView, vidAddress, sf.getNomeFile(), sf.getDimeFile());
 
-            MediaController vidControl = new MediaController(VariabiliGlobali.getInstance().getContext());
-            vidControl.setAnchorView(vidView);
-            vidView.setMediaController(vidControl);
-
+            // MediaController vidControl = new MediaController(VariabiliGlobali.getInstance().getContext());
+            // vidControl.setAnchorView(vidView);
+            // vidView.setMediaController(vidControl);
+//
             // vidView.start();
         } else {
             int Quale = VariabiliGlobali.getInstance().getImmagineVisualizzata();
             StrutturaFiles sf = VariabiliGlobali.getInstance().getListaImmagini().get(Quale);
-            String NomeImmagine = sf.getNomeFile();
+            String NomeImmagine = sf.getNomeFile().replace("\\", "/");
+            int Categoria = sf.getCategoria()-1;
+            String sCategoria = VariabiliGlobali.getInstance().getCategoriaImmagini().get(Categoria);
+            NomeImmagine = VariabiliGlobali.getInstance().getPercorsoURL() + "/" + sCategoria + "/" + NomeImmagine;
 
             ImageView mImageView = VariabiliGlobali.getInstance().getiView();
-            mImageView.setImageBitmap(BitmapFactory.decodeFile(NomeImmagine));
+            // mImageView.setImageBitmap(BitmapFactory.decodeFile(NomeImmagine));
 
-            PhotoViewAttacher photoAttacher;
-            photoAttacher= new PhotoViewAttacher(mImageView);
-            photoAttacher.update();
+            // PhotoViewAttacher photoAttacher;
+            // photoAttacher= new PhotoViewAttacher(mImageView);
+            // photoAttacher.update();
+
+            // Picasso.get().load(NomeImmagine).into(mImageView);
+            Picasso.get().load(NomeImmagine).placeholder( R.drawable.progress_animation ).into(mImageView);
         }
+
     }
 
+    private void LoadVideo(final VideoView mVideoView, String videoUrl, String Titolo, long Dime) {
+        final ProgressDialog pDialog = new ProgressDialog(VariabiliGlobali.getInstance().getContext());
+
+        // Set progressbar message
+        long Dime2 = Dime;
+        String[] tipo={"b.", "Kb.", "Mb.", "Gb."};
+        int quale = 0;
+        while (Dime2>1024) {
+            Dime2 /= 1024;
+            quale++;
+        }
+        pDialog.setMessage("Buffering...\n"+Titolo+"\nSize: "+Long.toString(Dime2) + " " + tipo[quale]);
+        pDialog.setIndeterminate(false);
+        pDialog.setCancelable(false);
+        // Show progressbar
+        pDialog.show();
+
+        try {
+            // Start the MediaController
+            MediaController mediacontroller = new MediaController(VariabiliGlobali.getInstance().getContext());
+            mediacontroller.setAnchorView(mVideoView);
+
+            Uri videoUri = Uri.parse(videoUrl);
+            mVideoView.setMediaController(mediacontroller);
+            mVideoView.setVideoURI(videoUri);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        mVideoView.requestFocus();
+        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            // Close the progress bar and play the video
+            public void onPrepared(MediaPlayer mp) {
+                pDialog.dismiss();
+                mVideoView.start();
+            }
+        });
+        mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer mp) {
+                if (pDialog.isShowing()) {
+                    pDialog.dismiss();
+                }
+                // finish();
+            }
+        });
+    }
 }

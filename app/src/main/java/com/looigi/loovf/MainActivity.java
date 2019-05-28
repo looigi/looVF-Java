@@ -17,14 +17,15 @@ import org.kobjects.util.Util;
 
 import java.io.File;
 
-import uk.co.senab.photoview.PhotoViewAttacher;
-
 public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Permessi p=new Permessi();
+        p.ControllaPermessi(this);
 
         VariabiliGlobali.getInstance().setDatiCaricati(false);
         GestioneFiles.getInstance().CreaCartella(VariabiliGlobali.getInstance().getPercorsoDIR());
@@ -117,8 +118,11 @@ public class MainActivity extends Activity {
         LinearLayout layRefresh = findViewById(R.id.layRefresh);
         layRefresh.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                DBRemoto dbr = new DBRemoto();
-                dbr.RitornaListe();
+                DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
+                        "Si vogliono riscaricare tutti i dati ?",
+                        false,
+                    "looVF",
+                        true);
             }
         });
 

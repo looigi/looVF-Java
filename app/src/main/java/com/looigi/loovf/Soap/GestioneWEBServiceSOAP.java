@@ -22,7 +22,6 @@ import java.net.SocketTimeoutException;
 public class GestioneWEBServiceSOAP {
 	private static BackgroundAsyncTask bckAsyncTask;
 	private static String messErrore="";
-	private long lastTimePressed = 0;
 
 	private String NAMESPACE;
 	private int Timeout;
@@ -347,7 +346,7 @@ public class GestioneWEBServiceSOAP {
 					if (!Errore) {
 						while (Ancora) {
 							switch (tOperazione) {
-								case "RitornaListe":
+								case "RitornaFiles":
 									rRit.RitornaListe(Ritorno);
 									Ancora = false;
 									break;

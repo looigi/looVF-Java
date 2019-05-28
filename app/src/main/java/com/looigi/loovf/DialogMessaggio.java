@@ -10,17 +10,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.looigi.loovf.R;
+import com.looigi.loovf.Soap.DBRemoto;
+
+import java.io.File;
 
 public class DialogMessaggio
 {
     //-------- Singleton ----------//
     private static DialogMessaggio instance = null;
     private String Message;
-    private String TAG="DialogMessageP";
     private boolean Error;
     private String titleDialog;
-    private EditText edtValore;
-    private Context context;
+    private boolean Scelta;
 
     private DialogMessaggio() {
     }
@@ -34,15 +35,15 @@ public class DialogMessaggio
     private Dialog dialog;
 
     //-------- Methods ----------//
-    public void show(Context a, String message, boolean Error, String titleDialog)
+    public void show(Context context, String message, boolean Error, String titleDialog, boolean Scelta)
     {
         this.Error=Error;
-        this.context=a;
         this.titleDialog=titleDialog;
+        this.Scelta = Scelta;
 
         Message = message;
 
-        create(a);
+        create(context);
     }
 
     private void create(Context context)
@@ -63,7 +64,13 @@ public class DialogMessaggio
             builder.setIcon(R.drawable.completed);
             builder.setTitle("looVF");
         }
-        builder.setPositiveButton("Ok", onClickOK);
+
+        if (Scelta) {
+            builder.setPositiveButton("Ok", onClickOK);
+            builder.setNegativeButton("Annulla", onClickAnnulla);
+        } else {
+            builder.setPositiveButton("Ok", onClickOK);
+        }
 
         VariabiliGlobali.getInstance().getFragmentActivityPrincipale().runOnUiThread(new Runnable() {
             public void run() {
@@ -87,6 +94,16 @@ public class DialogMessaggio
         @Override
         public void onClick(DialogInterface dialog, int which)
         {
+            if (Scelta) {
+                File f = new File(VariabiliGlobali.getInstance().getPercorsoDIR() + "/Lista.dat");
+                if (f.exists()) {
+                    f.delete();
+                }
+
+                DBRemoto dbr = new DBRemoto();
+                dbr.RitornaListe();
+            }
+
             dialog.cancel();
         }
     };

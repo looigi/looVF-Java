@@ -156,7 +156,7 @@
                 android:gravity="center_horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:textSize="14sp"
                 android:textColor="@color/Bianco"
                 android:text="Refresh" />
 
@@ -165,6 +165,11 @@
                 android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
+                <VideoView
+                    android:id="@+id/myVideo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
                 <LinearLayout
                     android:id="@+id/laySettingsPanel"
@@ -180,18 +185,16 @@
                         android:text="Avanzamento random" />
                 </LinearLayout>
 
-                <ImageView
+                <!-- <ImageView
                     android:id="@+id/imgImmagine"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerInside"
-                    android:background="@drawable/completed" />
+                    android:scaleType="centerCrop" /> -->
 
-                <VideoView
-                    android:id="@+id/myVideo"
+                <com.github.chrisbanes.photoview.PhotoView
+                    android:id="@+id/imgImmagine"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_centerInParent="true" />
+                    android:layout_height="match_parent"/>
 
             </LinearLayout>
         </LinearLayout>

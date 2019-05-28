@@ -198,6 +198,9 @@ public class Utility {
 
             // Uri vidUri = Uri.parse(vidAddress);
             // vidView.setVideoURI(vidUri);
+            db_dati db = new db_dati();
+            db.ScriveVisti(Integer.toString(Quale), VariabiliGlobali.getInstance().getModalita());
+
             LoadVideo(vidView, vidAddress, sf.getNomeFile(), sf.getDimeFile());
 
             // MediaController vidControl = new MediaController(VariabiliGlobali.getInstance().getContext());
@@ -220,10 +223,12 @@ public class Utility {
             // photoAttacher= new PhotoViewAttacher(mImageView);
             // photoAttacher.update();
 
+            db_dati db = new db_dati();
+            db.ScriveVisti(Integer.toString(Quale), VariabiliGlobali.getInstance().getModalita());
+
             // Picasso.get().load(NomeImmagine).into(mImageView);
             Picasso.get().load(NomeImmagine).placeholder( R.drawable.progress_animation ).into(mImageView);
         }
-
     }
 
     private void LoadVideo(final VideoView mVideoView, String videoUrl, String Titolo, long Dime) {

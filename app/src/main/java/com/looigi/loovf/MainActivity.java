@@ -27,6 +27,22 @@ public class MainActivity extends Activity {
         Permessi p=new Permessi();
         p.ControllaPermessi(this);
 
+        VariabiliGlobali.getInstance().setContext(this);
+        VariabiliGlobali.getInstance().setFragmentActivityPrincipale(this);
+
+        db_dati db = new db_dati();
+        db.CreazioneTabellaVisti();
+
+        int QualeVideo = db.LeggeUltimaVista("VIDEO");
+        if (QualeVideo > -1) {
+            VariabiliGlobali.getInstance().setVideoVisualizzato(QualeVideo);
+        }
+        int QualePic = db.LeggeUltimaVista("PHOTO");
+        if (QualePic>-1) {
+            VariabiliGlobali.getInstance().setImmagineVisualizzata(QualePic);
+            Utility.getInstance().CaricaMultimedia();
+        }
+
         VariabiliGlobali.getInstance().setDatiCaricati(false);
         GestioneFiles.getInstance().CreaCartella(VariabiliGlobali.getInstance().getPercorsoDIR());
         File f = new File(VariabiliGlobali.getInstance().getPercorsoDIR() + "/Lista.dat");
@@ -35,9 +51,6 @@ public class MainActivity extends Activity {
             Utility.getInstance().CreaListaFiles(Ritorno);
             VariabiliGlobali.getInstance().setDatiCaricati(true);
         }
-
-        VariabiliGlobali.getInstance().setContext(this);
-        VariabiliGlobali.getInstance().setFragmentActivityPrincipale(this);
 
         VariabiliGlobali.getInstance().setvView((VideoView) findViewById(R.id.myVideo));
         VariabiliGlobali.getInstance().setiView((ImageView) findViewById(R.id.imgImmagine));

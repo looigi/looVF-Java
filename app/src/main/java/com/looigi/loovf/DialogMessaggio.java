@@ -72,12 +72,12 @@ public class DialogMessaggio
             builder.setPositiveButton("Ok", onClickOK);
         }
 
-        VariabiliGlobali.getInstance().getFragmentActivityPrincipale().runOnUiThread(new Runnable() {
-            public void run() {
+        // VariabiliGlobali.getInstance().getContext().runOnUiThread(new Runnable() {
+        //     public void run() {
                 AlertDialog alert = builder.create();
                 alert.show();
-            }
-        });
+        //     }
+        // });
     }
 
     private OnClickListener onClickAnnulla = new OnClickListener()

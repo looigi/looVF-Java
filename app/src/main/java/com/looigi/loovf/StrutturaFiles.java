@@ -6,7 +6,7 @@ public class StrutturaFiles {
     private String Tipologia;
     private String NomeFile;
     private long DimeFile;
-    private Date DataFile;
+    private String DataFile;
     private int Categoria;
 
     public String getTipologia() {
@@ -33,11 +33,11 @@ public class StrutturaFiles {
         DimeFile = dimeFile;
     }
 
-    public Date getDataFile() {
+    public String getDataFile() {
         return DataFile;
     }
 
-    public void setDataFile(Date dataFile) {
+    public void setDataFile(String dataFile) {
         DataFile = dataFile;
     }
 

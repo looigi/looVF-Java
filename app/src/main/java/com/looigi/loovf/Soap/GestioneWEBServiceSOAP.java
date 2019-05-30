@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 
+import com.looigi.loovf.DialogMessaggio;
 import com.looigi.loovf.Utility;
 import com.looigi.loovf.VariabiliGlobali;
 
@@ -350,31 +351,49 @@ public class GestioneWEBServiceSOAP {
 									rRit.RitornaListe(Ritorno);
 									Ancora = false;
 									break;
+								case "RitornaQuantiFilesPhoto":
+									rRit.RitornaQuantiFilesPhoto(Ritorno);
+									Ancora = false;
+									break;
+								case "RitornaQuantiFilesVideo":
+									rRit.RitornaQuantiFilesVideo(Ritorno);
+									Ancora = false;
+									break;
+								case "RitornMultimediaDaId":
+									rRit.RitornMultimediaDaId(Ritorno);
+									Ancora=false;
+									break;
+								case "RitornaCategorie":
+									rRit.RitornaCategorie(Ritorno);
+									Ancora=false;
+									break;
 							}
 						}
 					} else {
-						if (Tentativo < QuantiTentativi) {
-							Tentativo++;
-
-							final int TempoAttesa = 5000;
-
-							SecondiAttesa = 0;
-							hAttesaNuovoTentativo = new Handler(Looper.getMainLooper());
-							rAttesaNuovoTentativo = (new Runnable() {
-								@Override
-								public void run() {
-									SecondiAttesa++;
-									if (SecondiAttesa>=TempoAttesa) {
-										hAttesaNuovoTentativo.removeCallbacks(rAttesaNuovoTentativo);
-										hAttesaNuovoTentativo = null;
-									} else {
-										hAttesaNuovoTentativo.postDelayed(rAttesaNuovoTentativo, 1000);
-									}
-								}
-							});
-							hAttesaNuovoTentativo.postDelayed(rAttesaNuovoTentativo, 1000);
-							// Errore... Riprovo ad eseguire la funzione
-					}
+						// if (Tentativo < QuantiTentativi) {
+						// 	Tentativo++;
+//
+						// 	final int TempoAttesa = 5000;
+//
+						// 	SecondiAttesa = 0;
+						// 	hAttesaNuovoTentativo = new Handler(Looper.getMainLooper());
+						// 	rAttesaNuovoTentativo = (new Runnable() {
+						// 		@Override
+						// 		public void run() {
+						// 			SecondiAttesa++;
+						// 			if (SecondiAttesa>=TempoAttesa) {
+						// 				hAttesaNuovoTentativo.removeCallbacks(rAttesaNuovoTentativo);
+						// 				hAttesaNuovoTentativo = null;
+						// 			} else {
+						// 				hAttesaNuovoTentativo.postDelayed(rAttesaNuovoTentativo, 1000);
+						// 			}
+						// 		}
+						// 	});
+						// 	hAttesaNuovoTentativo.postDelayed(rAttesaNuovoTentativo, 1000);
+						// 	// Errore... Riprovo ad eseguire la funzione
+					// }
+						DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
+								messErrore, true, "looVF", false);
 				}
 			}
 			bckAsyncTask = null;

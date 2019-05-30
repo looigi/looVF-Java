@@ -1,12 +1,10 @@
 package com.looigi.loovf.Soap;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.looigi.loovf.GestioneFiles;
 import com.looigi.loovf.Utility;
 import com.looigi.loovf.VariabiliGlobali;
 
@@ -176,14 +174,15 @@ public class DownloadTextFile {
             ChiudeDialog();
 
             if (messErrore.isEmpty()) {
-                String Ritorno = GestioneFiles.getInstance().LeggeFileDiTesto(Path + "/" + PathNomeFile);
-                Utility.getInstance().CreaListaFiles(Ritorno);
-                GestioneFiles.getInstance().CreaFileDiTesto(VariabiliGlobali.getInstance().getPercorsoDIR(),
-                        "Lista.dat",
-                        Ritorno);
-
-                Utility.getInstance().ScriveInformazioni();
-                Utility.getInstance().CaricaMultimedia();
+                // String Ritorno = GestioneFiles.getInstance().LeggeFileDiTesto(Path + "/" + PathNomeFile);
+                // Utility.getInstance().CreaListaFiles();
+                // File f = new File(Path, PathNomeFile);
+                // f.delete();
+                // GestioneFiles.getInstance().CreaFileDiTesto(VariabiliGlobali.getInstance().getPercorsoDIR(),
+                //         "Lista.dat",
+                //         Ritorno);
+                // CaricamentoDati cd = new CaricamentoDati();
+                // cd.IniziaCaricamento();
             } else {
                 if (messErrore.equals("ESCI")) {
                     // Errore... Riprovo ad eseguire la funzione

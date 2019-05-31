@@ -50,7 +50,7 @@ public class wsRitorno {
                     Utility.getInstance().ScriveInformazioni();
                     Utility.getInstance().PrendeUltimoMultimedia();
 
-                    Utility.getInstance().riempieSpinner();
+                    Utility.getInstance().riempieSpinner(true);
 
                     VariabiliGlobali.getInstance().setCaricataPagina(true);
                 }
@@ -82,7 +82,7 @@ public class wsRitorno {
         }
     }
 
-    public void RitornMultimediaDaId(final String Ritorno) {
+    public void RitornaMultimediaDaId(final String Ritorno) {
         if (Ritorno.toUpperCase().contains("ERROR:")) {
             DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
                     Ritorno,
@@ -97,76 +97,7 @@ public class wsRitorno {
                     hSelezionaRiga.removeCallbacks(runRiga);
                     runRiga = null;
 
-                    if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
-                        String[] Rit = Ritorno.split("§");
-                        // ImageView vidView = VariabiliGlobali.getInstance().getImgPlayVideo();
-
-                        String ImmVideo = VariabiliGlobali.getInstance().getPercorsoURL() + "/Thumbs/" + Rit[0].replace("\\", "/");
-
-                        Picasso.get().load(ImmVideo).placeholder( R.drawable.progress_animation ).into(VariabiliGlobali.getInstance().getImgPlayVideo());
-
-                        StrutturaFiles sf = new StrutturaFiles();
-                        String[] c = Rit[1].split(";");
-                        sf.setTipologia("2");
-                        sf.setNomeFile(c[0].replace("***PV***",";"));
-                        sf.setDimeFile(Long.parseLong(c[1]));
-                        sf.setDataFile(c[2]);
-                        sf.setCategoria(Integer.parseInt(c[3]));
-
-                        VariabiliGlobali.getInstance().setVideoCaricato(sf);
-
-                        // String vidAddress = sf.getNomeFile().replace("\\", "/");
-                        // int Categoria = sf.getCategoria()-1;
-                        // String sCategoria = VariabiliGlobali.getInstance().getCategorieVideo().get(Categoria);
-                        // vidAddress = VariabiliGlobali.getInstance().getPercorsoURL() + "/" + sCategoria + "/" + vidAddress;
-
-                        // Uri vidUri = Uri.parse(vidAddress);
-                        // vidView.setVideoURI(vidUri);
-//
-                        // MediaController vidControl = new MediaController(VariabiliGlobali.getInstance().getContext());
-                        // vidControl.setAnchorView(vidView);
-                        // vidView.setMediaController(vidControl);
-//
-                        // vidView.start();
-
-                        // VideoPlayer v = new VideoPlayer(VariabiliGlobali.getInstance().getContext(),
-                        //         vidView,
-                        //         VariabiliGlobali.getInstance().getPgrBar(),
-                        //         vidAddress);
-
-                        // Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
-                        // Uri data = Uri.parse(vidAddress);
-                        // String estensione = vidAddress.substring(vidAddress.length()-3,vidAddress.length());
-//
-                        // intent.setDataAndType(data, "video/" + estensione);
-                        // VariabiliGlobali.getInstance().getContext().startActivity(intent);
-
-                        // Utility.getInstance().LoadVideo(vidView, vidAddress, sf.getNomeFile(), sCategoria, sf.getDimeFile());
-                    } else {
-                        StrutturaFiles sf = new StrutturaFiles();
-
-                        String[] Rit = Ritorno.split("§");
-
-                        String[] c = Rit[1].split(";");
-                        sf.setTipologia("1");
-                        sf.setNomeFile(c[0].replace("***PV***",";"));
-                        sf.setDimeFile(Long.parseLong(c[1]));
-                        sf.setDataFile(c[2]);
-                        sf.setCategoria(Integer.parseInt(c[3]));
-                        VariabiliGlobali.getInstance().setImmagineCaricata(sf);
-
-                        String NomeImmagine = sf.getNomeFile().replace("\\", "/");
-                        int Categoria = sf.getCategoria()-1;
-                        String sCategoria = VariabiliGlobali.getInstance().getCategorieImmagini().get(Categoria);
-                        NomeImmagine = VariabiliGlobali.getInstance().getPercorsoURL() + "/" + sCategoria + "/" + NomeImmagine;
-                        NomeImmagine = NomeImmagine.replace(" ","%20");
-
-                        ImageView mImageView = VariabiliGlobali.getInstance().getiView();
-
-                        Picasso.get().load(NomeImmagine).placeholder( R.drawable.progress_animation ).into(mImageView);
-                    }
-
-                    Utility.getInstance().ScriveInformazioni();
+                    Utility.getInstance().VisualizzaMultimedia(Ritorno);
                 }
             }, 50);
         }
@@ -245,8 +176,11 @@ public class wsRitorno {
                     hSelezionaRiga.removeCallbacks(runRiga);
                     runRiga = null;
 
-                    Utility.getInstance().ScriveInformazioni();
-                    // Utility.getInstance().CaricaMultimedia();
+                    if (VariabiliGlobali.getInstance().isDeveCaricare()) {
+                        VariabiliGlobali.getInstance().setDeveCaricare(false);
+                        Utility.getInstance().ScriveInformazioni();
+                        Utility.getInstance().CaricaMultimedia();
+                    }
                 }
             }, 50);
         }

@@ -46,7 +46,7 @@ public class DBRemoto {
 
 		GestioneWEBServiceSOAP g = new GestioneWEBServiceSOAP(
 				RadiceWS + ws + Urletto,
-				"RitornMultimediaDaId",
+				"RitornaMultimediaDaId",
 				NS,
 				SA,
 				15000,
@@ -88,7 +88,7 @@ public class DBRemoto {
 				NS,
 				SA,
 				15000,
-				false);
+				true);
 		g.Esegue();
 	}
 

@@ -57,6 +57,9 @@ public class VariabiliGlobali {
     private ImageView imgPlayVideo;
     private boolean CaricataPagina=false;
     private Spinner sItems;
+    private String UltimoRitornoVideo="";
+    private String UltimoRitornoImmagine="";
+    private boolean DeveCaricare=false;
 
     public Context getContext() {
         return context;
@@ -72,6 +75,30 @@ public class VariabiliGlobali {
 
     public void setFragmentActivityPrincipale(Activity fragmentActivityPrincipale) {
         FragmentActivityPrincipale = fragmentActivityPrincipale;
+    }
+
+    public boolean isDeveCaricare() {
+        return DeveCaricare;
+    }
+
+    public void setDeveCaricare(boolean deveCaricare) {
+        DeveCaricare = deveCaricare;
+    }
+
+    public String getUltimoRitornoImmagine() {
+        return UltimoRitornoImmagine;
+    }
+
+    public void setUltimoRitornoImmagine(String ultimoRitornoImmagine) {
+        UltimoRitornoImmagine = ultimoRitornoImmagine;
+    }
+
+    public String getUltimoRitornoVideo() {
+        return UltimoRitornoVideo;
+    }
+
+    public void setUltimoRitornoVideo(String ultimoRitorno) {
+        UltimoRitornoVideo = ultimoRitorno;
     }
 
     public Spinner getsItems() {

@@ -16,7 +16,7 @@
         android:hardwareAccelerated="false"
         android:largeHeap="true"
         android:theme="@style/Theme.AppCompat.Light"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:configChanges="keyboardHidden|orientation|screenSize"
         android:supportsRtl="true">
         <activity android:name=".MainActivity">
             <intent-filter>

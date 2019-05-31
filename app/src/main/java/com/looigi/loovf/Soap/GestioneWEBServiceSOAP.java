@@ -359,8 +359,8 @@ public class GestioneWEBServiceSOAP {
 									rRit.RitornaQuantiFilesVideo(Ritorno);
 									Ancora = false;
 									break;
-								case "RitornMultimediaDaId":
-									rRit.RitornMultimediaDaId(Ritorno);
+								case "RitornaMultimediaDaId":
+									rRit.RitornaMultimediaDaId(Ritorno);
 									Ancora=false;
 									break;
 								case "RitornaCategorie":

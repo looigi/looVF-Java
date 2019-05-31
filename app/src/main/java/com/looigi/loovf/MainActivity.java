@@ -31,11 +31,12 @@ import com.looigi.loovf.db_locale.db_dati;
 
 import java.util.List;
 
+import okhttp3.internal.Util;
+
 public class MainActivity extends AppCompatActivity {
     private Runnable runRiga;
     private Handler hSelezionaRiga;
     private LinearLayout layContenitore;
-    private Spinner sItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         VariabiliGlobali.getInstance().setContext(this);
         VariabiliGlobali.getInstance().setFragmentActivityPrincipale(this);
 
-        VariabiliGlobali.getInstance().setCaricataPagina(false);
+        // VariabiliGlobali.getInstance().setCaricataPagina(false);
         // if (!io.vov.vitamio.LibsChecker.checkVitamioLibs(this)) {
         //     DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
         //             "Vitamio library doesn't setup properly!",
@@ -70,25 +71,43 @@ public class MainActivity extends AppCompatActivity {
         // mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         // btn.setOnClickListener(pausePlay);
 
-        sItems = (Spinner) findViewById(R.id.spnCategorie);
+        // Spinner sItems = (Spinner) findViewById(R.id.spnCategorie);
         VariabiliGlobali.getInstance().setsItems((Spinner) findViewById(R.id.spnCategorie));
 
-        final LinearLayout laySettingsPanel = findViewById(R.id.laySettingsPanel);
-        final ImageView mImageIndietro = findViewById(R.id.imgIndietro);
+        LinearLayout laySettingsPanel = findViewById(R.id.laySettingsPanel);
+        ImageView mImageIndietro = findViewById(R.id.imgIndietro);
         mImageIndietro.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Utility.getInstance().IndietreggiaMultimedia();
             }
         });
 
-        final ImageView mImageAvanti = findViewById(R.id.imgAvanti);
+        ImageView mImageAvanti = findViewById(R.id.imgAvanti);
         mImageAvanti.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Utility.getInstance().AvanzaMultimedia();
             }
         });
 
-        VariabiliGlobali.getInstance().setModalita("PHOTO");
+        ImageView mImageScegliCategoria = findViewById(R.id.imgCambiaCategoria);
+        mImageScegliCategoria.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String item = VariabiliGlobali.getInstance().getsItems().getSelectedItem().toString();;
+
+                if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
+                    VariabiliGlobali.getInstance().setCategoriaSceltaVideo(item);
+                } else {
+                    VariabiliGlobali.getInstance().setCategoriaSceltaImmagine(item);
+                }
+
+                Utility.getInstance().AvanzaMultimedia();
+            }
+        });
+
+        if (!VariabiliGlobali.getInstance().isCaricataPagina()) {
+            VariabiliGlobali.getInstance().setModalita("PHOTO");
+        }
+
         // VariabiliGlobali.getInstance().setvView((VideoView) findViewById(R.id.myVideo));
         VariabiliGlobali.getInstance().setImgPlayVideo((ImageView) findViewById(R.id.imgPlayVideo));
         VariabiliGlobali.getInstance().setiView((ImageView) findViewById(R.id.imgImmagine));
@@ -154,9 +173,14 @@ public class MainActivity extends AppCompatActivity {
                     VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.VISIBLE);
 
-                    Utility.getInstance().riempieSpinner();
+                    Utility.getInstance().riempieSpinner(false);
 
-                    Utility.getInstance().PrendeUltimoMultimedia();
+                    if (VariabiliGlobali.getInstance().getUltimoRitornoImmagine().isEmpty()) {
+                        Utility.getInstance().PrendeUltimoMultimedia();
+                    } else {
+                        Utility.getInstance().ScriveInformazioni();
+                        Utility.getInstance().VisualizzaMultimedia(VariabiliGlobali.getInstance().getUltimoRitornoImmagine());
+                    }
                 }
             }
         });
@@ -171,9 +195,14 @@ public class MainActivity extends AppCompatActivity {
                     VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.GONE);
 
-                    Utility.getInstance().riempieSpinner();
+                    Utility.getInstance().riempieSpinner(false);
 
-                    Utility.getInstance().PrendeUltimoMultimedia();
+                    if (VariabiliGlobali.getInstance().getUltimoRitornoVideo().isEmpty()) {
+                        Utility.getInstance().PrendeUltimoMultimedia();
+                    } else {
+                        Utility.getInstance().ScriveInformazioni();
+                        Utility.getInstance().VisualizzaMultimedia(VariabiliGlobali.getInstance().getUltimoRitornoVideo());
+                    }
                 }
             }
         });
@@ -228,18 +257,29 @@ public class MainActivity extends AppCompatActivity {
         //     VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.GONE);
         // }
 
-        TextView t = VariabiliGlobali.getInstance().getTxtInfo();
-        t.setText("");
+        if (!VariabiliGlobali.getInstance().isCaricataPagina()) {
+            TextView t = VariabiliGlobali.getInstance().getTxtInfo();
+            t.setText("");
 
-        DBRemoto dbr = new DBRemoto();
-        dbr.RitornaCategorie();
-        dbr.RitornaQuantiFilesPhoto();
-        dbr.RitornaQuantiFilesVideo();
+            DBRemoto dbr = new DBRemoto();
+            dbr.RitornaCategorie();
+            dbr.RitornaQuantiFilesPhoto();
+            dbr.RitornaQuantiFilesVideo();
 
-        Utility.getInstance().riempieSpinner();
+            Utility.getInstance().riempieSpinner(true);
 
-        VariabiliGlobali.getInstance().setLinguettaAperta(true);
-        ChiudeLinguetta();
+            VariabiliGlobali.getInstance().setLinguettaAperta(true);
+            ChiudeLinguetta();
+        } else {
+            Utility.getInstance().riempieSpinner(false);
+
+            Utility.getInstance().ScriveInformazioni();
+            if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
+                Utility.getInstance().VisualizzaMultimedia(VariabiliGlobali.getInstance().getUltimoRitornoVideo());
+            } else {
+                Utility.getInstance().VisualizzaMultimedia(VariabiliGlobali.getInstance().getUltimoRitornoImmagine());
+            }
+        }
 
         // MediaController mc = new MediaController(this);
         // VideoView vidView = VariabiliGlobali.getInstance().getvView();

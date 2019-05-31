@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import android.widget.VideoView;
 
 import com.looigi.loovf.Soap.DBRemoto;
 import com.looigi.loovf.db_locale.db_dati;
+import com.squareup.picasso.Picasso;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -32,14 +34,23 @@ public class Utility {
     private Utility() {
     }
 
-    public void riempieSpinner() {
+    public void riempieSpinner(final boolean Ricarica) {
         List<String> spinnerArray;
         if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
             spinnerArray = VariabiliGlobali.getInstance().getCategorieImmagini();
         } else {
             spinnerArray = VariabiliGlobali.getInstance().getCategorieVideo();
         }
-        spinnerArray.add("Tutto");
+        boolean Ok = true;
+        for (String s: spinnerArray) {
+            if (s.equals("Tutto")) {
+                Ok=false;
+                break;
+            }
+        }
+        if (Ok) {
+            spinnerArray.add("Tutto");
+        }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 VariabiliGlobali.getInstance().getContext(),
@@ -47,23 +58,23 @@ public class Utility {
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         VariabiliGlobali.getInstance().getsItems().setAdapter(adapter);
-        VariabiliGlobali.getInstance().getsItems().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (VariabiliGlobali.getInstance().isCaricataPagina()) {
-                    String item = parent.getItemAtPosition(position).toString();
-
-                    if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
-                        VariabiliGlobali.getInstance().setCategoriaSceltaVideo(item);
-                    } else {
-                        VariabiliGlobali.getInstance().setCategoriaSceltaImmagine(item);
-                    }
-
-                    Utility.getInstance().AvanzaMultimedia();
-                }
-            }
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        // VariabiliGlobali.getInstance().getsItems().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        //     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        //         if (VariabiliGlobali.getInstance().isCaricataPagina() && Ricarica) {
+        //             String item = parent.getItemAtPosition(position).toString();
+//
+        //             if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
+        //                 VariabiliGlobali.getInstance().setCategoriaSceltaVideo(item);
+        //             } else {
+        //                 VariabiliGlobali.getInstance().setCategoriaSceltaImmagine(item);
+        //             }
+//
+        //             // Utility.getInstance().AvanzaMultimedia();
+        //         }
+        //     }
+        //     public void onNothingSelected(AdapterView<?> parent) {
+        //     }
+        // });
 
         if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
             if (!VariabiliGlobali.getInstance().getCategoriaSceltaVideo().isEmpty()) {
@@ -216,6 +227,7 @@ public class Utility {
                     // VariabiliGlobali.getInstance().setVideoVisualizzato(prossimo);
 //
                     // db.ScriveVisti(Long.toString(prossimo), VariabiliGlobali.getInstance().getModalita());
+                    VariabiliGlobali.getInstance().setDeveCaricare(true);
                     DBRemoto dbr = new DBRemoto();
                     dbr.RitornaSuccessivoMultimedia();
                 } else {
@@ -243,6 +255,7 @@ public class Utility {
                     // VariabiliGlobali.getInstance().setImmagineVisualizzata(prossima);
 //
                     // db.ScriveVisti(Integer.toString(prossima), VariabiliGlobali.getInstance().getModalita());
+                    VariabiliGlobali.getInstance().setDeveCaricare(true);
                     DBRemoto dbr = new DBRemoto();
                     dbr.RitornaSuccessivoMultimedia();
                 } else {
@@ -263,6 +276,83 @@ public class Utility {
             ScriveInformazioni();
             CaricaMultimedia();
         }
+    }
+
+    public void VisualizzaMultimedia(String Ritorno) {
+        if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
+            VariabiliGlobali.getInstance().setUltimoRitornoVideo(Ritorno);
+
+            String[] Rit = Ritorno.split("§");
+            // ImageView vidView = VariabiliGlobali.getInstance().getImgPlayVideo();
+
+            String ImmVideo = VariabiliGlobali.getInstance().getPercorsoURL() + "/Thumbs/" + Rit[0].replace("\\", "/");
+
+            Picasso.get().load(ImmVideo).placeholder( R.drawable.progress_animation ).into(VariabiliGlobali.getInstance().getImgPlayVideo());
+
+            StrutturaFiles sf = new StrutturaFiles();
+            String[] c = Rit[1].split(";");
+            sf.setTipologia("2");
+            sf.setNomeFile(c[0].replace("***PV***",";"));
+            sf.setDimeFile(Long.parseLong(c[1]));
+            sf.setDataFile(c[2]);
+            sf.setCategoria(Integer.parseInt(c[3]));
+
+            VariabiliGlobali.getInstance().setVideoCaricato(sf);
+
+            // String vidAddress = sf.getNomeFile().replace("\\", "/");
+            // int Categoria = sf.getCategoria()-1;
+            // String sCategoria = VariabiliGlobali.getInstance().getCategorieVideo().get(Categoria);
+            // vidAddress = VariabiliGlobali.getInstance().getPercorsoURL() + "/" + sCategoria + "/" + vidAddress;
+
+            // Uri vidUri = Uri.parse(vidAddress);
+            // vidView.setVideoURI(vidUri);
+//
+            // MediaController vidControl = new MediaController(VariabiliGlobali.getInstance().getContext());
+            // vidControl.setAnchorView(vidView);
+            // vidView.setMediaController(vidControl);
+//
+            // vidView.start();
+
+            // VideoPlayer v = new VideoPlayer(VariabiliGlobali.getInstance().getContext(),
+            //         vidView,
+            //         VariabiliGlobali.getInstance().getPgrBar(),
+            //         vidAddress);
+
+            // Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
+            // Uri data = Uri.parse(vidAddress);
+            // String estensione = vidAddress.substring(vidAddress.length()-3,vidAddress.length());
+//
+            // intent.setDataAndType(data, "video/" + estensione);
+            // VariabiliGlobali.getInstance().getContext().startActivity(intent);
+
+            // Utility.getInstance().LoadVideo(vidView, vidAddress, sf.getNomeFile(), sCategoria, sf.getDimeFile());
+        } else {
+            VariabiliGlobali.getInstance().setUltimoRitornoImmagine(Ritorno);
+
+            StrutturaFiles sf = new StrutturaFiles();
+
+            String[] Rit = Ritorno.split("§");
+
+            String[] c = Rit[1].split(";");
+            sf.setTipologia("1");
+            sf.setNomeFile(c[0].replace("***PV***",";"));
+            sf.setDimeFile(Long.parseLong(c[1]));
+            sf.setDataFile(c[2]);
+            sf.setCategoria(Integer.parseInt(c[3]));
+            VariabiliGlobali.getInstance().setImmagineCaricata(sf);
+
+            String NomeImmagine = sf.getNomeFile().replace("\\", "/");
+            int Categoria = sf.getCategoria()-1;
+            String sCategoria = VariabiliGlobali.getInstance().getCategorieImmagini().get(Categoria);
+            NomeImmagine = VariabiliGlobali.getInstance().getPercorsoURL() + "/" + sCategoria + "/" + NomeImmagine;
+            NomeImmagine = NomeImmagine.replace(" ","%20");
+
+            ImageView mImageView = VariabiliGlobali.getInstance().getiView();
+
+            Picasso.get().load(NomeImmagine).placeholder( R.drawable.progress_animation ).into(mImageView);
+        }
+
+        Utility.getInstance().ScriveInformazioni();
     }
 
     public void CaricaMultimedia() {

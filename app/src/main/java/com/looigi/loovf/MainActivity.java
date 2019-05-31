@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -298,10 +299,30 @@ public class MainActivity extends AppCompatActivity {
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sItems.setAdapter(adapter);
+        sItems.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
 
-        if (!VariabiliGlobali.getInstance().getCategoriaScelta().isEmpty()) {
-            int spinnerPosition = adapter.getPosition(VariabiliGlobali.getInstance().getCategoriaScelta());
-            sItems.setSelection(spinnerPosition);
+                if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
+                    VariabiliGlobali.getInstance().setCategoriaSceltaVideo(item);
+                } else {
+                    VariabiliGlobali.getInstance().setCategoriaSceltaImmagine(item);
+                }
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
+            if (!VariabiliGlobali.getInstance().getCategoriaSceltaVideo().isEmpty()) {
+                int spinnerPosition = adapter.getPosition(VariabiliGlobali.getInstance().getCategoriaSceltaVideo());
+                sItems.setSelection(spinnerPosition);
+            }
+        } else {
+            if (!VariabiliGlobali.getInstance().getCategoriaSceltaImmagine().isEmpty()) {
+                int spinnerPosition = adapter.getPosition(VariabiliGlobali.getInstance().getCategoriaSceltaImmagine());
+                sItems.setSelection(spinnerPosition);
+            }
         }
     }
 }

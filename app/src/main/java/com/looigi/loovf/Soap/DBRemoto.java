@@ -50,7 +50,7 @@ public class DBRemoto {
 				NS,
 				SA,
 				10000,
-				false);
+				true);
 		g.Esegue();
 	}
 
@@ -64,6 +64,31 @@ public class DBRemoto {
 				SA,
 				5000,
 				true);
+		g.Esegue();
+	}
+
+	public void RitornaSuccessivoMultimedia() {
+		String tip = "";
+		if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
+			tip="2";
+		} else {
+			tip="1";
+		}
+		String Categoria = "";
+		if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
+			Categoria = VariabiliGlobali.getInstance().getCategoriaSceltaVideo();
+		} else {
+			Categoria = VariabiliGlobali.getInstance().getCategoriaSceltaImmagine();
+		}
+		String Urletto="RitornaSuccessivoMultimedia?idTipologia=" + tip + "&Categoria=" + Categoria;
+
+		GestioneWEBServiceSOAP g = new GestioneWEBServiceSOAP(
+				RadiceWS + ws + Urletto,
+				"RitornaSuccessivoMultimedia",
+				NS,
+				SA,
+				5000,
+				false);
 		g.Esegue();
 	}
 

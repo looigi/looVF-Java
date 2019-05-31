@@ -151,57 +151,68 @@ public class Utility {
 
     public void AvanzaMultimedia() {
         db_dati db = new db_dati();
+        boolean Ok = false;
 
         if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
             if (VariabiliGlobali.getInstance().getIndiceVideo() < VariabiliGlobali.getInstance().getVideoVisualizzati().size()-1) {
                 long Quale = VariabiliGlobali.getInstance().getIndiceVideo()+1;
                 VariabiliGlobali.getInstance().setIndiceVideo(Quale);
                 VariabiliGlobali.getInstance().setVideoVisualizzato(VariabiliGlobali.getInstance().getVideoVisualizzati().get((int) Quale));
+                Ok = true;
             } else {
-                // int QuantiVideo = VariabiliGlobali.getInstance().getListaVideo().size() - 1;
                 if (VariabiliGlobali.getInstance().getChkRandom().isChecked()) {
-                    Random r = new Random();
-                    long prossimo = r.nextInt((int) VariabiliGlobali.getInstance().getQuantiVideo());
-                    VariabiliGlobali.getInstance().setVideoVisualizzato(prossimo);
-
-                    db.ScriveVisti(Long.toString(prossimo), VariabiliGlobali.getInstance().getModalita());
+                    // Random r = new Random();
+                    // long prossimo = r.nextInt((int) VariabiliGlobali.getInstance().getQuantiVideo());
+                    // VariabiliGlobali.getInstance().setVideoVisualizzato(prossimo);
+//
+                    // db.ScriveVisti(Long.toString(prossimo), VariabiliGlobali.getInstance().getModalita());
+                    DBRemoto dbr = new DBRemoto();
+                    dbr.RitornaSuccessivoMultimedia();
                 } else {
                     long prossimo = VariabiliGlobali.getInstance().getVideoVisualizzato();
                     prossimo++;
                     VariabiliGlobali.getInstance().setVideoVisualizzato(prossimo);
 
                     db.ScriveVisti(Long.toString(prossimo), VariabiliGlobali.getInstance().getModalita());
+
+                    VariabiliGlobali.getInstance().getVideoVisualizzati().add(VariabiliGlobali.getInstance().getVideoVisualizzato());
+                    VariabiliGlobali.getInstance().setIndiceVideo(VariabiliGlobali.getInstance().getVideoVisualizzati().size() - 1);
+                    Ok = true;
                 }
-                VariabiliGlobali.getInstance().getVideoVisualizzati().add(VariabiliGlobali.getInstance().getVideoVisualizzato());
-                VariabiliGlobali.getInstance().setIndiceVideo(VariabiliGlobali.getInstance().getVideoVisualizzati().size() - 1);
             }
         } else {
             if (VariabiliGlobali.getInstance().getIndiceImmagine() < VariabiliGlobali.getInstance().getImmaginiVisualizzate().size()-1) {
                 long Quale = VariabiliGlobali.getInstance().getIndiceImmagine()+1;
                 VariabiliGlobali.getInstance().setIndiceImmagine(Quale);
                 VariabiliGlobali.getInstance().setImmagineVisualizzata(VariabiliGlobali.getInstance().getImmaginiVisualizzate().get((int) Quale));
+                Ok = true;
             } else {
-                // int QuanteImmagini = VariabiliGlobali.getInstance().getListaImmagini().size() - 1;
                 if (VariabiliGlobali.getInstance().getChkRandom().isChecked()) {
-                    Random r = new Random();
-                    int prossima = r.nextInt((int) VariabiliGlobali.getInstance().getQuanteImmagini());
-                    VariabiliGlobali.getInstance().setImmagineVisualizzata(prossima);
-
-                    db.ScriveVisti(Integer.toString(prossima), VariabiliGlobali.getInstance().getModalita());
+                    // Random r = new Random();
+                    // int prossima = r.nextInt((int) VariabiliGlobali.getInstance().getQuanteImmagini());
+                    // VariabiliGlobali.getInstance().setImmagineVisualizzata(prossima);
+//
+                    // db.ScriveVisti(Integer.toString(prossima), VariabiliGlobali.getInstance().getModalita());
+                    DBRemoto dbr = new DBRemoto();
+                    dbr.RitornaSuccessivoMultimedia();
                 } else {
                     long prossima = VariabiliGlobali.getInstance().getImmagineVisualizzata();
                     prossima++;
                     VariabiliGlobali.getInstance().setImmagineVisualizzata(prossima);
 
                     db.ScriveVisti(Long.toString(prossima), VariabiliGlobali.getInstance().getModalita());
+
+                    VariabiliGlobali.getInstance().getImmaginiVisualizzate().add(VariabiliGlobali.getInstance().getImmagineVisualizzata());
+                    VariabiliGlobali.getInstance().setIndiceImmagine(VariabiliGlobali.getInstance().getImmaginiVisualizzate().size() - 1);
+                    Ok = true;
                 }
-                VariabiliGlobali.getInstance().getImmaginiVisualizzate().add(VariabiliGlobali.getInstance().getImmagineVisualizzata());
-                VariabiliGlobali.getInstance().setIndiceImmagine(VariabiliGlobali.getInstance().getImmaginiVisualizzate().size() - 1);
             }
         }
 
-        ScriveInformazioni();
-        CaricaMultimedia();
+        if (Ok) {
+            ScriveInformazioni();
+            CaricaMultimedia();
+        }
     }
 
     public void CaricaMultimedia() {

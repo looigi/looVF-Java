@@ -17,6 +17,7 @@ import com.looigi.loovf.R;
 import com.looigi.loovf.StrutturaFiles;
 import com.looigi.loovf.Utility;
 import com.looigi.loovf.VariabiliGlobali;
+import com.looigi.loovf.db_locale.db_dati;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -201,6 +202,47 @@ public class wsRitorno {
 
                     // DBRemoto dbr = new DBRemoto();
                     // dbr.RitornaQuantiFilesPhoto();
+                }
+            }, 50);
+        }
+    }
+
+    public void RitornaSuccessivoMultimedia(final String Ritorno) {
+        if (Ritorno.toUpperCase().contains("ERROR:") || Ritorno.equals("0")) {
+            DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
+                    "Errore nella lettura del successivo multimedia:\n" + Ritorno,
+                    true,
+                    "looVF",
+                    false);
+        } else {
+            long prossimo = Long.parseLong(Ritorno);
+            db_dati db = new db_dati();
+
+            if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
+                VariabiliGlobali.getInstance().setVideoVisualizzato(prossimo);
+
+                db.ScriveVisti(Long.toString(prossimo), VariabiliGlobali.getInstance().getModalita());
+
+                VariabiliGlobali.getInstance().getVideoVisualizzati().add(VariabiliGlobali.getInstance().getVideoVisualizzato());
+                VariabiliGlobali.getInstance().setIndiceVideo(VariabiliGlobali.getInstance().getVideoVisualizzati().size() - 1);
+            } else {
+                VariabiliGlobali.getInstance().setImmagineVisualizzata(prossimo) ;
+
+                db.ScriveVisti(Long.toString(prossimo), VariabiliGlobali.getInstance().getModalita());
+
+                VariabiliGlobali.getInstance().getImmaginiVisualizzate().add(VariabiliGlobali.getInstance().getImmagineVisualizzata());
+                VariabiliGlobali.getInstance().setIndiceImmagine(VariabiliGlobali.getInstance().getImmaginiVisualizzate().size() - 1);
+            }
+
+            hSelezionaRiga = new Handler(Looper.getMainLooper());
+            hSelezionaRiga.postDelayed(runRiga = new Runnable() {
+                @Override
+                public void run() {
+                    hSelezionaRiga.removeCallbacks(runRiga);
+                    runRiga = null;
+
+                    Utility.getInstance().ScriveInformazioni();
+                    Utility.getInstance().CaricaMultimedia();
                 }
             }, 50);
         }

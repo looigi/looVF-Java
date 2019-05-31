@@ -51,7 +51,8 @@ public class VariabiliGlobali {
     private StrutturaFiles VideoCaricato;
     private LinearLayout laySettings;
     private boolean LinguettaAperta = true;
-    private String CategoriaScelta="Tutto";
+    private String CategoriaSceltaVideo="Tutto";
+    private String CategoriaSceltaImmagine="Tutto";
     private ImageView imgPlayVideo;
 
     private RelativeLayout layCaricamento;
@@ -84,12 +85,20 @@ public class VariabiliGlobali {
         this.imgPlayVideo = imgPlayVideo;
     }
 
-    public String getCategoriaScelta() {
-        return CategoriaScelta;
+    public String getCategoriaSceltaVideo() {
+        return CategoriaSceltaVideo;
     }
 
-    public void setCategoriaScelta(String categoriaScelta) {
-        CategoriaScelta = categoriaScelta;
+    public void setCategoriaSceltaVideo(String categoriaScelta) {
+        CategoriaSceltaVideo = categoriaScelta;
+    }
+
+    public String getCategoriaSceltaImmagine() {
+        return CategoriaSceltaImmagine;
+    }
+
+    public void setCategoriaSceltaImmagine(String categoriaSceltaImmagine) {
+        CategoriaSceltaImmagine = categoriaSceltaImmagine;
     }
 
     public boolean isLinguettaAperta() {

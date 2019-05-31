@@ -49,7 +49,7 @@ public class DBRemoto {
 				"RitornMultimediaDaId",
 				NS,
 				SA,
-				5000,
+				10000,
 				false);
 		g.Esegue();
 	}

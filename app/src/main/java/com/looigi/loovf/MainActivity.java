@@ -2,8 +2,10 @@ package com.looigi.loovf;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,6 +18,9 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -47,6 +52,15 @@ public class MainActivity extends AppCompatActivity {
         VariabiliGlobali.getInstance().setContext(this);
         VariabiliGlobali.getInstance().setFragmentActivityPrincipale(this);
 
+        // if (!io.vov.vitamio.LibsChecker.checkVitamioLibs(this)) {
+        //     DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
+        //             "Vitamio library doesn't setup properly!",
+        //             true,
+        //             "looVF",
+        //             false);
+        //     return;
+        // }
+
         db_dati db = new db_dati();
         db.CreazioneTabelle();
 
@@ -55,6 +69,10 @@ public class MainActivity extends AppCompatActivity {
         // btn.setOnClickListener(pausePlay);
 
         sItems = (Spinner) findViewById(R.id.spnCategorie);
+        VariabiliGlobali.getInstance().setLayCaricamento((RelativeLayout) findViewById(R.id.layCaricamento));
+        VariabiliGlobali.getInstance().setTxtCaricamento((TextView) findViewById(R.id.txtCaricamento));
+        VariabiliGlobali.getInstance().setPgrBar((ProgressBar) findViewById(R.id.pgrBar));
+        VariabiliGlobali.getInstance().getLayCaricamento().setVisibility(LinearLayout.GONE);
 
         final LinearLayout laySettingsPanel = findViewById(R.id.laySettingsPanel);
         final ImageView mImageIndietro = findViewById(R.id.imgIndietro);
@@ -72,13 +90,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         VariabiliGlobali.getInstance().setModalita("PHOTO");
-        VariabiliGlobali.getInstance().setvView((VideoView) findViewById(R.id.myVideo));
+        // VariabiliGlobali.getInstance().setvView((VideoView) findViewById(R.id.myVideo));
+        VariabiliGlobali.getInstance().setImgPlayVideo((ImageView) findViewById(R.id.imgPlayVideo));
         VariabiliGlobali.getInstance().setiView((ImageView) findViewById(R.id.imgImmagine));
 
         VariabiliGlobali.getInstance().setLaySettings(laySettingsPanel);
         laySettingsPanel.setVisibility(LinearLayout.GONE);
         VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.GONE);
-        VariabiliGlobali.getInstance().getvView().setVisibility(LinearLayout.GONE);
+        VariabiliGlobali.getInstance().getImgPlayVideo().setVisibility(LinearLayout.GONE);
         mImageAvanti.setVisibility(LinearLayout.VISIBLE);
         mImageIndietro.setVisibility(LinearLayout.VISIBLE);
 
@@ -108,15 +127,39 @@ public class MainActivity extends AppCompatActivity {
         //     cd.IniziaCaricamento();
         // }
 
+        VariabiliGlobali.getInstance().getImgPlayVideo().setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                StrutturaFiles sf = VariabiliGlobali.getInstance().getVideoCaricato();
+
+                String vidAddress = sf.getNomeFile().replace("\\", "/");
+                int Categoria = sf.getCategoria()-1;
+                String sCategoria = VariabiliGlobali.getInstance().getCategorieVideo().get(Categoria);
+                vidAddress = VariabiliGlobali.getInstance().getPercorsoURL() + "/" + sCategoria + "/" + vidAddress;
+
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
+                Uri data = Uri.parse(vidAddress);
+                String estensione = vidAddress.substring(vidAddress.length()-3,vidAddress.length());
+
+                intent.setDataAndType(data, "video/" + estensione);
+                VariabiliGlobali.getInstance().getContext().startActivity(intent);
+            }
+        });
+
         LinearLayout layPhoto = findViewById(R.id.layPhoto);
         layPhoto.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (!VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
                     VariabiliGlobali.getInstance().setModalita("PHOTO");
 
-                    VariabiliGlobali.getInstance().getvView().setVisibility(LinearLayout.GONE);
+                    VariabiliGlobali.getInstance().getImgPlayVideo().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.VISIBLE);
+
+                    if (VariabiliGlobali.getInstance().gethSpinner()!=null) {
+                        VariabiliGlobali.getInstance().gethSpinner().removeCallbacks(VariabiliGlobali.getInstance().getRunSpinner());
+                        VariabiliGlobali.getInstance().setRunSpinner(null);
+                        VariabiliGlobali.getInstance().getLayCaricamento().setVisibility(LinearLayout.GONE);
+                    }
 
                     riempieSpinner();
 
@@ -131,9 +174,15 @@ public class MainActivity extends AppCompatActivity {
                 if (!VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
                     VariabiliGlobali.getInstance().setModalita("VIDEO");
 
-                    VariabiliGlobali.getInstance().getvView().setVisibility(LinearLayout.VISIBLE);
+                    VariabiliGlobali.getInstance().getImgPlayVideo().setVisibility(LinearLayout.VISIBLE);
                     VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.GONE);
+
+                    if (VariabiliGlobali.getInstance().gethSpinner()!=null) {
+                        VariabiliGlobali.getInstance().gethSpinner().removeCallbacks(VariabiliGlobali.getInstance().getRunSpinner());
+                        VariabiliGlobali.getInstance().setRunSpinner(null);
+                        VariabiliGlobali.getInstance().getLayCaricamento().setVisibility(LinearLayout.GONE);
+                    }
 
                     riempieSpinner();
 
@@ -145,9 +194,15 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout laySettings = findViewById(R.id.laySettings);
         laySettings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                VariabiliGlobali.getInstance().getvView().setVisibility(LinearLayout.GONE);
+                VariabiliGlobali.getInstance().getImgPlayVideo().setVisibility(LinearLayout.GONE);
                 VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.VISIBLE);
                 VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.GONE);
+
+                if (VariabiliGlobali.getInstance().gethSpinner()!=null) {
+                    VariabiliGlobali.getInstance().gethSpinner().removeCallbacks(VariabiliGlobali.getInstance().getRunSpinner());
+                    VariabiliGlobali.getInstance().setRunSpinner(null);
+                    VariabiliGlobali.getInstance().getLayCaricamento().setVisibility(LinearLayout.GONE);
+                }
 
                 Utility.getInstance().ScriveInformazioni();
             }
@@ -204,6 +259,15 @@ public class MainActivity extends AppCompatActivity {
 
         VariabiliGlobali.getInstance().setLinguettaAperta(true);
         ChiudeLinguetta();
+
+        // MediaController mc = new MediaController(this);
+        // VideoView vidView = VariabiliGlobali.getInstance().getvView();
+        // vidView.setMediaController(mc);
+        // String str = "http://looigi.no-ip.biz:12345/looVF/Filmatini/Rows/Gyn/Speculum/DoppioSpeculumPerforante.avi";
+        // Uri uri = Uri.parse(str);
+        // vidView.setVideoURI(uri);
+        // vidView.requestFocus();
+        // vidView.start();
     }
 
     private void ChiudeLinguetta() {
@@ -227,10 +291,17 @@ public class MainActivity extends AppCompatActivity {
         } else {
             spinnerArray = VariabiliGlobali.getInstance().getCategorieVideo();
         }
+        spinnerArray.add("Tutto");
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this, android.R.layout.simple_spinner_item, spinnerArray);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sItems.setAdapter(adapter);
+
+        if (!VariabiliGlobali.getInstance().getCategoriaScelta().isEmpty()) {
+            int spinnerPosition = adapter.getPosition(VariabiliGlobali.getInstance().getCategoriaScelta());
+            sItems.setSelection(spinnerPosition);
+        }
     }
 }

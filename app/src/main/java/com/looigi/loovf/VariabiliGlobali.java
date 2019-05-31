@@ -3,9 +3,12 @@ package com.looigi.loovf;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Environment;
+import android.os.Handler;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -40,7 +43,7 @@ public class VariabiliGlobali {
     private long IndiceVideo=0;
     private List<Long> ImmaginiVisualizzate = new ArrayList<>();
     private long IndiceImmagine=0;
-    private VideoView vView;
+    // private VideoView vView;
     private ImageView iView;
     private List<String> categorieVideo=new ArrayList<>();
     private List<String> categorieImmagini=new ArrayList<>();
@@ -48,6 +51,14 @@ public class VariabiliGlobali {
     private StrutturaFiles VideoCaricato;
     private LinearLayout laySettings;
     private boolean LinguettaAperta = true;
+    private String CategoriaScelta="Tutto";
+    private ImageView imgPlayVideo;
+
+    private RelativeLayout layCaricamento;
+    private TextView txtCaricamento;
+    private ProgressBar pgrBar;
+    private Runnable runSpinner;
+    private Handler hSpinner;
 
     public Context getContext() {
         return context;
@@ -63,6 +74,22 @@ public class VariabiliGlobali {
 
     public void setFragmentActivityPrincipale(Activity fragmentActivityPrincipale) {
         FragmentActivityPrincipale = fragmentActivityPrincipale;
+    }
+
+    public ImageView getImgPlayVideo() {
+        return imgPlayVideo;
+    }
+
+    public void setImgPlayVideo(ImageView imgPlayVideo) {
+        this.imgPlayVideo = imgPlayVideo;
+    }
+
+    public String getCategoriaScelta() {
+        return CategoriaScelta;
+    }
+
+    public void setCategoriaScelta(String categoriaScelta) {
+        CategoriaScelta = categoriaScelta;
     }
 
     public boolean isLinguettaAperta() {
@@ -209,13 +236,13 @@ public class VariabiliGlobali {
         IndiceImmagine = indiceImmagine;
     }
 
-    public VideoView getvView() {
-        return vView;
-    }
-
-    public void setvView(VideoView vView) {
-        this.vView = vView;
-    }
+    // public VideoView getvView() {
+    //     return vView;
+    // }
+//
+    // public void setvView(VideoView vView) {
+    //     this.vView = vView;
+    // }
 
     public ImageView getiView() {
         return iView;
@@ -239,5 +266,45 @@ public class VariabiliGlobali {
 
     public void setCategorieImmagini(List<String> categorieImmagini) {
         this.categorieImmagini = categorieImmagini;
+    }
+
+    public RelativeLayout getLayCaricamento() {
+        return layCaricamento;
+    }
+
+    public void setLayCaricamento(RelativeLayout layCaricamento) {
+        this.layCaricamento = layCaricamento;
+    }
+
+    public TextView getTxtCaricamento() {
+        return txtCaricamento;
+    }
+
+    public void setTxtCaricamento(TextView txtCaricamento) {
+        this.txtCaricamento = txtCaricamento;
+    }
+
+    public ProgressBar getPgrBar() {
+        return pgrBar;
+    }
+
+    public void setPgrBar(ProgressBar pgrBar) {
+        this.pgrBar = pgrBar;
+    }
+
+    public Runnable getRunSpinner() {
+        return runSpinner;
+    }
+
+    public void setRunSpinner(Runnable runSpinner) {
+        this.runSpinner = runSpinner;
+    }
+
+    public Handler gethSpinner() {
+        return hSpinner;
+    }
+
+    public void sethSpinner(Handler hSpinner) {
+        this.hSpinner = hSpinner;
     }
 }

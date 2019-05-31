@@ -1,9 +1,9 @@
 package com.looigi.loovf;
 
-import android.app.ProgressDialog;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.widget.ImageView;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.TextView;
@@ -11,12 +11,7 @@ import android.widget.VideoView;
 
 import com.looigi.loovf.Soap.DBRemoto;
 import com.looigi.loovf.db_locale.db_dati;
-import com.squareup.picasso.Picasso;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Random;
@@ -27,6 +22,8 @@ public class Utility {
     public static Utility getInstance() {
         return ourInstance;
     }
+
+    private int Contatore;
 
     private Utility() {
     }
@@ -75,7 +72,7 @@ public class Utility {
                 NomeFile += " dim: " + Long.toString(Dime2) + " " + tipo[quale];
                 NomeFile += " data: " + VariabiliGlobali.getInstance().getVideoCaricato().getDataFile();
 
-                VariabiliGlobali.getInstance().getvView().setVisibility(LinearLayout.VISIBLE);
+                VariabiliGlobali.getInstance().getImgPlayVideo().setVisibility(LinearLayout.VISIBLE);
                 VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.GONE);
                 VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.GONE);
             }
@@ -99,7 +96,7 @@ public class Utility {
                 NomeFile += " dim: " + Long.toString(Dime2) + " " + tipo[quale];
                 NomeFile += " data: " + VariabiliGlobali.getInstance().getImmagineCaricata().getDataFile();
 
-                VariabiliGlobali.getInstance().getvView().setVisibility(LinearLayout.GONE);
+                VariabiliGlobali.getInstance().getImgPlayVideo().setVisibility(LinearLayout.GONE);
                 VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.GONE);
                 VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.VISIBLE);
             }
@@ -220,8 +217,8 @@ public class Utility {
         }
     }
 
-    public void LoadVideo(final VideoView mVideoView, String videoUrl, String Titolo, String Categoria, long Dime) {
-        final ProgressDialog pDialog = new ProgressDialog(VariabiliGlobali.getInstance().getContext());
+    /* public void LoadVideo(final VideoView mVideoView, String videoUrl, String Titolo, String Categoria, long Dime) {
+        // final ProgressDialog pDialog = new ProgressDialog(VariabiliGlobali.getInstance().getContext());
 
         // Set progressbar message
         long Dime2 = Dime;
@@ -231,39 +228,77 @@ public class Utility {
             Dime2 /= 1024;
             quale++;
         }
-        pDialog.setMessage("Buffering...\n"+Titolo+"\nCategoria: "+Categoria+"\nSize: "+Long.toString(Dime2) + " " + tipo[quale]);
-        pDialog.setIndeterminate(false);
-        pDialog.setCancelable(false);
+
+        String Testo = "Buffering...\n"+Titolo+"\nCategoria: "+Categoria+"\nSize: "+Long.toString(Dime2) + " " + tipo[quale];
+        VariabiliGlobali.getInstance().getTxtCaricamento().setText(Testo);
+        VariabiliGlobali.getInstance().getLayCaricamento().setVisibility(LinearLayout.VISIBLE);
+        // pDialog.setMessage("Buffering...\n"+Titolo+"\nCategoria: "+Categoria+"\nSize: "+Long.toString(Dime2) + " " + tipo[quale]);
+        // pDialog.setIndeterminate(false);
+        // pDialog.setCancelable(false);
         // Show progressbar
-        pDialog.show();
+        // pDialog.show();
+
+        VariabiliGlobali.getInstance().getPgrBar().setIndeterminate(true);
+        VariabiliGlobali.getInstance().getPgrBar().setMax(100);
+        VariabiliGlobali.getInstance().getPgrBar().setProgress(0);
+        Contatore = 0;
+//
+        VariabiliGlobali.getInstance().sethSpinner(new Handler(Looper.getMainLooper()));
+        VariabiliGlobali.getInstance().setRunSpinner ( new Runnable() {
+            @Override
+            public void run() {
+                Contatore++;
+                if (Contatore>100) {
+                    Contatore=0;
+                }
+                VariabiliGlobali.getInstance().getPgrBar().setProgress(0);
+                VariabiliGlobali.getInstance().gethSpinner().postDelayed(VariabiliGlobali.getInstance().getRunSpinner(),100);
+            }
+        });
+        VariabiliGlobali.getInstance().gethSpinner().postDelayed(VariabiliGlobali.getInstance().getRunSpinner(),100);
 
         try {
             // Start the MediaController
             MediaController mediacontroller = new MediaController(VariabiliGlobali.getInstance().getContext());
+            mediacontroller.setMediaPlayer(mVideoView);
             mediacontroller.setAnchorView(mVideoView);
 
-            Uri videoUri = Uri.parse(videoUrl);
+            Uri videoUri = Uri.parse(videoUrl.replace(" ","%20"));
             mVideoView.setMediaController(mediacontroller);
             mVideoView.setVideoURI(videoUri);
         } catch (Exception e) {
-            e.printStackTrace();
+            VariabiliGlobali.getInstance().gethSpinner().removeCallbacks(VariabiliGlobali.getInstance().getRunSpinner());
+            VariabiliGlobali.getInstance().setRunSpinner(null);
+
+            VariabiliGlobali.getInstance().getLayCaricamento().setVisibility(LinearLayout.GONE);
+            DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
+                    Utility.getInstance().PrendeErroreDaException(e),
+                    true, "looVF", false);
         }
 
         mVideoView.requestFocus();
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             // Close the progress bar and play the video
             public void onPrepared(MediaPlayer mp) {
-                pDialog.dismiss();
+                VariabiliGlobali.getInstance().gethSpinner().removeCallbacks(VariabiliGlobali.getInstance().getRunSpinner());
+                VariabiliGlobali.getInstance().setRunSpinner(null);
+
+                VariabiliGlobali.getInstance().getLayCaricamento().setVisibility(LinearLayout.GONE);
                 mVideoView.start();
+                // pDialog.dismiss();
             }
         });
         mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             public void onCompletion(MediaPlayer mp) {
-                if (pDialog.isShowing()) {
-                    pDialog.dismiss();
-                }
+                VariabiliGlobali.getInstance().gethSpinner().removeCallbacks(VariabiliGlobali.getInstance().getRunSpinner());
+                VariabiliGlobali.getInstance().setRunSpinner(null);
+
+                VariabiliGlobali.getInstance().getLayCaricamento().setVisibility(LinearLayout.GONE);
+                // if (pDialog.isShowing()) {
+                //     pDialog.dismiss();
+                // }
                 // finish();
             }
         });
-    }
+    } */
 }

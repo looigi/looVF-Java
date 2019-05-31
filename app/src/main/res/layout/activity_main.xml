@@ -172,14 +172,7 @@
                     android:id="@+id/spnCategorie"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5" />
-
-                <ImageView
-                    android:id="@+id/imgCambiaCategoria"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/seleziona"
-                    android:layout_height="45dp" />
+                    android:layout_weight="6" />
             </LinearLayout>
 
             <LinearLayout
@@ -284,33 +277,5 @@
                 android:layout_height="50dp"
                 android:background="@drawable/avanti" />
         </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/layCaricamento"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_width="300sp"
-            android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
-            android:padding="5dp"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/txtCaricamento"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="TextView" />
-
-                <ProgressBar
-                    android:id="@+id/pgrBar"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-        </RelativeLayout>
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

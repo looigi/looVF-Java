@@ -35,7 +35,7 @@ public class DBRemoto {
 		g.Esegue();
 	}
 
-	public void RitornaMultimediaDaID(String Tipologia, String id) {
+	public void RitornaMultimediaDaID(String id) {
     	String tip = "";
     	if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
     		tip="2";
@@ -49,7 +49,7 @@ public class DBRemoto {
 				"RitornMultimediaDaId",
 				NS,
 				SA,
-				10000,
+				15000,
 				true);
 		g.Esegue();
 	}
@@ -62,7 +62,7 @@ public class DBRemoto {
 				"RitornaQuantiFilesPhoto",
 				NS,
 				SA,
-				5000,
+				15000,
 				true);
 		g.Esegue();
 	}
@@ -87,7 +87,7 @@ public class DBRemoto {
 				"RitornaSuccessivoMultimedia",
 				NS,
 				SA,
-				5000,
+				15000,
 				false);
 		g.Esegue();
 	}
@@ -100,7 +100,7 @@ public class DBRemoto {
 				"RitornaQuantiFilesVideo",
 				NS,
 				SA,
-				5000,
+				20000,
 				true);
 		g.Esegue();
 	}

@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         VariabiliGlobali.getInstance().setContext(this);
         VariabiliGlobali.getInstance().setFragmentActivityPrincipale(this);
 
+        VariabiliGlobali.getInstance().setCaricataPagina(false);
         // if (!io.vov.vitamio.LibsChecker.checkVitamioLibs(this)) {
         //     DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
         //             "Vitamio library doesn't setup properly!",
@@ -70,10 +71,7 @@ public class MainActivity extends AppCompatActivity {
         // btn.setOnClickListener(pausePlay);
 
         sItems = (Spinner) findViewById(R.id.spnCategorie);
-        VariabiliGlobali.getInstance().setLayCaricamento((RelativeLayout) findViewById(R.id.layCaricamento));
-        VariabiliGlobali.getInstance().setTxtCaricamento((TextView) findViewById(R.id.txtCaricamento));
-        VariabiliGlobali.getInstance().setPgrBar((ProgressBar) findViewById(R.id.pgrBar));
-        VariabiliGlobali.getInstance().getLayCaricamento().setVisibility(LinearLayout.GONE);
+        VariabiliGlobali.getInstance().setsItems((Spinner) findViewById(R.id.spnCategorie));
 
         final LinearLayout laySettingsPanel = findViewById(R.id.laySettingsPanel);
         final ImageView mImageIndietro = findViewById(R.id.imgIndietro);
@@ -156,13 +154,7 @@ public class MainActivity extends AppCompatActivity {
                     VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.VISIBLE);
 
-                    if (VariabiliGlobali.getInstance().gethSpinner()!=null) {
-                        VariabiliGlobali.getInstance().gethSpinner().removeCallbacks(VariabiliGlobali.getInstance().getRunSpinner());
-                        VariabiliGlobali.getInstance().setRunSpinner(null);
-                        VariabiliGlobali.getInstance().getLayCaricamento().setVisibility(LinearLayout.GONE);
-                    }
-
-                    riempieSpinner();
+                    Utility.getInstance().riempieSpinner();
 
                     Utility.getInstance().PrendeUltimoMultimedia();
                 }
@@ -179,13 +171,7 @@ public class MainActivity extends AppCompatActivity {
                     VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.GONE);
 
-                    if (VariabiliGlobali.getInstance().gethSpinner()!=null) {
-                        VariabiliGlobali.getInstance().gethSpinner().removeCallbacks(VariabiliGlobali.getInstance().getRunSpinner());
-                        VariabiliGlobali.getInstance().setRunSpinner(null);
-                        VariabiliGlobali.getInstance().getLayCaricamento().setVisibility(LinearLayout.GONE);
-                    }
-
-                    riempieSpinner();
+                    Utility.getInstance().riempieSpinner();
 
                     Utility.getInstance().PrendeUltimoMultimedia();
                 }
@@ -198,12 +184,6 @@ public class MainActivity extends AppCompatActivity {
                 VariabiliGlobali.getInstance().getImgPlayVideo().setVisibility(LinearLayout.GONE);
                 VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.VISIBLE);
                 VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.GONE);
-
-                if (VariabiliGlobali.getInstance().gethSpinner()!=null) {
-                    VariabiliGlobali.getInstance().gethSpinner().removeCallbacks(VariabiliGlobali.getInstance().getRunSpinner());
-                    VariabiliGlobali.getInstance().setRunSpinner(null);
-                    VariabiliGlobali.getInstance().getLayCaricamento().setVisibility(LinearLayout.GONE);
-                }
 
                 Utility.getInstance().ScriveInformazioni();
             }
@@ -256,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
         dbr.RitornaQuantiFilesPhoto();
         dbr.RitornaQuantiFilesVideo();
 
-        riempieSpinner();
+        Utility.getInstance().riempieSpinner();
 
         VariabiliGlobali.getInstance().setLinguettaAperta(true);
         ChiudeLinguetta();
@@ -283,46 +263,5 @@ public class MainActivity extends AppCompatActivity {
                 VariabiliGlobali.getInstance().setLinguettaAperta(false);
             }
         },5000);
-    }
-
-    private void riempieSpinner() {
-        List<String> spinnerArray;
-        if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
-            spinnerArray = VariabiliGlobali.getInstance().getCategorieImmagini();
-        } else {
-            spinnerArray = VariabiliGlobali.getInstance().getCategorieVideo();
-        }
-        spinnerArray.add("Tutto");
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_spinner_item, spinnerArray);
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sItems.setAdapter(adapter);
-        sItems.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String item = parent.getItemAtPosition(position).toString();
-
-                if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
-                    VariabiliGlobali.getInstance().setCategoriaSceltaVideo(item);
-                } else {
-                    VariabiliGlobali.getInstance().setCategoriaSceltaImmagine(item);
-                }
-            }
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-        if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
-            if (!VariabiliGlobali.getInstance().getCategoriaSceltaVideo().isEmpty()) {
-                int spinnerPosition = adapter.getPosition(VariabiliGlobali.getInstance().getCategoriaSceltaVideo());
-                sItems.setSelection(spinnerPosition);
-            }
-        } else {
-            if (!VariabiliGlobali.getInstance().getCategoriaSceltaImmagine().isEmpty()) {
-                int spinnerPosition = adapter.getPosition(VariabiliGlobali.getInstance().getCategoriaSceltaImmagine());
-                sItems.setSelection(spinnerPosition);
-            }
-        }
     }
 }

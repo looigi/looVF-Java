@@ -49,6 +49,10 @@ public class wsRitorno {
 
                     Utility.getInstance().ScriveInformazioni();
                     Utility.getInstance().PrendeUltimoMultimedia();
+
+                    Utility.getInstance().riempieSpinner();
+
+                    VariabiliGlobali.getInstance().setCaricataPagina(true);
                 }
             },50);
         }
@@ -97,7 +101,7 @@ public class wsRitorno {
                         String[] Rit = Ritorno.split("§");
                         // ImageView vidView = VariabiliGlobali.getInstance().getImgPlayVideo();
 
-                        String ImmVideo = VariabiliGlobali.getInstance().getPercorsoURL() + "/" + Rit[0].replace("\\", "/");
+                        String ImmVideo = VariabiliGlobali.getInstance().getPercorsoURL() + "/Thumbs/" + Rit[0].replace("\\", "/");
 
                         Picasso.get().load(ImmVideo).placeholder( R.drawable.progress_animation ).into(VariabiliGlobali.getInstance().getImgPlayVideo());
 
@@ -242,7 +246,7 @@ public class wsRitorno {
                     runRiga = null;
 
                     Utility.getInstance().ScriveInformazioni();
-                    Utility.getInstance().CaricaMultimedia();
+                    // Utility.getInstance().CaricaMultimedia();
                 }
             }, 50);
         }

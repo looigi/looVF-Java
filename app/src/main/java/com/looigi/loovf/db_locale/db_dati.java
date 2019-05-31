@@ -185,8 +185,8 @@ public class db_dati {
         if (myDB != null) {
             long Progressivo = 0;
 
-            Cursor c = myDB.rawQuery("SELECT Max(Progressivo) FROM Visti WHERE Tipologia = ? AND id = ?",
-                    new String[]{ Tipologia, idMultimedia});
+            Cursor c = myDB.rawQuery("SELECT Max(Progressivo) FROM Visti WHERE Tipologia = ?",
+                    new String[]{ Tipologia });
             c.moveToFirst();
             if (c.getCount() > 0) {
                 Progressivo = c.getLong(0);

@@ -4,6 +4,9 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.TextView;
@@ -14,6 +17,7 @@ import com.looigi.loovf.db_locale.db_dati;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.List;
 import java.util.Random;
 
 public class Utility {
@@ -26,6 +30,52 @@ public class Utility {
     private int Contatore;
 
     private Utility() {
+    }
+
+    public void riempieSpinner() {
+        List<String> spinnerArray;
+        if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
+            spinnerArray = VariabiliGlobali.getInstance().getCategorieImmagini();
+        } else {
+            spinnerArray = VariabiliGlobali.getInstance().getCategorieVideo();
+        }
+        spinnerArray.add("Tutto");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                VariabiliGlobali.getInstance().getContext(),
+                android.R.layout.simple_spinner_item, spinnerArray);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        VariabiliGlobali.getInstance().getsItems().setAdapter(adapter);
+        VariabiliGlobali.getInstance().getsItems().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (VariabiliGlobali.getInstance().isCaricataPagina()) {
+                    String item = parent.getItemAtPosition(position).toString();
+
+                    if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
+                        VariabiliGlobali.getInstance().setCategoriaSceltaVideo(item);
+                    } else {
+                        VariabiliGlobali.getInstance().setCategoriaSceltaImmagine(item);
+                    }
+
+                    Utility.getInstance().AvanzaMultimedia();
+                }
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
+            if (!VariabiliGlobali.getInstance().getCategoriaSceltaVideo().isEmpty()) {
+                int spinnerPosition = adapter.getPosition(VariabiliGlobali.getInstance().getCategoriaSceltaVideo());
+                VariabiliGlobali.getInstance().getsItems().setSelection(spinnerPosition);
+            }
+        } else {
+            if (!VariabiliGlobali.getInstance().getCategoriaSceltaImmagine().isEmpty()) {
+                int spinnerPosition = adapter.getPosition(VariabiliGlobali.getInstance().getCategoriaSceltaImmagine());
+                VariabiliGlobali.getInstance().getsItems().setSelection(spinnerPosition);
+            }
+        }
     }
 
     public String PrendeErroreDaException(Exception e) {
@@ -221,10 +271,10 @@ public class Utility {
 
         if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
             long Quale = VariabiliGlobali.getInstance().getVideoVisualizzato();
-            dbr.RitornaMultimediaDaID(VariabiliGlobali.getInstance().getModalita(), Long.toString(Quale));
+            dbr.RitornaMultimediaDaID(Long.toString(Quale));
         } else {
             long Quale = VariabiliGlobali.getInstance().getImmagineVisualizzata();
-            dbr.RitornaMultimediaDaID(VariabiliGlobali.getInstance().getModalita(), Long.toString(Quale));
+            dbr.RitornaMultimediaDaID( Long.toString(Quale));
         }
     }
 

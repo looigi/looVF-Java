@@ -39,7 +39,7 @@ public class VariabiliGlobali {
     // private boolean DatiCaricati = false;
     private TextView txtInfo;
     private String Modalita;
-    private CheckBox chkRandom;
+    // private CheckBox chkRandom;
     private List<Long> VideoVisualizzati = new ArrayList<>();
     private long IndiceVideo=0;
     private List<Long> ImmaginiVisualizzate = new ArrayList<>();
@@ -52,14 +52,15 @@ public class VariabiliGlobali {
     private StrutturaFiles VideoCaricato;
     private LinearLayout laySettings;
     private boolean LinguettaAperta = true;
-    private String CategoriaSceltaVideo="Tutto";
-    private String CategoriaSceltaImmagine="Tutto";
+    // private String CategoriaSceltaVideo="Tutto";
+    // private String CategoriaSceltaImmagine="Tutto";
     private ImageView imgPlayVideo;
     private boolean CaricataPagina=false;
     private Spinner sItems;
     private String UltimoRitornoVideo="";
     private String UltimoRitornoImmagine="";
     private boolean DeveCaricare=false;
+    private StrutturaConfig Configurazione;
 
     public Context getContext() {
         return context;
@@ -75,6 +76,14 @@ public class VariabiliGlobali {
 
     public void setFragmentActivityPrincipale(Activity fragmentActivityPrincipale) {
         FragmentActivityPrincipale = fragmentActivityPrincipale;
+    }
+
+    public StrutturaConfig getConfigurazione() {
+        return Configurazione;
+    }
+
+    public void setConfigurazione(StrutturaConfig configurazione) {
+        Configurazione = configurazione;
     }
 
     public boolean isDeveCaricare() {
@@ -125,21 +134,21 @@ public class VariabiliGlobali {
         this.imgPlayVideo = imgPlayVideo;
     }
 
-    public String getCategoriaSceltaVideo() {
-        return CategoriaSceltaVideo;
-    }
-
-    public void setCategoriaSceltaVideo(String categoriaScelta) {
-        CategoriaSceltaVideo = categoriaScelta;
-    }
-
-    public String getCategoriaSceltaImmagine() {
-        return CategoriaSceltaImmagine;
-    }
-
-    public void setCategoriaSceltaImmagine(String categoriaSceltaImmagine) {
-        CategoriaSceltaImmagine = categoriaSceltaImmagine;
-    }
+    // public String getCategoriaSceltaVideo() {
+    //     return CategoriaSceltaVideo;
+    // }
+//
+    // public void setCategoriaSceltaVideo(String categoriaScelta) {
+    //     CategoriaSceltaVideo = categoriaScelta;
+    // }
+//
+    // public String getCategoriaSceltaImmagine() {
+    //     return CategoriaSceltaImmagine;
+    // }
+//
+    // public void setCategoriaSceltaImmagine(String categoriaSceltaImmagine) {
+    //     CategoriaSceltaImmagine = categoriaSceltaImmagine;
+    // }
 
     public boolean isLinguettaAperta() {
         return LinguettaAperta;
@@ -253,13 +262,13 @@ public class VariabiliGlobali {
     //     this.listaImmagini = listaImmagini;
     // }
 
-    public CheckBox getChkRandom() {
-        return chkRandom;
-    }
-
-    public void setChkRandom(CheckBox chkRandom) {
-        this.chkRandom = chkRandom;
-    }
+    // public CheckBox getChkRandom() {
+    //     return chkRandom;
+    // }
+//
+    // public void setChkRandom(CheckBox chkRandom) {
+    //     this.chkRandom = chkRandom;
+    // }
 
     public List<Long> getVideoVisualizzati() {
         return VideoVisualizzati;

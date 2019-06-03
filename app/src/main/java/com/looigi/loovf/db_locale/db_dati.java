@@ -4,7 +4,9 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.looigi.loovf.StrutturaConfig;
 import com.looigi.loovf.StrutturaFiles;
+import com.looigi.loovf.Utility;
 import com.looigi.loovf.VariabiliGlobali;
 
 import java.io.File;
@@ -54,6 +56,9 @@ public class db_dati {
                 //         + "Categorie "
                 //         + " (Tipologia VARCHAR, idCategoria INT(2), Categoria VARCHAR);");
                 // myDB.execSQL("CREATE INDEX IF NOT EXISTS Categorie_Index ON Dati(Tipologia, idCategoria);");
+                myDB.execSQL("CREATE TABLE IF NOT EXISTS "
+                        + "Configurazione "
+                        + " (Random INT(1), UltimaCategoriaImmagini VARCHAR, UltimaCategoriaVideo VARCHAR);");
             }
         } catch (Exception ignored) {
             int a = 0;
@@ -108,6 +113,7 @@ public class db_dati {
             // myDB.execSQL("Delete From Categorie");
             // myDB.execSQL("Delete From Dati");
             myDB.execSQL("Delete From Visti");
+            myDB.execSQL("Delete From Configurazione");
         }
     }
 
@@ -178,6 +184,56 @@ public class db_dati {
     //     return Ok;
     // }
 
+    public StrutturaConfig CaricaConfigurazione() {
+        StrutturaConfig Ritorno = new StrutturaConfig();
+
+        if (myDB != null) {
+            Cursor c = myDB.rawQuery("SELECT * FROM Configurazione Where UltimaCategoriaImmagini<>?",
+                    new String[]{ "***NIENTE***" });
+            c.moveToFirst();
+            if (c.getCount() > 0) {
+                boolean random = true;
+                if (c.getInt(0) == 0) {
+                    random = false;
+                }
+                Ritorno.setRandom(random);
+                Ritorno.setUltimaCategoriaImmagini(c.getString(1));
+                Ritorno.setUltimaCategoriaVideo(c.getString(2));
+            } else {
+                Ritorno = null;
+            }
+            c.close();
+        }
+
+        return Ritorno;
+    }
+
+    public String ScriveConfigurazione() {
+        String Ok = "";
+
+        if (myDB != null) {
+            int random = 0;
+            if (VariabiliGlobali.getInstance().getConfigurazione().isRandom()) {
+                random = 1;
+            }
+
+            try {
+                myDB.execSQL("Delete From Configurazione");
+                myDB.execSQL("INSERT INTO"
+                        + " Configurazione"
+                        + " (Random, UltimaCategoriaImmagini, UltimaCategoriaVideo)"
+                        + " VALUES (" + Integer.toString(random) + ", "
+                        + "'" + VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini() + "', "
+                        + "'" + VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo() + "' "
+                        + ");");
+            } catch (SQLException e) {
+                Ok = Utility.getInstance().PrendeErroreDaException(e);
+            }
+        }
+
+        return Ok;
+    }
+
     public boolean ScriveVisti(String idMultimedia, String Tipologia) {
         boolean Ok = true;
 
@@ -214,7 +270,8 @@ public class db_dati {
         if (myDB != null) {
             // int Progressivo = 0;
 
-            Cursor c = myDB.rawQuery("SELECT id FROM Visti WHERE Tipologia = ? Order By Progressivo Desc", new String[]{ Tipologia });
+            Cursor c = myDB.rawQuery("SELECT id FROM Visti WHERE Tipologia = ? Order By Progressivo Desc",
+                    new String[]{ Tipologia });
             c.moveToFirst();
             if (c.getCount() > 0) {
                 Numero = c.getLong(0);
@@ -230,7 +287,8 @@ public class db_dati {
 
         // SQLiteDatabase myDB = ApreDB();
         if (myDB != null) {
-            Cursor c = myDB.rawQuery("SELECT Tipologia, id FROM Visti Where Progressivo>? Order By Tipologia, Progressivo Desc",
+            Cursor c = myDB.rawQuery("SELECT Tipologia, id FROM Visti Where Progressivo>? " +
+                            "Order By Tipologia, Progressivo Desc",
                     new String[]{ "0" });
             c.moveToFirst();
             if (c.getCount() > 0) {

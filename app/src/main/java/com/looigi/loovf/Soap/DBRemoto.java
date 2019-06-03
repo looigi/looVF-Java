@@ -76,9 +76,9 @@ public class DBRemoto {
 		}
 		String Categoria = "";
 		if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
-			Categoria = VariabiliGlobali.getInstance().getCategoriaSceltaVideo();
+			Categoria = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo();
 		} else {
-			Categoria = VariabiliGlobali.getInstance().getCategoriaSceltaImmagine();
+			Categoria = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini();
 		}
 		String Urletto="RitornaSuccessivoMultimedia?idTipologia=" + tip + "&Categoria=" + Categoria;
 

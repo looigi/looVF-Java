@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private Runnable runRiga;
     private Handler hSelezionaRiga;
     private LinearLayout layContenitore;
+    private db_dati db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +65,43 @@ public class MainActivity extends AppCompatActivity {
         //     return;
         // }
 
-        db_dati db = new db_dati();
+        db = new db_dati();
         db.CreazioneTabelle();
+
+        StrutturaConfig sc = db.CaricaConfigurazione();
+        if (sc != null) {
+            VariabiliGlobali.getInstance().setConfigurazione(sc);
+        } else {
+            sc = new StrutturaConfig();
+            sc.setRandom(true);
+            sc.setUltimaCategoriaImmagini("Tutto");
+            sc.setUltimaCategoriaVideo("Tutto");
+            VariabiliGlobali.getInstance().setConfigurazione(sc);
+            String Ritorno = db.ScriveConfigurazione();
+            if (!Ritorno.isEmpty()) {
+                DialogMessaggio.getInstance().show(this,
+                        "ERRORE nel salvataggio della configurazione\n" + Ritorno,
+                        true,
+                        "looVF",
+                        false);
+            }
+        }
+
+        final CheckBox chkRandom = findViewById(R.id.chkRandom);
+        chkRandom.setChecked(VariabiliGlobali.getInstance().getConfigurazione().isRandom());
+        chkRandom.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliGlobali.getInstance().getConfigurazione().setRandom(chkRandom.isChecked());
+                String Ritorno = db.ScriveConfigurazione();
+                if (!Ritorno.isEmpty()) {
+                    DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
+                            "ERRORE nel salvataggio della configurazione\n" + Ritorno,
+                            true,
+                            "looVF",
+                            false);
+                }
+            }
+        });
 
         // mediaPlayer = new MediaPlayer();
         // mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -95,9 +131,17 @@ public class MainActivity extends AppCompatActivity {
                 String item = VariabiliGlobali.getInstance().getsItems().getSelectedItem().toString();;
 
                 if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
-                    VariabiliGlobali.getInstance().setCategoriaSceltaVideo(item);
+                    VariabiliGlobali.getInstance().getConfigurazione().setUltimaCategoriaVideo(item);
                 } else {
-                    VariabiliGlobali.getInstance().setCategoriaSceltaImmagine(item);
+                    VariabiliGlobali.getInstance().getConfigurazione().setUltimaCategoriaImmagini(item);
+                }
+                String Ritorno = db.ScriveConfigurazione();
+                if (!Ritorno.isEmpty()) {
+                    DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
+                            "ERRORE nel salvataggio della configurazione\n" + Ritorno,
+                            true,
+                            "looVF",
+                            false);
                 }
 
                 Utility.getInstance().AvanzaMultimedia();
@@ -217,13 +261,6 @@ public class MainActivity extends AppCompatActivity {
                 Utility.getInstance().ScriveInformazioni();
             }
         });
-
-        CheckBox chkRandom = findViewById(R.id.chkRandom);
-        chkRandom.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-            }
-        });
-        VariabiliGlobali.getInstance().setChkRandom(chkRandom);
 
         LinearLayout layRefresh = findViewById(R.id.layRefresh);
         layRefresh.setOnClickListener(new View.OnClickListener() {

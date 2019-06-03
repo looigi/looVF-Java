@@ -76,14 +76,17 @@ public class Utility {
         //     }
         // });
 
+        // VariabiliGlobali.getInstance().getConfigurazione().setUltimaCategoriaImmagini(VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini());
+        // VariabiliGlobali.getInstance().setCategoriaSceltaVideo(VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo());
+
         if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
-            if (!VariabiliGlobali.getInstance().getCategoriaSceltaVideo().isEmpty()) {
-                int spinnerPosition = adapter.getPosition(VariabiliGlobali.getInstance().getCategoriaSceltaVideo());
+            if (!VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo().isEmpty()) {
+                int spinnerPosition = adapter.getPosition(VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo());
                 VariabiliGlobali.getInstance().getsItems().setSelection(spinnerPosition);
             }
         } else {
-            if (!VariabiliGlobali.getInstance().getCategoriaSceltaImmagine().isEmpty()) {
-                int spinnerPosition = adapter.getPosition(VariabiliGlobali.getInstance().getCategoriaSceltaImmagine());
+            if (!VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini().isEmpty()) {
+                int spinnerPosition = adapter.getPosition(VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini());
                 VariabiliGlobali.getInstance().getsItems().setSelection(spinnerPosition);
             }
         }
@@ -221,7 +224,7 @@ public class Utility {
                 VariabiliGlobali.getInstance().setVideoVisualizzato(VariabiliGlobali.getInstance().getVideoVisualizzati().get((int) Quale));
                 Ok = true;
             } else {
-                if (VariabiliGlobali.getInstance().getChkRandom().isChecked()) {
+                if (VariabiliGlobali.getInstance().getConfigurazione().isRandom()) {
                     // Random r = new Random();
                     // long prossimo = r.nextInt((int) VariabiliGlobali.getInstance().getQuantiVideo());
                     // VariabiliGlobali.getInstance().setVideoVisualizzato(prossimo);
@@ -249,7 +252,7 @@ public class Utility {
                 VariabiliGlobali.getInstance().setImmagineVisualizzata(VariabiliGlobali.getInstance().getImmaginiVisualizzate().get((int) Quale));
                 Ok = true;
             } else {
-                if (VariabiliGlobali.getInstance().getChkRandom().isChecked()) {
+                if (VariabiliGlobali.getInstance().getConfigurazione().isRandom()) {
                     // Random r = new Random();
                     // int prossima = r.nextInt((int) VariabiliGlobali.getInstance().getQuanteImmagini());
                     // VariabiliGlobali.getInstance().setImmagineVisualizzata(prossima);

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Environment;
 import android.os.Handler;
+import android.support.v7.widget.RecyclerView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -52,8 +53,8 @@ public class VariabiliGlobali {
     private StrutturaFiles VideoCaricato;
     private LinearLayout laySettings;
     private boolean LinguettaAperta = true;
-    // private String CategoriaSceltaVideo="Tutto";
-    // private String CategoriaSceltaImmagine="Tutto";
+    private String CategoriaSceltaVideo="Tutto";
+    private String CategoriaSceltaImmagine="Tutto";
     private ImageView imgPlayVideo;
     private boolean CaricataPagina=false;
     private Spinner sItems;
@@ -61,6 +62,11 @@ public class VariabiliGlobali {
     private String UltimoRitornoImmagine="";
     private boolean DeveCaricare=false;
     private StrutturaConfig Configurazione;
+    private String Tastopremuto;
+    private LinearLayout layGriglia;
+    private RecyclerView recyclerView;
+    // private int idCategoriaSceltaImmagini;
+    // private int idCategoriaSceltaVideo;
 
     public Context getContext() {
         return context;
@@ -76,6 +82,46 @@ public class VariabiliGlobali {
 
     public void setFragmentActivityPrincipale(Activity fragmentActivityPrincipale) {
         FragmentActivityPrincipale = fragmentActivityPrincipale;
+    }
+
+    // public int getIdCategoriaSceltaImmagini() {
+    //     return idCategoriaSceltaImmagini;
+    // }
+//
+    // public void setIdCategoriaSceltaImmagini(int idCategoriaSceltaImmagini) {
+    //     this.idCategoriaSceltaImmagini = idCategoriaSceltaImmagini;
+    // }
+//
+    // public int getIdCategoriaSceltaVideo() {
+    //     return idCategoriaSceltaVideo;
+    // }
+//
+    // public void setIdCategoriaSceltaVideo(int idCategoriaSceltaVideo) {
+    //     this.idCategoriaSceltaVideo = idCategoriaSceltaVideo;
+    // }
+//
+    public RecyclerView getRecyclerView() {
+        return recyclerView;
+    }
+
+    public void setRecyclerView(RecyclerView recyclerView) {
+        this.recyclerView = recyclerView;
+    }
+
+    public LinearLayout getLayGriglia() {
+        return layGriglia;
+    }
+
+    public void setLayGriglia(LinearLayout layGriglia) {
+        this.layGriglia = layGriglia;
+    }
+
+    public String getTastopremuto() {
+        return Tastopremuto;
+    }
+
+    public void setTastopremuto(String tastopremuto) {
+        Tastopremuto = tastopremuto;
     }
 
     public StrutturaConfig getConfigurazione() {
@@ -134,21 +180,21 @@ public class VariabiliGlobali {
         this.imgPlayVideo = imgPlayVideo;
     }
 
-    // public String getCategoriaSceltaVideo() {
-    //     return CategoriaSceltaVideo;
-    // }
+    public String getCategoriaSceltaVideo() {
+        return CategoriaSceltaVideo;
+    }
 //
-    // public void setCategoriaSceltaVideo(String categoriaScelta) {
-    //     CategoriaSceltaVideo = categoriaScelta;
-    // }
+    public void setCategoriaSceltaVideo(String categoriaScelta) {
+        CategoriaSceltaVideo = categoriaScelta;
+    }
 //
-    // public String getCategoriaSceltaImmagine() {
-    //     return CategoriaSceltaImmagine;
-    // }
+    public String getCategoriaSceltaImmagine() {
+        return CategoriaSceltaImmagine;
+    }
 //
-    // public void setCategoriaSceltaImmagine(String categoriaSceltaImmagine) {
-    //     CategoriaSceltaImmagine = categoriaSceltaImmagine;
-    // }
+    public void setCategoriaSceltaImmagine(String categoriaSceltaImmagine) {
+        CategoriaSceltaImmagine = categoriaSceltaImmagine;
+    }
 
     public boolean isLinguettaAperta() {
         return LinguettaAperta;
@@ -270,8 +316,16 @@ public class VariabiliGlobali {
     //     this.chkRandom = chkRandom;
     // }
 
+    public void setVideoVisualizzati(List<Long> l) {
+        VideoVisualizzati = l;
+    }
+
     public List<Long> getVideoVisualizzati() {
         return VideoVisualizzati;
+    }
+
+    public void setImmaginiVisualizzate(List<Long> l) {
+        ImmaginiVisualizzate = l;
     }
 
     public List<Long> getImmaginiVisualizzate() {

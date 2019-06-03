@@ -1,8 +1,5 @@
 package com.looigi.loovf.Soap;
 
-import android.content.Context;
-import android.os.Handler;
-
 import com.looigi.loovf.VariabiliGlobali;
 
 public class DBRemoto {
@@ -40,9 +37,11 @@ public class DBRemoto {
     	if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
     		tip="2";
 		} else {
-			tip="1";
+			if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
+				tip = "1";
+			}
 		}
-		String Urletto="RitornMultimediaDaId?Tipologia=" + tip + "&idMultimedia=" + id;
+		String Urletto="RitornaMultimediaDaId?Tipologia=" + tip + "&idMultimedia=" + id;
 
 		GestioneWEBServiceSOAP g = new GestioneWEBServiceSOAP(
 				RadiceWS + ws + Urletto,
@@ -67,18 +66,53 @@ public class DBRemoto {
 		g.Esegue();
 	}
 
+	public void RitornaImmaginiGriglia() {
+		// String tip = "";
+		// if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
+		// 	tip="2";
+		// } else {
+		// 	if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
+		// 		tip = "1";
+		// 	}
+		// }
+		String Categoria = "";
+		// if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
+		// 	Categoria = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo();
+		// } else {
+		// 	if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
+		// 		Categoria = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini();
+		// 	}
+		// }
+		Categoria = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini();
+
+		String Urletto="RitornaImmaginiPerGriglia?QuanteImm=15&Categoria=" + Categoria;
+
+		GestioneWEBServiceSOAP g = new GestioneWEBServiceSOAP(
+				RadiceWS + ws + Urletto,
+				"RitornaImmaginiPerGriglia",
+				NS,
+				SA,
+				15000,
+				true);
+		g.Esegue();
+	}
+
 	public void RitornaSuccessivoMultimedia() {
 		String tip = "";
 		if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
 			tip="2";
 		} else {
-			tip="1";
+			if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
+				tip = "1";
+			}
 		}
 		String Categoria = "";
 		if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
 			Categoria = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo();
 		} else {
-			Categoria = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini();
+			if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
+				Categoria = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini();
+			}
 		}
 		String Urletto="RitornaSuccessivoMultimedia?idTipologia=" + tip + "&Categoria=" + Categoria;
 

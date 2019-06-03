@@ -80,6 +80,29 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/layContGriglia"
+                        android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+                        android:layout_width="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="3dp"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/imgGriglia"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/griglia" />
+
+                        <TextView
+                            android:paddingLeft="5dp"
+                            android:paddingRight="3dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:text="Griglia" />
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:id="@+id/layRefresh"
                         android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
                         android:layout_width="wrap_content"
@@ -207,6 +230,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <LinearLayout
+                android:id="@+id/layGriglia"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/imageGallery"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
             <ImageView
                 android:id="@+id/imgPlayVideo"
                 android:src="@drawable/seleziona"
@@ -236,6 +271,12 @@
                     android:layout_height="wrap_content"
                     android:checked="true"
                     android:text="Avanzamento random" />
+
+                <Button
+                    android:id="@+id/cmdCompatta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Compatta DB" />
             </LinearLayout>
 
             <!-- <ImageView
@@ -259,7 +300,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <LinearLayout
+        <!-- <LinearLayout
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
@@ -283,6 +324,6 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="@drawable/avanti" />
-        </LinearLayout>
+        </LinearLayout> -->
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

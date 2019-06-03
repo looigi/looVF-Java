@@ -8,6 +8,8 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.VideoView;
@@ -18,6 +20,8 @@ import com.looigi.loovf.StrutturaFiles;
 import com.looigi.loovf.Utility;
 import com.looigi.loovf.VariabiliGlobali;
 import com.looigi.loovf.db_locale.db_dati;
+import com.looigi.loovf.griglia.AdapterRecyclerView;
+import com.looigi.loovf.griglia.ImageListForRecycler;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -48,9 +52,9 @@ public class wsRitorno {
                     VariabiliGlobali.getInstance().setQuantiVideo(Long.parseLong(Ritorno));
 
                     Utility.getInstance().ScriveInformazioni();
-                    Utility.getInstance().PrendeUltimoMultimedia();
+                    Utility.getInstance().PrendeUltimoMultimedia(true);
 
-                    Utility.getInstance().riempieSpinner(true);
+                    Utility.getInstance().riempieSpinner();
 
                     VariabiliGlobali.getInstance().setCaricataPagina(true);
                 }
@@ -161,12 +165,14 @@ public class wsRitorno {
                 VariabiliGlobali.getInstance().getVideoVisualizzati().add(VariabiliGlobali.getInstance().getVideoVisualizzato());
                 VariabiliGlobali.getInstance().setIndiceVideo(VariabiliGlobali.getInstance().getVideoVisualizzati().size() - 1);
             } else {
-                VariabiliGlobali.getInstance().setImmagineVisualizzata(prossimo) ;
+                if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
+                    VariabiliGlobali.getInstance().setImmagineVisualizzata(prossimo);
 
-                db.ScriveVisti(Long.toString(prossimo), VariabiliGlobali.getInstance().getModalita());
+                    db.ScriveVisti(Long.toString(prossimo), VariabiliGlobali.getInstance().getModalita());
 
-                VariabiliGlobali.getInstance().getImmaginiVisualizzate().add(VariabiliGlobali.getInstance().getImmagineVisualizzata());
-                VariabiliGlobali.getInstance().setIndiceImmagine(VariabiliGlobali.getInstance().getImmaginiVisualizzate().size() - 1);
+                    VariabiliGlobali.getInstance().getImmaginiVisualizzate().add(VariabiliGlobali.getInstance().getImmagineVisualizzata());
+                    VariabiliGlobali.getInstance().setIndiceImmagine(VariabiliGlobali.getInstance().getImmaginiVisualizzate().size() - 1);
+                }
             }
 
             hSelezionaRiga = new Handler(Looper.getMainLooper());
@@ -225,6 +231,18 @@ public class wsRitorno {
                     //         true);
                 }
             }, 50);
+        }
+    }
+
+    public void RitornaImmaginiPerGriglia(final String Ritorno) {
+        if (Ritorno.toUpperCase().contains("ERROR:")) {
+            DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
+                    Ritorno,
+                    true,
+                    "looVF",
+                    false);
+        } else {
+            Utility.getInstance().CaricaRecyclerView(Ritorno, true);
         }
     }
 }

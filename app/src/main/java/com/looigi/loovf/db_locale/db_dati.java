@@ -10,6 +10,8 @@ import com.looigi.loovf.Utility;
 import com.looigi.loovf.VariabiliGlobali;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -59,6 +61,11 @@ public class db_dati {
                 myDB.execSQL("CREATE TABLE IF NOT EXISTS "
                         + "Configurazione "
                         + " (Random INT(1), UltimaCategoriaImmagini VARCHAR, UltimaCategoriaVideo VARCHAR);");
+                myDB.execSQL("CREATE TABLE IF NOT EXISTS "
+                        + "Griglia "
+                        + " (idTipologia INT(1), idCategoria INT(2), Progressivo INT(2), Titolo VARCHAR, "+
+                        "Dimensione INT(10), Data VARCHAR);");
+                myDB.execSQL("CREATE INDEX IF NOT EXISTS Griglia_Index ON Visti(idTipologia, idCategoria, Progressivo);");
             }
         } catch (Exception ignored) {
             int a = 0;
@@ -114,6 +121,7 @@ public class db_dati {
             // myDB.execSQL("Delete From Dati");
             myDB.execSQL("Delete From Visti");
             myDB.execSQL("Delete From Configurazione");
+            myDB.execSQL("Delete From Griglia");
         }
     }
 
@@ -285,28 +293,85 @@ public class db_dati {
     public long LeggeTutteLeViste() {
         long Ritorno = -1;
 
-        // SQLiteDatabase myDB = ApreDB();
+        // // SQLiteDatabase myDB = ApreDB();
+        // if (myDB != null) {
+        //     Cursor c = myDB.rawQuery("SELECT Tipologia, id FROM Visti Where Progressivo>? " +
+        //                     "Order By Tipologia, Progressivo Desc",
+        //             new String[]{ "0" });
+        //     c.moveToFirst();
+        //     if (c.getCount() > 0) {
+        //         do {
+        //             String idTipologia = c.getString(0);
+//
+        //             if (idTipologia.equals("VIDEO")) {
+        //                 VariabiliGlobali.getInstance().getVideoVisualizzati().add(c.getLong(1));
+        //                 VariabiliGlobali.getInstance().setIndiceVideo(VariabiliGlobali.getInstance().getVideoVisualizzati().size() - 1);
+        //             } else {
+        //                 VariabiliGlobali.getInstance().getImmaginiVisualizzate().add(c.getLong(1));
+        //                 VariabiliGlobali.getInstance().setIndiceImmagine(VariabiliGlobali.getInstance().getImmaginiVisualizzate().size() - 1);
+        //             }
+        //         } while (c.moveToNext());
+        //     }
+        //     c.close();
+        // }
+
+        VariabiliGlobali.getInstance().setIndiceVideo(0);
+        VariabiliGlobali.getInstance().setVideoVisualizzati(new ArrayList<Long>());
+
+        VariabiliGlobali.getInstance().setIndiceImmagine(0);
+        VariabiliGlobali.getInstance().setImmaginiVisualizzate(new ArrayList<Long>());
+
+        return Ritorno;
+    }
+
+    public String RitornaRigheGriglia(String idTipologia, String idCategoria) {
+        String Ok = "";
+
         if (myDB != null) {
-            Cursor c = myDB.rawQuery("SELECT Tipologia, id FROM Visti Where Progressivo>? " +
-                            "Order By Tipologia, Progressivo Desc",
-                    new String[]{ "0" });
+            Cursor c = myDB.rawQuery("SELECT * FROM Griglia WHERE idTipologia = ? And idCategoria = ? Order By Progressivo Desc",
+                    new String[]{ idTipologia, idCategoria });
             c.moveToFirst();
             if (c.getCount() > 0) {
                 do {
-                    String idTipologia = c.getString(0);
-
-                    if (idTipologia.equals("VIDEO")) {
-                        VariabiliGlobali.getInstance().getVideoVisualizzati().add(c.getLong(1));
-                        VariabiliGlobali.getInstance().setIndiceVideo(VariabiliGlobali.getInstance().getVideoVisualizzati().size() - 1);
-                    } else {
-                        VariabiliGlobali.getInstance().getImmaginiVisualizzate().add(c.getLong(1));
-                        VariabiliGlobali.getInstance().setIndiceImmagine(VariabiliGlobali.getInstance().getImmaginiVisualizzate().size() - 1);
-                    }
+                    Ok += c.getString(3) + ";" + c.getString(4) + ";" + c.getString(5)+ ";" + Integer.toString(c.getInt(1)) + ";§";
                 } while (c.moveToNext());
             }
             c.close();
         }
 
-        return Ritorno;
+        return Ok;
+    }
+
+    public String ScriveRigheGriglia(String idTipologia, String idCategoria, String Ritorno) {
+        String Ok = "";
+
+        if (myDB != null) {
+            try {
+                myDB.execSQL("Delete From Griglia Where idTipologia=" + idTipologia + " And idCategoria=" + idCategoria);
+
+                String[] c = Ritorno.split("§");
+                int contatore = 0;
+
+                for (String cc : c) {
+                    String[] ccc = cc.split(";");
+
+                    myDB.execSQL("INSERT INTO"
+                            + " Griglia"
+                            + " (idTipologia, idCategoria, Progressivo, Titolo, Dimensione, Data)"
+                            + " VALUES (" + idTipologia + ", "
+                            + " " + idCategoria + ", "
+                            + " " + contatore + " , "
+                            + "'" + ccc[0].replace("'","''") + "', "
+                            + "'" + ccc[1] + "', "
+                            + "'" + ccc[2] + "' "
+                            + ");");
+                    contatore++;
+                }
+            } catch (SQLException e) {
+                Ok = Utility.getInstance().PrendeErroreDaException(e);
+            }
+        }
+
+        return Ok;
     }
 }

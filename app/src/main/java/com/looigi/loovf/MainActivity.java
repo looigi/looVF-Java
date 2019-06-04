@@ -336,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
                     VariabiliGlobali.getInstance().getLayGriglia().setVisibility(LinearLayout.GONE);
                     imgRefreshGriglia.setVisibility(LinearLayout.GONE);
                     layScroller.setVisibility(LinearLayout.VISIBLE);
-
+//
                     Utility.getInstance().riempieSpinner();
 
                     if (VariabiliGlobali.getInstance().getUltimoRitornoVideo().isEmpty()) {

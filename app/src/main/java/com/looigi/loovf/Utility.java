@@ -1,9 +1,5 @@
 package com.looigi.loovf;
 
-import android.media.MediaPlayer;
-import android.net.Uri;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -11,9 +7,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.MediaController;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.looigi.loovf.Soap.DBRemoto;
 import com.looigi.loovf.db_locale.db_dati;
@@ -25,7 +19,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Utility {
     private static final Utility ourInstance = new Utility();
@@ -39,13 +32,14 @@ public class Utility {
     private Utility() {
     }
 
-    private ArrayList<ImageListForRecycler> prepareData(List<String> Titoli, List<String> Percorsi){
+    private ArrayList<ImageListForRecycler> prepareData(List<String> Titoli, List<String> Percorsi,List<String> ID){
         ArrayList<ImageListForRecycler> theimage = new ArrayList<>();
 
         for(int i = 0; i< Titoli.size(); i++){
             ImageListForRecycler createList = new ImageListForRecycler();
             createList.setImage_title(Titoli.get(i));
-            createList.setImage_ID(Percorsi.get(i));
+            createList.setImage_URL(Percorsi.get(i));
+            createList.setImage_id(ID.get(i));
             theimage.add(createList);
         }
 
@@ -58,6 +52,7 @@ public class Utility {
         String[] c = Ritorno.split("§");
         List<String> Titoli = new ArrayList<>();
         List<String> Percorsi = new ArrayList<>();
+        List<String> ID = new ArrayList<>();
         String idCategoria = "";
 
         for (String cc : c) {
@@ -66,6 +61,7 @@ public class Utility {
             String tt = t[t.length-1];
             String path = ccc[0];
             path = path.replace("***PV***", ";").replace("\\", "/");
+            ID.add(cc);
 
             Titoli.add(tt);
 
@@ -96,7 +92,7 @@ public class Utility {
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(VariabiliGlobali.getInstance().getContext(),2);
         VariabiliGlobali.getInstance().getRecyclerView().setLayoutManager(layoutManager);
-        ArrayList<ImageListForRecycler> createLists = prepareData(Titoli, Percorsi);
+        ArrayList<ImageListForRecycler> createLists = prepareData(Titoli, Percorsi, ID);
         AdapterRecyclerView adapter = new AdapterRecyclerView(VariabiliGlobali.getInstance().getContext(), createLists);
         VariabiliGlobali.getInstance().getRecyclerView().setAdapter(adapter);
     }

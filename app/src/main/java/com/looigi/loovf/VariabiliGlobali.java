@@ -62,7 +62,7 @@ public class VariabiliGlobali {
     private String UltimoRitornoImmagine="";
     private boolean DeveCaricare=false;
     private StrutturaConfig Configurazione;
-    private String Tastopremuto;
+    // private String Tastopremuto;
     private LinearLayout layGriglia;
     private RecyclerView recyclerView;
     // private int idCategoriaSceltaImmagini;
@@ -116,13 +116,13 @@ public class VariabiliGlobali {
         this.layGriglia = layGriglia;
     }
 
-    public String getTastopremuto() {
-        return Tastopremuto;
-    }
-
-    public void setTastopremuto(String tastopremuto) {
-        Tastopremuto = tastopremuto;
-    }
+    // public String getTastopremuto() {
+    //     return Tastopremuto;
+    // }
+//
+    // public void setTastopremuto(String tastopremuto) {
+    //     Tastopremuto = tastopremuto;
+    // }
 
     public StrutturaConfig getConfigurazione() {
         return Configurazione;

@@ -225,6 +225,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layScrollatore"
             android:layout_below="@+id/layContenitore"
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -325,5 +326,21 @@
                 android:layout_height="50dp"
                 android:background="@drawable/avanti" />
         </LinearLayout> -->
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/layScrollatore"
+            android:id="@+id/imgRefreshGriglia"
+            android:src="@drawable/refresh"
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
+
+        <LinearLayout
+            android:id="@+id/layScroller"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="150dp">
+
+        </LinearLayout>
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

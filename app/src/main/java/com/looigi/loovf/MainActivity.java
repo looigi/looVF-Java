@@ -84,6 +84,16 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        final LinearLayout layScroller = (LinearLayout) findViewById(R.id.layScroller);
+        layScroller.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(final View view, final MotionEvent event) {
+                // VariabiliGlobali.getInstance().setTastopremuto("PHOTO");
+                gdt.onTouchEvent(event);
+                return true;
+            }
+        });
+
         final CheckBox chkRandom = findViewById(R.id.chkRandom);
         chkRandom.setChecked(VariabiliGlobali.getInstance().getConfigurazione().isRandom());
         chkRandom.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +116,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Spinner sItems = (Spinner) findViewById(R.id.spnCategorie);
         VariabiliGlobali.getInstance().setsItems((Spinner) findViewById(R.id.spnCategorie));
+        final ImageView imgRefreshGriglia = (ImageView) findViewById(R.id.imgRefreshGriglia);
+        imgRefreshGriglia.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                DBRemoto dbr = new DBRemoto();
+                dbr.RitornaImmaginiGriglia();
+            }
+        });
 
         LinearLayout laySettingsPanel = findViewById(R.id.laySettingsPanel);
         // ImageView mImageIndietro = findViewById(R.id.imgIndietro);
@@ -178,23 +195,23 @@ public class MainActivity extends AppCompatActivity {
         VariabiliGlobali.getInstance().setiView((ImageView) findViewById(R.id.imgImmagine));
         VariabiliGlobali.getInstance().setLayGriglia((LinearLayout) findViewById(R.id.layGriglia));
 
-        VariabiliGlobali.getInstance().getImgPlayVideo().setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(final View view, final MotionEvent event) {
-                VariabiliGlobali.getInstance().setTastopremuto("VIDEO");
-                gdt.onTouchEvent(event);
-                return true;
-            }
-        });
-
-        VariabiliGlobali.getInstance().getiView().setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(final View view, final MotionEvent event) {
-                VariabiliGlobali.getInstance().setTastopremuto("PHOTO");
-                gdt.onTouchEvent(event);
-                return true;
-            }
-        });
+        // VariabiliGlobali.getInstance().getImgPlayVideo().setOnTouchListener(new View.OnTouchListener() {
+        //     @Override
+        //     public boolean onTouch(final View view, final MotionEvent event) {
+        //         // VariabiliGlobali.getInstance().setTastopremuto("VIDEO");
+        //         gdt.onTouchEvent(event);
+        //         return true;
+        //     }
+        // });
+//
+        // VariabiliGlobali.getInstance().getiView().setOnTouchListener(new View.OnTouchListener() {
+        //     @Override
+        //     public boolean onTouch(final View view, final MotionEvent event) {
+        //         // VariabiliGlobali.getInstance().setTastopremuto("PHOTO");
+        //         gdt.onTouchEvent(event);
+        //         return true;
+        //     }
+        // });
 
         VariabiliGlobali.getInstance().setLaySettings(laySettingsPanel);
         laySettingsPanel.setVisibility(LinearLayout.GONE);
@@ -262,6 +279,8 @@ public class MainActivity extends AppCompatActivity {
                     VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getLayGriglia().setVisibility(LinearLayout.VISIBLE);
+                    imgRefreshGriglia.setVisibility(LinearLayout.VISIBLE);
+                    layScroller.setVisibility(LinearLayout.GONE);
 
                     Utility.getInstance().riempieSpinner();
 
@@ -290,6 +309,8 @@ public class MainActivity extends AppCompatActivity {
                     VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.VISIBLE);
                     VariabiliGlobali.getInstance().getLayGriglia().setVisibility(LinearLayout.GONE);
+                    imgRefreshGriglia.setVisibility(LinearLayout.GONE);
+                    layScroller.setVisibility(LinearLayout.VISIBLE);
 
                     Utility.getInstance().riempieSpinner();
 
@@ -313,6 +334,8 @@ public class MainActivity extends AppCompatActivity {
                     VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getLayGriglia().setVisibility(LinearLayout.GONE);
+                    imgRefreshGriglia.setVisibility(LinearLayout.GONE);
+                    layScroller.setVisibility(LinearLayout.VISIBLE);
 
                     Utility.getInstance().riempieSpinner();
 
@@ -373,6 +396,7 @@ public class MainActivity extends AppCompatActivity {
         if (!VariabiliGlobali.getInstance().isCaricataPagina()) {
             TextView t = VariabiliGlobali.getInstance().getTxtInfo();
             t.setText("");
+            imgRefreshGriglia.setVisibility(LinearLayout.GONE);
 
             DBRemoto dbr = new DBRemoto();
             dbr.RitornaCategorie();

@@ -13,7 +13,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
         // Detected click
-        if (VariabiliGlobali.getInstance().getTastopremuto().equals("VIDEO")) {
+        if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
             StrutturaFiles sf = VariabiliGlobali.getInstance().getVideoCaricato();
 
             String vidAddress = sf.getNomeFile().replace("\\", "/");
@@ -29,7 +29,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
             VariabiliGlobali.getInstance().getContext().startActivity(intent);
         }
 
-        VariabiliGlobali.getInstance().setTastopremuto("");
+        // VariabiliGlobali.getInstance().setTastopremuto("");
 
         return super.onSingleTapUp(e);
     }
@@ -49,7 +49,6 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
         }  else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
             return false; // Top to bottom
         }
-
 
         return false;
     }

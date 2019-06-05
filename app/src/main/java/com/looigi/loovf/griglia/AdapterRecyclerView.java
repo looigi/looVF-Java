@@ -11,8 +11,10 @@ import android.widget.TextView;
 
 import com.looigi.loovf.DialogMessaggio;
 import com.looigi.loovf.R;
+import com.looigi.loovf.StrutturaFiles;
 import com.looigi.loovf.Utility;
 import com.looigi.loovf.VariabiliGlobali;
+import com.looigi.loovf.db_locale.db_dati;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -33,21 +35,51 @@ public class AdapterRecyclerView extends RecyclerView.Adapter<AdapterRecyclerVie
         holder.img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
-                        galleryList.get(position).getImage_id(),
-                        false,
-                        "looVF",
-                        false
-                        );
-                // Utility.getInstance().VisualizzaMultimedia(galleryList.get(position).getImage_id());
+                // DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
+                //         galleryList.get(position).getImage_id(),
+                //         false,
+                //         "looVF",
+                //         false
+                //         );
+                // String[] Rit = galleryList.get(position).getImage_URL().split("§");
 //
-                // VariabiliGlobali.getInstance().getImgPlayVideo().setVisibility(LinearLayout.GONE);
-                // VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.GONE);
-                // VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.VISIBLE);
-                // VariabiliGlobali.getInstance().getLayGriglia().setVisibility(LinearLayout.GONE);
-                // // imgRefreshGriglia.setVisibility(LinearLayout.GONE);
+                // String[] c = Rit[1].split(";");
+                // int Categoria = Integer.parseInt(c[3]) - 1;
+                // String sCategoria = VariabiliGlobali.getInstance().getCategorieImmagini().get(Categoria);
 //
-                // Utility.getInstance().riempieSpinner();
+                // String url = VariabiliGlobali.getInstance().getPercorsoURL() + "/" + sCategoria + "/" + c[0];
+                VariabiliGlobali.getInstance().setModalita("PHOTO");
+
+                int prossimo=Integer.parseInt(galleryList.get(position).getImage_number());
+                VariabiliGlobali.getInstance().setImmagineVisualizzata(prossimo);
+
+                db_dati db = new db_dati();
+                db.ScriveVisti(Long.toString(prossimo), VariabiliGlobali.getInstance().getModalita());
+
+                VariabiliGlobali.getInstance().getImmaginiVisualizzate().add(VariabiliGlobali.getInstance().getImmagineVisualizzata());
+                VariabiliGlobali.getInstance().setIndiceImmagine(VariabiliGlobali.getInstance().getImmaginiVisualizzate().size() - 1);
+
+                ImageView mImageView = VariabiliGlobali.getInstance().getiView();
+
+                StrutturaFiles sf = new StrutturaFiles();
+                sf.setTipologia("1");
+                sf.setNomeFile(galleryList.get(position).getImage_title().replace("***PV***", ";"));
+                sf.setDimeFile(Long.parseLong(galleryList.get(position).getImage_dime()));
+                sf.setDataFile(galleryList.get(position).getImage_date());
+                sf.setCategoria(Integer.parseInt(galleryList.get(position).getImage_category()));
+                VariabiliGlobali.getInstance().setImmagineCaricata(sf);
+
+                Picasso.get().load(galleryList.get(position).getImage_URL()).placeholder(R.drawable.progress_animation).into(mImageView);
+
+                VariabiliGlobali.getInstance().getImgPlayVideo().setVisibility(LinearLayout.GONE);
+                VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.GONE);
+                VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.VISIBLE);
+                VariabiliGlobali.getInstance().getLayGriglia().setVisibility(LinearLayout.GONE);
+                VariabiliGlobali.getInstance().getImgRefresh().setVisibility(LinearLayout.GONE);
+                VariabiliGlobali.getInstance().getLayScroller().setVisibility(LinearLayout.VISIBLE);
+
+                Utility.getInstance().riempieSpinner();
+                Utility.getInstance().ScriveInformazioni();
             }
         });
         super.onBindViewHolder(holder, position, payloads);

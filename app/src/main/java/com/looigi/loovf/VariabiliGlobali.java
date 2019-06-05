@@ -65,6 +65,8 @@ public class VariabiliGlobali {
     // private String Tastopremuto;
     private LinearLayout layGriglia;
     private RecyclerView recyclerView;
+    private ImageView imgRefresh;
+    private LinearLayout layScroller;
     // private int idCategoriaSceltaImmagini;
     // private int idCategoriaSceltaVideo;
 
@@ -82,6 +84,22 @@ public class VariabiliGlobali {
 
     public void setFragmentActivityPrincipale(Activity fragmentActivityPrincipale) {
         FragmentActivityPrincipale = fragmentActivityPrincipale;
+    }
+
+    public ImageView getImgRefresh() {
+        return imgRefresh;
+    }
+
+    public void setImgRefresh(ImageView imgRefresh) {
+        this.imgRefresh = imgRefresh;
+    }
+
+    public LinearLayout getLayScroller() {
+        return layScroller;
+    }
+
+    public void setLayScroller(LinearLayout layScroller) {
+        this.layScroller = layScroller;
     }
 
     // public int getIdCategoriaSceltaImmagini() {

@@ -64,7 +64,7 @@ public class db_dati {
                 myDB.execSQL("CREATE TABLE IF NOT EXISTS "
                         + "Griglia "
                         + " (idTipologia INT(1), idCategoria INT(2), Progressivo INT(2), Titolo VARCHAR, "+
-                        "Dimensione INT(10), Data VARCHAR);");
+                        "Dimensione INT(10), Data VARCHAR, Numero INT(10));");
                 myDB.execSQL("CREATE INDEX IF NOT EXISTS Griglia_Index ON Visti(idTipologia, idCategoria, Progressivo);");
             }
         } catch (Exception ignored) {
@@ -333,7 +333,7 @@ public class db_dati {
             c.moveToFirst();
             if (c.getCount() > 0) {
                 do {
-                    Ok += c.getString(3) + ";" + c.getString(4) + ";" + c.getString(5)+ ";" + Integer.toString(c.getInt(1)) + ";§";
+                    Ok += c.getString(3) + ";" + c.getString(4) + ";" + c.getString(5)+ ";" + Integer.toString(c.getInt(1)) + ";" + Integer.toString(c.getInt(6)) + ";§";
                 } while (c.moveToNext());
             }
             c.close();
@@ -357,13 +357,14 @@ public class db_dati {
 
                     myDB.execSQL("INSERT INTO"
                             + " Griglia"
-                            + " (idTipologia, idCategoria, Progressivo, Titolo, Dimensione, Data)"
+                            + " (idTipologia, idCategoria, Progressivo, Titolo, Dimensione, Data, Numero)"
                             + " VALUES (" + idTipologia + ", "
                             + " " + idCategoria + ", "
                             + " " + contatore + " , "
                             + "'" + ccc[0].replace("'","''") + "', "
                             + "'" + ccc[1] + "', "
-                            + "'" + ccc[2] + "' "
+                            + "'" + ccc[2] + "', "
+                            + " " + ccc[4] + " "
                             + ");");
                     contatore++;
                 }

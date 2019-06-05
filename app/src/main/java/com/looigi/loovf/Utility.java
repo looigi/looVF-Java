@@ -49,21 +49,24 @@ public class Utility {
     public void CaricaRecyclerView(String Ritorno, boolean Salva) {
         VariabiliGlobali.getInstance().getRecyclerView().setHasFixedSize(true);
 
+        ArrayList<ImageListForRecycler> createLists = new ArrayList<>();
         String[] c = Ritorno.split("§");
-        List<String> Titoli = new ArrayList<>();
-        List<String> Percorsi = new ArrayList<>();
-        List<String> ID = new ArrayList<>();
         String idCategoria = "";
 
         for (String cc : c) {
+            ImageListForRecycler i = new ImageListForRecycler();
+
             String[] ccc = cc.split(";");
             String[] t = ccc[0].split("\\\\");
             String tt = t[t.length-1];
             String path = ccc[0];
             path = path.replace("***PV***", ";").replace("\\", "/");
-            ID.add(cc);
 
-            Titoli.add(tt);
+            String ID = cc;
+            String Titoli = tt;
+            String Data = ccc[2];
+            String Dime = ccc[1];
+            String Numero = ccc[4];
 
             if (idCategoria.isEmpty()) {
                 if (Salva) {
@@ -74,7 +77,17 @@ public class Utility {
             }
 
             String Categoria = VariabiliGlobali.getInstance().getCategorieImmagini().get(Integer.parseInt(idCategoria));
-            Percorsi.add(VariabiliGlobali.getInstance().getPercorsoURL() + "/" + Categoria + "/" + path);
+            String Percorsi = VariabiliGlobali.getInstance().getPercorsoURL() + "/" + Categoria + "/" + path;
+
+            i.setImage_category(idCategoria);
+            i.setImage_date(Data);
+            i.setImage_dime(Dime);
+            i.setImage_id(ID);
+            i.setImage_title(Titoli);
+            i.setImage_URL(Percorsi);
+            i.setImage_number(Numero);
+
+            createLists.add(i);
         }
 
         if (Salva) {
@@ -92,7 +105,7 @@ public class Utility {
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(VariabiliGlobali.getInstance().getContext(),2);
         VariabiliGlobali.getInstance().getRecyclerView().setLayoutManager(layoutManager);
-        ArrayList<ImageListForRecycler> createLists = prepareData(Titoli, Percorsi, ID);
+        // ArrayList<ImageListForRecycler> createLists = prepareData(Titoli, Percorsi, ID);
         AdapterRecyclerView adapter = new AdapterRecyclerView(VariabiliGlobali.getInstance().getContext(), createLists);
         VariabiliGlobali.getInstance().getRecyclerView().setAdapter(adapter);
     }

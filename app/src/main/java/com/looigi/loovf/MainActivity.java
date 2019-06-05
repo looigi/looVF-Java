@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
         db = new db_dati();
         db.CreazioneTabelle();
+        // db.PulisceDati();
 
         StrutturaConfig sc = db.CaricaConfigurazione();
         if (sc != null) {
@@ -84,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        final LinearLayout layScroller = (LinearLayout) findViewById(R.id.layScroller);
-        layScroller.setOnTouchListener(new View.OnTouchListener() {
+        VariabiliGlobali.getInstance().setLayScroller((LinearLayout) findViewById(R.id.layScroller));
+        VariabiliGlobali.getInstance().getLayScroller().setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(final View view, final MotionEvent event) {
                 // VariabiliGlobali.getInstance().setTastopremuto("PHOTO");
@@ -116,8 +117,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Spinner sItems = (Spinner) findViewById(R.id.spnCategorie);
         VariabiliGlobali.getInstance().setsItems((Spinner) findViewById(R.id.spnCategorie));
-        final ImageView imgRefreshGriglia = (ImageView) findViewById(R.id.imgRefreshGriglia);
-        imgRefreshGriglia.setOnClickListener(new View.OnClickListener() {
+        VariabiliGlobali.getInstance().setImgRefresh((ImageView) findViewById(R.id.imgRefreshGriglia));
+        VariabiliGlobali.getInstance().getImgRefresh().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 DBRemoto dbr = new DBRemoto();
                 dbr.RitornaImmaginiGriglia();
@@ -157,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
                 String item = VariabiliGlobali.getInstance().getsItems().getSelectedItem().toString();
 
                 if (VariabiliGlobali.getInstance().getModalita().equals("GRIGLIA")) {
+                    VariabiliGlobali.getInstance().getConfigurazione().setUltimaCategoriaImmagini(item);
                     String idCategoria = Integer.toString(VariabiliGlobali.getInstance().getsItems().getSelectedItemPosition());
                     String Ritorno = db.RitornaRigheGriglia("1", idCategoria);
 
@@ -279,8 +281,8 @@ public class MainActivity extends AppCompatActivity {
                     VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getLayGriglia().setVisibility(LinearLayout.VISIBLE);
-                    imgRefreshGriglia.setVisibility(LinearLayout.VISIBLE);
-                    layScroller.setVisibility(LinearLayout.GONE);
+                    VariabiliGlobali.getInstance().getImgRefresh().setVisibility(LinearLayout.VISIBLE);
+                    VariabiliGlobali.getInstance().getLayScroller().setVisibility(LinearLayout.GONE);
 
                     Utility.getInstance().riempieSpinner();
 
@@ -309,8 +311,8 @@ public class MainActivity extends AppCompatActivity {
                     VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.VISIBLE);
                     VariabiliGlobali.getInstance().getLayGriglia().setVisibility(LinearLayout.GONE);
-                    imgRefreshGriglia.setVisibility(LinearLayout.GONE);
-                    layScroller.setVisibility(LinearLayout.VISIBLE);
+                    VariabiliGlobali.getInstance().getImgRefresh().setVisibility(LinearLayout.GONE);
+                    VariabiliGlobali.getInstance().getLayScroller().setVisibility(LinearLayout.VISIBLE);
 
                     Utility.getInstance().riempieSpinner();
 
@@ -334,8 +336,8 @@ public class MainActivity extends AppCompatActivity {
                     VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getLayGriglia().setVisibility(LinearLayout.GONE);
-                    imgRefreshGriglia.setVisibility(LinearLayout.GONE);
-                    layScroller.setVisibility(LinearLayout.VISIBLE);
+                    VariabiliGlobali.getInstance().getImgRefresh().setVisibility(LinearLayout.GONE);
+                    VariabiliGlobali.getInstance().getLayScroller().setVisibility(LinearLayout.VISIBLE);
 //
                     Utility.getInstance().riempieSpinner();
 
@@ -396,7 +398,8 @@ public class MainActivity extends AppCompatActivity {
         if (!VariabiliGlobali.getInstance().isCaricataPagina()) {
             TextView t = VariabiliGlobali.getInstance().getTxtInfo();
             t.setText("");
-            imgRefreshGriglia.setVisibility(LinearLayout.GONE);
+            VariabiliGlobali.getInstance().getImgRefresh().setVisibility(LinearLayout.GONE);
+            VariabiliGlobali.getInstance().getLayScroller().setVisibility(LinearLayout.VISIBLE);
 
             DBRemoto dbr = new DBRemoto();
             dbr.RitornaCategorie();

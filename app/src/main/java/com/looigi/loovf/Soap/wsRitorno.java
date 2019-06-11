@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
+import com.looigi.loovf.AdapterMultimedia;
 import com.looigi.loovf.DialogMessaggio;
 import com.looigi.loovf.R;
 import com.looigi.loovf.StrutturaFiles;
@@ -102,6 +103,34 @@ public class wsRitorno {
                     runRiga = null;
 
                     Utility.getInstance().VisualizzaMultimedia(Ritorno);
+                }
+            }, 50);
+        }
+    }
+
+    public void EffettuaRicerca(final String Ritorno) {
+        if (Ritorno.toUpperCase().contains("ERROR:")) {
+            DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
+                    Ritorno,
+                    true,
+                    "looVF",
+                    false);
+        } else {
+            hSelezionaRiga = new Handler(Looper.getMainLooper());
+            hSelezionaRiga.postDelayed(runRiga = new Runnable() {
+                @Override
+                public void run() {
+                    hSelezionaRiga.removeCallbacks(runRiga);
+                    runRiga = null;
+
+                    List<String> ll = new ArrayList<>();
+                    String[] r = Ritorno.split("§");
+                    for (String rr : r) {
+                        ll.add(rr);
+                    }
+                    AdapterMultimedia a = new AdapterMultimedia(VariabiliGlobali.getInstance().getContext(),
+                            android.R.layout.simple_list_item_1, ll);
+                    VariabiliGlobali.getInstance().getLstRicerca().setAdapter(a);
                 }
             }, 50);
         }

@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -67,6 +68,8 @@ public class VariabiliGlobali {
     private RecyclerView recyclerView;
     private ImageView imgRefresh;
     private LinearLayout layScroller;
+    private LinearLayout layRicerca;
+    private ListView lstRicerca;
     // private int idCategoriaSceltaImmagini;
     // private int idCategoriaSceltaVideo;
 
@@ -84,6 +87,22 @@ public class VariabiliGlobali {
 
     public void setFragmentActivityPrincipale(Activity fragmentActivityPrincipale) {
         FragmentActivityPrincipale = fragmentActivityPrincipale;
+    }
+
+    public ListView getLstRicerca() {
+        return lstRicerca;
+    }
+
+    public void setLstRicerca(ListView lstRicerca) {
+        this.lstRicerca = lstRicerca;
+    }
+
+    public LinearLayout getLayRicerca() {
+        return layRicerca;
+    }
+
+    public void setLayRicerca(LinearLayout layRicerca) {
+        this.layRicerca = layRicerca;
     }
 
     public ImageView getImgRefresh() {

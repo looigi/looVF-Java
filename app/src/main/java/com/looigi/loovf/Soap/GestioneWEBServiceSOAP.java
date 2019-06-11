@@ -375,6 +375,10 @@ public class GestioneWEBServiceSOAP {
 									rRit.RitornaImmaginiPerGriglia(Ritorno);
 									Ancora=false;
 									break;
+								case "EffettuaRicerca":
+									rRit.EffettuaRicerca(Ritorno);
+									Ancora=false;
+									break;
 							}
 						}
 					} else {

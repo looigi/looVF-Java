@@ -414,6 +414,9 @@ public class Utility {
 
     public void VisualizzaMultimedia(String Ritorno) {
         if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
+            VariabiliGlobali.getInstance().getImgRefresh().setVisibility(LinearLayout.GONE);
+            VariabiliGlobali.getInstance().getLayScroller().setVisibility(LinearLayout.VISIBLE);
+
             VariabiliGlobali.getInstance().setUltimoRitornoVideo(Ritorno);
 
             String[] Rit = Ritorno.split("§");
@@ -463,6 +466,8 @@ public class Utility {
         } else {
             if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
                 VariabiliGlobali.getInstance().setUltimoRitornoImmagine(Ritorno);
+                VariabiliGlobali.getInstance().getImgRefresh().setVisibility(LinearLayout.GONE);
+                VariabiliGlobali.getInstance().getLayScroller().setVisibility(LinearLayout.VISIBLE);
 
                 StrutturaFiles sf = new StrutturaFiles();
 
@@ -485,10 +490,21 @@ public class Utility {
                 ImageView mImageView = VariabiliGlobali.getInstance().getiView();
 
                 Picasso.get().load(NomeImmagine).placeholder(R.drawable.progress_animation).into(mImageView);
+            } else {
+                VariabiliGlobali.getInstance().getImgRefresh().setVisibility(LinearLayout.VISIBLE);
+                VariabiliGlobali.getInstance().getLayScroller().setVisibility(LinearLayout.GONE);
             }
         }
 
         Utility.getInstance().ScriveInformazioni();
+    }
+
+    public boolean ePari(int numero) {
+        if ((numero % 2) == 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void CaricaMultimedia() {

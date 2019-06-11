@@ -15,8 +15,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -84,6 +86,55 @@ public class MainActivity extends AppCompatActivity {
                         false);
             }
         }
+
+        // SEZIONE RICERCA
+        ImageView imgRicercaFuori = findViewById(R.id.imgRicercaFuori);
+        imgRicercaFuori.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO") ||
+                        VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
+                    VariabiliGlobali.getInstance().getLayRicerca().setVisibility(LinearLayout.VISIBLE);
+                }
+            }
+        });
+        VariabiliGlobali.getInstance().setLayRicerca((LinearLayout) findViewById(R.id.layRicerca));
+        VariabiliGlobali.getInstance().getLayRicerca().setVisibility(LinearLayout.GONE);
+        VariabiliGlobali.getInstance().setLstRicerca((ListView) findViewById(R.id.lstRicerca));
+        final EditText edtRicerca = findViewById(R.id.edtRicerca);
+        ImageView imgRicerca = findViewById(R.id.imgRicerca);
+        imgRicerca.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String ric = edtRicerca.getText().toString().trim();
+                if (ric.isEmpty() || ric.length() < 3) {
+                    DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
+                            "Inserire un parametro di ricerca di almeno 3 caratteri",
+                            true,
+                            "looVF",
+                            false);
+                } else {
+                    String Categoria="";
+
+                    if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
+                        Categoria = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo();
+                    } else {
+                        if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
+                            Categoria = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini();
+                        }
+                    }
+                    if (!Categoria.isEmpty()) {
+                        DBRemoto dbr = new DBRemoto();
+                        dbr.EffettuaRicerca(Categoria, ric);
+                    }
+                }
+            }
+        });
+        ImageView imgUscitaRicerca = findViewById(R.id.imgUscitaRicerca);
+        imgUscitaRicerca.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliGlobali.getInstance().getLayRicerca().setVisibility(LinearLayout.GONE);
+            }
+        });
+        // SEZIONE RICERCA
 
         VariabiliGlobali.getInstance().setLayScroller((LinearLayout) findViewById(R.id.layScroller));
         VariabiliGlobali.getInstance().getLayScroller().setOnTouchListener(new View.OnTouchListener() {
@@ -156,6 +207,8 @@ public class MainActivity extends AppCompatActivity {
         mImageScegliCategoria.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String item = VariabiliGlobali.getInstance().getsItems().getSelectedItem().toString();
+
+                VariabiliGlobali.getInstance().getLayRicerca().setVisibility(LinearLayout.GONE);
 
                 if (VariabiliGlobali.getInstance().getModalita().equals("GRIGLIA")) {
                     VariabiliGlobali.getInstance().getConfigurazione().setUltimaCategoriaImmagini(item);
@@ -275,6 +328,8 @@ public class MainActivity extends AppCompatActivity {
         layGriglia.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // if (!VariabiliGlobali.getInstance().getModalita().equals("GRIGLIA")) {
+                VariabiliGlobali.getInstance().getLayRicerca().setVisibility(LinearLayout.GONE);
+
                     VariabiliGlobali.getInstance().setModalita("GRIGLIA");
 
                     VariabiliGlobali.getInstance().getImgPlayVideo().setVisibility(LinearLayout.GONE);
@@ -304,6 +359,8 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout layPhoto = findViewById(R.id.layPhoto);
         layPhoto.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliGlobali.getInstance().getLayRicerca().setVisibility(LinearLayout.GONE);
+
                 if (!VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
                     VariabiliGlobali.getInstance().setModalita("PHOTO");
 
@@ -329,6 +386,8 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout layVideo = findViewById(R.id.layVideo);
         layVideo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliGlobali.getInstance().getLayRicerca().setVisibility(LinearLayout.GONE);
+
                 if (!VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
                     VariabiliGlobali.getInstance().setModalita("VIDEO");
 
@@ -354,10 +413,13 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout laySettings = findViewById(R.id.laySettings);
         laySettings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliGlobali.getInstance().getLayRicerca().setVisibility(LinearLayout.GONE);
                 VariabiliGlobali.getInstance().getImgPlayVideo().setVisibility(LinearLayout.GONE);
                 VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.VISIBLE);
                 VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.GONE);
                 VariabiliGlobali.getInstance().getLayGriglia().setVisibility(LinearLayout.GONE);
+                VariabiliGlobali.getInstance().getImgRefresh().setVisibility(LinearLayout.GONE);
+                VariabiliGlobali.getInstance().getLayScroller().setVisibility(LinearLayout.GONE);
 
                 Utility.getInstance().ScriveInformazioni();
             }
@@ -366,6 +428,8 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout layRefresh = findViewById(R.id.layRefresh);
         layRefresh.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliGlobali.getInstance().getLayRicerca().setVisibility(LinearLayout.GONE);
+
                 DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
                         "Si vogliono riscaricare tutti i dati ?",
                         false,
@@ -377,6 +441,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout layAbout = findViewById(R.id.layAbout);
         layAbout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliGlobali.getInstance().getLayRicerca().setVisibility(LinearLayout.GONE);
             }
         });
 

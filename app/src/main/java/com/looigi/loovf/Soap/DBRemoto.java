@@ -35,7 +35,7 @@ public class DBRemoto {
 	public void RitornaMultimediaDaID(String id) {
     	String tip = "";
     	if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
-    		tip="2";
+    		tip = "2";
 		} else {
 			if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
 				tip = "1";
@@ -62,6 +62,27 @@ public class DBRemoto {
 				NS,
 				SA,
 				15000,
+				true);
+		g.Esegue();
+	}
+
+	public void EffettuaRicerca(String Categoria, String Ricerca) {
+		String tip = "";
+		if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
+			tip = "2";
+		} else {
+			if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
+				tip = "1";
+			}
+		}
+		String Urletto="EffettuaRicerca?idTipologia=" + tip + "&Categoria=" +Categoria + "&Ricerca=" + Ricerca;
+
+		GestioneWEBServiceSOAP g = new GestioneWEBServiceSOAP(
+				RadiceWS + ws + Urletto,
+				"EffettuaRicerca",
+				NS,
+				SA,
+				25000,
 				true);
 		g.Esegue();
 	}

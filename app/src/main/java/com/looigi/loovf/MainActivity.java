@@ -2,11 +2,12 @@ package com.looigi.loovf;
 
 
 import android.annotation.SuppressLint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -23,17 +24,23 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.looigi.loovf.Soap.DBRemoto;
+import com.looigi.loovf.Soap.DownloadFileFromURL;
 import com.looigi.loovf.db_locale.db_dati;
-import com.looigi.loovf.griglia.AdapterRecyclerView;
-import com.looigi.loovf.griglia.ImageListForRecycler;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private Runnable runRiga;
     private Handler hSelezionaRiga;
     private LinearLayout layContenitore;
     private db_dati db;
+
+    @Override
+    public void onBackPressed() {
+        Drawable icona_nessuna = ContextCompat.getDrawable(VariabiliGlobali.getInstance().getContext(), R.drawable.about);
+        VariabiliGlobali.getInstance().getImgPlayVideo().setImageDrawable(icona_nessuna);
+
+        ExitActivity.exitApplicationAndRemoveFromRecent(MainActivity.this);
+        super.onBackPressed();
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -52,6 +59,14 @@ public class MainActivity extends AppCompatActivity {
         VariabiliGlobali.getInstance().setContext(this);
         VariabiliGlobali.getInstance().setFragmentActivityPrincipale(this);
 
+        InfoOnPhone i = new InfoOnPhone();
+        String Device = i.getDeviceName();
+        String User = i.getUser(this);
+        String IMEI_IMSI = i.getIMEI();
+        VariabiliGlobali.getInstance().setTipoTelefono(Device);
+        VariabiliGlobali.getInstance().setUtenza(User);
+        VariabiliGlobali.getInstance().setIMEI_IMSI(IMEI_IMSI);
+
         final GestureDetector gdt = new GestureDetector(new GestureListener());
 
         // VariabiliGlobali.getInstance().setCaricataPagina(false);
@@ -68,24 +83,31 @@ public class MainActivity extends AppCompatActivity {
         db.CreazioneTabelle();
         // db.PulisceDati();
 
-        StrutturaConfig sc = db.CaricaConfigurazione();
-        if (sc != null) {
-            VariabiliGlobali.getInstance().setConfigurazione(sc);
-        } else {
-            sc = new StrutturaConfig();
-            sc.setRandom(true);
-            sc.setUltimaCategoriaImmagini("Tutto");
-            sc.setUltimaCategoriaVideo("Tutto");
-            VariabiliGlobali.getInstance().setConfigurazione(sc);
-            String Ritorno = db.ScriveConfigurazione();
-            if (!Ritorno.isEmpty()) {
-                DialogMessaggio.getInstance().show(this,
-                        "ERRORE nel salvataggio della configurazione\n" + Ritorno,
-                        true,
-                        "looVF",
-                        false);
-            }
-        }
+        // StrutturaConfig sc = db.CaricaConfigurazione();
+        // if (sc != null) {
+        //     VariabiliGlobali.getInstance().setConfigurazione(sc);
+        // } else {
+        //     sc = new StrutturaConfig();
+        //     sc.setRandom(true);
+//
+        //     StrutturaCategorie sc1 = new StrutturaCategorie();
+        //     sc1.setIdCategoria(999);
+        //     sc1.setNomeCategoria("Tutto");
+        //     sc1.setPercorsoCategoria("");
+        //     sc1.setProtetta(false);
+//
+        //     sc.setUltimaCategoriaImmagini(sc1);
+        //     sc.setUltimaCategoriaVideo(sc1);
+        //     VariabiliGlobali.getInstance().setConfigurazione(sc);
+        //     String Ritorno = db.ScriveConfigurazione();
+        //     if (!Ritorno.isEmpty()) {
+        //         DialogMessaggio.getInstance().show(this,
+        //                 "ERRORE nel salvataggio della configurazione\n" + Ritorno,
+        //                 true,
+        //                 "looVF",
+        //                 false);
+        //     }
+        // }
 
         // SEZIONE RICERCA
         ImageView imgRicercaFuori = findViewById(R.id.imgRicercaFuori);
@@ -112,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                             "looVF",
                             false);
                 } else {
-                    String Categoria="";
+                    StrutturaCategorie Categoria= new StrutturaCategorie();
 
                     if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
                         Categoria = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo();
@@ -121,9 +143,9 @@ public class MainActivity extends AppCompatActivity {
                             Categoria = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini();
                         }
                     }
-                    if (!Categoria.isEmpty()) {
+                    if (!Categoria.getNomeCategoria().isEmpty()) {
                         DBRemoto dbr = new DBRemoto();
-                        dbr.EffettuaRicerca(Categoria, ric);
+                        dbr.EffettuaRicerca(Categoria.getNomeCategoria(), ric);
                     }
                 }
             }
@@ -136,6 +158,52 @@ public class MainActivity extends AppCompatActivity {
         });
         // SEZIONE RICERCA
 
+        VariabiliGlobali.getInstance().setChkVisuaTutto((CheckBox) findViewById(R.id.chkVisualizzaTutto));
+        VariabiliGlobali.getInstance().getChkVisuaTutto().setChecked(false);
+        VariabiliGlobali.getInstance().getChkVisuaTutto().setVisibility(LinearLayout.GONE);
+        VariabiliGlobali.getInstance().getChkVisuaTutto().setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliGlobali.getInstance().getConfigurazione().setVisuaTutto(VariabiliGlobali.getInstance().getChkVisuaTutto().isChecked());
+                String Ritorno = db.ScriveConfigurazione();
+                if (!Ritorno.isEmpty()) {
+                    DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
+                            "ERRORE nel salvataggio della configurazione\n" + Ritorno,
+                            true,
+                            "looVF",
+                            false);
+                } else {
+                    Utility.getInstance().riempieSpinner();
+                }
+            }
+        });
+
+        VariabiliGlobali.getInstance().setImgCondividi((ImageView) findViewById(R.id.imgCondividi));
+        VariabiliGlobali.getInstance().getImgCondividi().setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
+                    StrutturaFiles nome = VariabiliGlobali.getInstance().getImmagineCaricata();
+                    int idCategoria = nome.getCategoria();
+                    StrutturaCategorie Categoria = VariabiliGlobali.getInstance().getCategorieImmagini().get(idCategoria);
+                    nome.setNomeFile(nome.getNomeFile().replace("\\", "/"));
+                    nome.setNomeFile(VariabiliGlobali.getInstance().getPercorsoURL() + "/" + Categoria.getNomeCategoria() + "/" + nome.getNomeFile());
+                    // Uri fileUri = Uri.parse(nome.getNomeFile());
+
+                    new DownloadFileFromURL("1").execute(nome.getNomeFile());
+                } else {
+                    if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
+                        StrutturaFiles nome = VariabiliGlobali.getInstance().getVideoCaricato();
+                        int idCategoria = nome.getCategoria();
+                        StrutturaCategorie Categoria = VariabiliGlobali.getInstance().getCategorieVideo().get(idCategoria);
+                        nome.setNomeFile(nome.getNomeFile().replace("\\", "/"));
+                        nome.setNomeFile(VariabiliGlobali.getInstance().getPercorsoURL() + "/" + Categoria.getNomeCategoria() + "/" + nome.getNomeFile());
+                        // Uri fileUri = Uri.parse(nome.getNomeFile());
+
+                        new DownloadFileFromURL("2").execute(nome.getNomeFile());
+                    }
+                }
+            }
+        });
+
         VariabiliGlobali.getInstance().setLayScroller((LinearLayout) findViewById(R.id.layScroller));
         VariabiliGlobali.getInstance().getLayScroller().setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -146,11 +214,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        final CheckBox chkRandom = findViewById(R.id.chkRandom);
-        chkRandom.setChecked(VariabiliGlobali.getInstance().getConfigurazione().isRandom());
-        chkRandom.setOnClickListener(new View.OnClickListener() {
+        VariabiliGlobali.getInstance().setChkRandom((CheckBox) findViewById(R.id.chkRandom));
+        VariabiliGlobali.getInstance().getChkRandom().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                VariabiliGlobali.getInstance().getConfigurazione().setRandom(chkRandom.isChecked());
+                VariabiliGlobali.getInstance().getConfigurazione().setRandom(VariabiliGlobali.getInstance().getChkRandom().isChecked());
                 String Ritorno = db.ScriveConfigurazione();
                 if (!Ritorno.isEmpty()) {
                     DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
@@ -176,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        LinearLayout laySettingsPanel = findViewById(R.id.laySettingsPanel);
+        // LinearLayout laySettings = findViewById(R.id.laySettings);
         // ImageView mImageIndietro = findViewById(R.id.imgIndietro);
         // mImageIndietro.setOnClickListener(new View.OnClickListener() {
         //     public void onClick(View v) {
@@ -207,11 +274,13 @@ public class MainActivity extends AppCompatActivity {
         mImageScegliCategoria.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String item = VariabiliGlobali.getInstance().getsItems().getSelectedItem().toString();
+                StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaNome("1", item);
 
                 VariabiliGlobali.getInstance().getLayRicerca().setVisibility(LinearLayout.GONE);
 
                 if (VariabiliGlobali.getInstance().getModalita().equals("GRIGLIA")) {
-                    VariabiliGlobali.getInstance().getConfigurazione().setUltimaCategoriaImmagini(item);
+
+                    VariabiliGlobali.getInstance().getConfigurazione().setUltimaCategoriaImmagini(sc);
                     String idCategoria = Integer.toString(VariabiliGlobali.getInstance().getsItems().getSelectedItemPosition());
                     String Ritorno = db.RitornaRigheGriglia("1", idCategoria);
 
@@ -223,9 +292,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 } else {
                     if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
-                        VariabiliGlobali.getInstance().getConfigurazione().setUltimaCategoriaVideo(item);
+                        VariabiliGlobali.getInstance().getConfigurazione().setUltimaCategoriaVideo(sc);
                     } else {
-                        VariabiliGlobali.getInstance().getConfigurazione().setUltimaCategoriaImmagini(item);
+                        VariabiliGlobali.getInstance().getConfigurazione().setUltimaCategoriaImmagini(sc);
                     }
                     String Ritorno = db.ScriveConfigurazione();
                     if (!Ritorno.isEmpty()) {
@@ -268,8 +337,8 @@ public class MainActivity extends AppCompatActivity {
         //     }
         // });
 
-        VariabiliGlobali.getInstance().setLaySettings(laySettingsPanel);
-        laySettingsPanel.setVisibility(LinearLayout.GONE);
+        VariabiliGlobali.getInstance().setLaySettingsPanel((LinearLayout) findViewById(R.id.laySettingsPanel));
+        VariabiliGlobali.getInstance().getLaySettingsPanel().setVisibility(LinearLayout.GONE);
 
         VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.GONE);
         VariabiliGlobali.getInstance().getImgPlayVideo().setVisibility(LinearLayout.GONE);
@@ -329,11 +398,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // if (!VariabiliGlobali.getInstance().getModalita().equals("GRIGLIA")) {
                 VariabiliGlobali.getInstance().getLayRicerca().setVisibility(LinearLayout.GONE);
-
+                VariabiliGlobali.getInstance().getImgCondividi().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().setModalita("GRIGLIA");
 
                     VariabiliGlobali.getInstance().getImgPlayVideo().setVisibility(LinearLayout.GONE);
-                    VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.GONE);
+                    VariabiliGlobali.getInstance().getLaySettingsPanel().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getLayGriglia().setVisibility(LinearLayout.VISIBLE);
                     VariabiliGlobali.getInstance().getImgRefresh().setVisibility(LinearLayout.VISIBLE);
@@ -341,8 +410,9 @@ public class MainActivity extends AppCompatActivity {
 
                     Utility.getInstance().riempieSpinner();
 
-                    String idCategoria = Integer.toString(Utility.getInstance().TornaIdCategoria(VariabiliGlobali.getInstance().getCategoriaSceltaImmagine()));
-                    String Ritorno = db.RitornaRigheGriglia("1", idCategoria);
+                    // String idCategoria = Integer.toString(Utility.getInstance().TornaIdCategoria(VariabiliGlobali.getInstance().getCategoriaSceltaImmagine()));
+                    StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaNome("1", VariabiliGlobali.getInstance().getCategoriaSceltaImmagine());
+                    String Ritorno = db.RitornaRigheGriglia("1", Integer.toString(sc.getIdCategoria()));
 
                     if (Ritorno.isEmpty()) {
                         DBRemoto dbr = new DBRemoto();
@@ -360,12 +430,13 @@ public class MainActivity extends AppCompatActivity {
         layPhoto.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliGlobali.getInstance().getLayRicerca().setVisibility(LinearLayout.GONE);
+                VariabiliGlobali.getInstance().getImgCondividi().setVisibility(LinearLayout.VISIBLE);
 
                 if (!VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
                     VariabiliGlobali.getInstance().setModalita("PHOTO");
 
                     VariabiliGlobali.getInstance().getImgPlayVideo().setVisibility(LinearLayout.GONE);
-                    VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.GONE);
+                    VariabiliGlobali.getInstance().getLaySettingsPanel().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.VISIBLE);
                     VariabiliGlobali.getInstance().getLayGriglia().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getImgRefresh().setVisibility(LinearLayout.GONE);
@@ -387,17 +458,18 @@ public class MainActivity extends AppCompatActivity {
         layVideo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliGlobali.getInstance().getLayRicerca().setVisibility(LinearLayout.GONE);
+                VariabiliGlobali.getInstance().getImgCondividi().setVisibility(LinearLayout.VISIBLE);
 
                 if (!VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
                     VariabiliGlobali.getInstance().setModalita("VIDEO");
 
                     VariabiliGlobali.getInstance().getImgPlayVideo().setVisibility(LinearLayout.VISIBLE);
-                    VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.GONE);
+                    VariabiliGlobali.getInstance().getLaySettingsPanel().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getLayGriglia().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getImgRefresh().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getLayScroller().setVisibility(LinearLayout.VISIBLE);
-//
+
                     Utility.getInstance().riempieSpinner();
 
                     if (VariabiliGlobali.getInstance().getUltimoRitornoVideo().isEmpty()) {
@@ -415,13 +487,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 VariabiliGlobali.getInstance().getLayRicerca().setVisibility(LinearLayout.GONE);
                 VariabiliGlobali.getInstance().getImgPlayVideo().setVisibility(LinearLayout.GONE);
-                VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.VISIBLE);
+                VariabiliGlobali.getInstance().getLaySettingsPanel().setVisibility(LinearLayout.VISIBLE);
                 VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.GONE);
                 VariabiliGlobali.getInstance().getLayGriglia().setVisibility(LinearLayout.GONE);
                 VariabiliGlobali.getInstance().getImgRefresh().setVisibility(LinearLayout.GONE);
                 VariabiliGlobali.getInstance().getLayScroller().setVisibility(LinearLayout.GONE);
+                VariabiliGlobali.getInstance().getImgCondividi().setVisibility(LinearLayout.GONE);
 
-                Utility.getInstance().ScriveInformazioni();
+                // Utility.getInstance().ScriveInformazioni();
             }
         });
 
@@ -467,11 +540,12 @@ public class MainActivity extends AppCompatActivity {
             VariabiliGlobali.getInstance().getLayScroller().setVisibility(LinearLayout.VISIBLE);
 
             DBRemoto dbr = new DBRemoto();
+            dbr.RitornaPermessi();
             dbr.RitornaCategorie();
             dbr.RitornaQuantiFilesPhoto();
             dbr.RitornaQuantiFilesVideo();
 
-            Utility.getInstance().riempieSpinner();
+            // Utility.getInstance().riempieSpinner();
 
             VariabiliGlobali.getInstance().setLinguettaAperta(true);
             ChiudeLinguetta();

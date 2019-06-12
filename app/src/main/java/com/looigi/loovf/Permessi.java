@@ -10,7 +10,7 @@ public class Permessi {
     public void ControllaPermessi(Activity context) {
         int permissionRequestCode1 = 1193;
 
-        String[] PERMISSIONS = new String[]{
+        String[] PERMISSIONS = new String[] {
                 android.Manifest.permission.INTERNET,
                 android.Manifest.permission.ACCESS_NETWORK_STATE,
                 android.Manifest.permission.ACCESS_WIFI_STATE,
@@ -21,6 +21,8 @@ public class Permessi {
                 Manifest.permission.WAKE_LOCK,
                 android.Manifest.permission.READ_PHONE_STATE,
                 android.Manifest.permission.PROCESS_OUTGOING_CALLS,
+                Manifest.permission.READ_CONTACTS,
+                Manifest.permission.READ_PHONE_STATE,
                 // android.Manifest.permission.ACCESS_COARSE_LOCATION,
                 android.Manifest.permission.MODIFY_AUDIO_SETTINGS,
         };

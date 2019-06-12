@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.looigi.loovf.DialogMessaggio;
 import com.looigi.loovf.R;
 import com.looigi.loovf.StrutturaFiles;
 import com.looigi.loovf.Utility;
@@ -71,8 +70,9 @@ public class AdapterRecyclerView extends RecyclerView.Adapter<AdapterRecyclerVie
 
                 Picasso.get().load(galleryList.get(position).getImage_URL()).placeholder(R.drawable.progress_animation).into(mImageView);
 
+                VariabiliGlobali.getInstance().getImgCondividi().setVisibility(LinearLayout.VISIBLE);
                 VariabiliGlobali.getInstance().getImgPlayVideo().setVisibility(LinearLayout.GONE);
-                VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.GONE);
+                VariabiliGlobali.getInstance().getLaySettingsPanel().setVisibility(LinearLayout.GONE);
                 VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.VISIBLE);
                 VariabiliGlobali.getInstance().getLayGriglia().setVisibility(LinearLayout.GONE);
                 VariabiliGlobali.getInstance().getImgRefresh().setVisibility(LinearLayout.GONE);

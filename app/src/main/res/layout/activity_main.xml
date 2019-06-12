@@ -269,6 +269,7 @@
 
             <LinearLayout
                 android:id="@+id/laySettingsPanel"
+                android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -279,6 +280,13 @@
                     android:layout_height="wrap_content"
                     android:checked="true"
                     android:text="Avanzamento random" />
+
+                <CheckBox
+                    android:id="@+id/chkVisualizzaTutto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="Visualizza tutto" />
 
                 <Button
                     android:id="@+id/cmdCompatta"

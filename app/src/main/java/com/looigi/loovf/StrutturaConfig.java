@@ -2,8 +2,17 @@ package com.looigi.loovf;
 
 public class StrutturaConfig {
     private boolean Random = true;
-    private String UltimaCategoriaVideo = "Tutto";
-    private String UltimaCategoriaImmagini = "Tutto";
+    private StrutturaCategorie UltimaCategoriaVideo;
+    private StrutturaCategorie UltimaCategoriaImmagini;
+    private boolean VisuaTutto;
+
+    public boolean isVisuaTutto() {
+        return VisuaTutto;
+    }
+
+    public void setVisuaTutto(boolean visuaTutto) {
+        VisuaTutto = visuaTutto;
+    }
 
     public boolean isRandom() {
         return Random;
@@ -13,19 +22,19 @@ public class StrutturaConfig {
         Random = random;
     }
 
-    public String getUltimaCategoriaVideo() {
+    public StrutturaCategorie getUltimaCategoriaVideo() {
         return UltimaCategoriaVideo;
     }
 
-    public void setUltimaCategoriaVideo(String ultimaCategoriaVideo) {
+    public void setUltimaCategoriaVideo(StrutturaCategorie ultimaCategoriaVideo) {
         UltimaCategoriaVideo = ultimaCategoriaVideo;
     }
 
-    public String getUltimaCategoriaImmagini() {
+    public StrutturaCategorie getUltimaCategoriaImmagini() {
         return UltimaCategoriaImmagini;
     }
 
-    public void setUltimaCategoriaImmagini(String ultimaCategoriaImmagini) {
+    public void setUltimaCategoriaImmagini(StrutturaCategorie ultimaCategoriaImmagini) {
         UltimaCategoriaImmagini = ultimaCategoriaImmagini;
     }
 }

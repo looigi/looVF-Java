@@ -1,5 +1,6 @@
 package com.looigi.loovf.Soap;
 
+import com.looigi.loovf.StrutturaCategorie;
 import com.looigi.loovf.VariabiliGlobali;
 
 public class DBRemoto {
@@ -27,8 +28,32 @@ public class DBRemoto {
 				"RitornaFiles",
 				NS,
 				SA,
-				1420000,
+				1450000,
 				true);
+		g.Esegue();
+	}
+
+	public void RitornaPermessi() {
+    	String Device = VariabiliGlobali.getInstance().getTipoTelefono();
+    	String User = VariabiliGlobali.getInstance().getUtenza();
+
+    	Device = Device.replace("&", "***AND***");
+		Device = Device.replace("?", "***PI***");
+
+		User = User.replace("&", "***AND***");
+		User = User.replace("?", "***PI***");
+
+		String[] i = VariabiliGlobali.getInstance().getIMEI_IMSI().split(";");
+
+		String Urletto="RitornaPermessi?Device=" + Device + "&User=" + User + "&IMEI=" + i[0] + "&IMSI=" + i[1];
+
+		GestioneWEBServiceSOAP g = new GestioneWEBServiceSOAP(
+				RadiceWS + ws + Urletto,
+				"RitornaPermessi",
+				NS,
+				SA,
+				25000,
+				false);
 		g.Esegue();
 	}
 
@@ -48,7 +73,7 @@ public class DBRemoto {
 				"RitornaMultimediaDaId",
 				NS,
 				SA,
-				15000,
+				25000,
 				true);
 		g.Esegue();
 	}
@@ -61,7 +86,7 @@ public class DBRemoto {
 				"RitornaQuantiFilesPhoto",
 				NS,
 				SA,
-				15000,
+				25000,
 				true);
 		g.Esegue();
 	}
@@ -104,7 +129,8 @@ public class DBRemoto {
 		// 		Categoria = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini();
 		// 	}
 		// }
-		Categoria = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini();
+		StrutturaCategorie sc = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini();
+		Categoria = sc.getNomeCategoria();
 
 		String Urletto="RitornaImmaginiPerGriglia?QuanteImm=15&Categoria=" + Categoria;
 
@@ -113,7 +139,7 @@ public class DBRemoto {
 				"RitornaImmaginiPerGriglia",
 				NS,
 				SA,
-				15000,
+				25000,
 				true);
 		g.Esegue();
 	}
@@ -129,10 +155,12 @@ public class DBRemoto {
 		}
 		String Categoria = "";
 		if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
-			Categoria = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo();
+			Categoria = VariabiliGlobali.getInstance().getCategoriaSceltaVideo();
+			// VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo().getNomeCategoria();
 		} else {
 			if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
-				Categoria = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini();
+				Categoria = VariabiliGlobali.getInstance().getCategoriaSceltaImmagine();
+				// VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini().getNomeCategoria();
 			}
 		}
 		String Urletto="RitornaSuccessivoMultimedia?idTipologia=" + tip + "&Categoria=" + Categoria;
@@ -142,7 +170,7 @@ public class DBRemoto {
 				"RitornaSuccessivoMultimedia",
 				NS,
 				SA,
-				15000,
+				25000,
 				true);
 		g.Esegue();
 	}
@@ -155,7 +183,7 @@ public class DBRemoto {
 				"RitornaQuantiFilesVideo",
 				NS,
 				SA,
-				20000,
+				30000,
 				true);
 		g.Esegue();
 	}
@@ -168,7 +196,7 @@ public class DBRemoto {
 				"RitornaCategorie",
 				NS,
 				SA,
-				15000,
+				25000,
 				true);
 		g.Esegue();
 	}

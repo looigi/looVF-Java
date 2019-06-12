@@ -379,6 +379,10 @@ public class GestioneWEBServiceSOAP {
 									rRit.EffettuaRicerca(Ritorno);
 									Ancora=false;
 									break;
+                                case "RitornaPermessi":
+                                    rRit.RitornaPermessi(Ritorno);
+                                    Ancora=false;
+                                    break;
 							}
 						}
 					} else {

@@ -3,17 +3,13 @@ package com.looigi.loovf;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Environment;
-import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,11 +44,11 @@ public class VariabiliGlobali {
     private long IndiceImmagine=0;
     // private VideoView vView;
     private ImageView iView;
-    private List<String> categorieVideo=new ArrayList<>();
-    private List<String> categorieImmagini=new ArrayList<>();
+    private List<StrutturaCategorie> categorieVideo=new ArrayList<>();
+    private List<StrutturaCategorie> categorieImmagini=new ArrayList<>();
     private StrutturaFiles ImmagineCaricata;
     private StrutturaFiles VideoCaricato;
-    private LinearLayout laySettings;
+    private LinearLayout laySettingsPanel;
     private boolean LinguettaAperta = true;
     private String CategoriaSceltaVideo="Tutto";
     private String CategoriaSceltaImmagine="Tutto";
@@ -70,6 +66,13 @@ public class VariabiliGlobali {
     private LinearLayout layScroller;
     private LinearLayout layRicerca;
     private ListView lstRicerca;
+    private ImageView imgCondividi;
+    private CheckBox chkRandom;
+    private String TipoTelefono;
+    private String Utenza;
+    private String IMEI_IMSI;
+    private boolean Amministratore=false;
+    private CheckBox chkVisuaTutto;
     // private int idCategoriaSceltaImmagini;
     // private int idCategoriaSceltaVideo;
 
@@ -87,6 +90,62 @@ public class VariabiliGlobali {
 
     public void setFragmentActivityPrincipale(Activity fragmentActivityPrincipale) {
         FragmentActivityPrincipale = fragmentActivityPrincipale;
+    }
+
+    public CheckBox getChkVisuaTutto() {
+        return chkVisuaTutto;
+    }
+
+    public void setChkVisuaTutto(CheckBox chkVisuaTutto) {
+        this.chkVisuaTutto = chkVisuaTutto;
+    }
+
+    public boolean isAmministratore() {
+        return Amministratore;
+    }
+
+    public void setAmministratore(boolean amministratore) {
+        Amministratore = amministratore;
+    }
+
+    public String getIMEI_IMSI() {
+        return IMEI_IMSI;
+    }
+
+    public void setIMEI_IMSI(String IMEI_IMSI) {
+        this.IMEI_IMSI = IMEI_IMSI;
+    }
+
+    public String getTipoTelefono() {
+        return TipoTelefono;
+    }
+
+    public void setTipoTelefono(String tipoTelefono) {
+        TipoTelefono = tipoTelefono;
+    }
+
+    public String getUtenza() {
+        return Utenza;
+    }
+
+    public void setUtenza(String utenza) {
+        Utenza = utenza;
+    }
+
+    public CheckBox getChkRandom() {
+        return chkRandom;
+    }
+
+    public void setChkRandom(CheckBox chkRandom) {
+        this.chkRandom = chkRandom;
+    }
+
+    public ImageView getImgCondividi() {
+        return imgCondividi;
+    }
+
+    public void setImgCondividi(ImageView imgCondividi) {
+        this.imgCondividi = imgCondividi;
     }
 
     public ListView getLstRicerca() {
@@ -241,12 +300,12 @@ public class VariabiliGlobali {
         LinguettaAperta = linguettaAperta;
     }
 
-    public LinearLayout getLaySettings() {
-        return laySettings;
+    public LinearLayout getLaySettingsPanel() {
+        return laySettingsPanel;
     }
 
-    public void setLaySettings(LinearLayout laySettings) {
-        this.laySettings = laySettings;
+    public void setLaySettingsPanel(LinearLayout laySettingsPanel) {
+        this.laySettingsPanel = laySettingsPanel;
     }
 
     public StrutturaFiles getImmagineCaricata() {
@@ -401,19 +460,57 @@ public class VariabiliGlobali {
         this.iView = iView;
     }
 
-    public List<String> getCategorieVideo() {
+    public List<StrutturaCategorie> getCategorieVideo() {
         return categorieVideo;
     }
 
-    public void setCategorieVideo(List<String> categorieVideo) {
+    public void setCategorieVideo(List<StrutturaCategorie> categorieVideo) {
         this.categorieVideo = categorieVideo;
     }
 
-    public List<String> getCategorieImmagini() {
+    public List<StrutturaCategorie> getCategorieImmagini() {
         return categorieImmagini;
     }
 
-    public void setCategorieImmagini(List<String> categorieImmagini) {
+    public void setCategorieImmagini(List<StrutturaCategorie> categorieImmagini) {
         this.categorieImmagini = categorieImmagini;
+    }
+
+    public StrutturaCategorie RitornaCategoriaDaNome(String idTipologia, String Nome) {
+        StrutturaCategorie rit = new StrutturaCategorie();
+        List <StrutturaCategorie> ls;
+        if (idTipologia.equals("1")) {
+            ls = this.categorieImmagini;
+        } else {
+            ls = this.categorieVideo;
+        }
+
+        for (StrutturaCategorie c : ls) {
+            if (c.getNomeCategoria().equals(Nome)) {
+                rit = c;
+                break;
+            }
+        }
+
+        return rit;
+    }
+
+    public StrutturaCategorie RitornaCategoriaDaID(String idTipologia, int ID) {
+        StrutturaCategorie rit = new StrutturaCategorie();
+        List <StrutturaCategorie> ls;
+        if (idTipologia.equals("1")) {
+            ls = this.categorieImmagini;
+        } else {
+            ls = this.categorieVideo;
+        }
+
+        for (StrutturaCategorie c : ls) {
+            if (c.getIdCategoria()==ID) {
+                rit = c;
+                break;
+            }
+        }
+
+        return rit;
     }
 }

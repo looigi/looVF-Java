@@ -1,13 +1,8 @@
 package com.looigi.loovf;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +14,6 @@ import android.widget.TextView;
 import com.looigi.loovf.db_locale.db_dati;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class AdapterMultimedia extends ArrayAdapter
@@ -54,12 +46,8 @@ public class AdapterMultimedia extends ArrayAdapter
         int idMultimedia = Integer.parseInt(r[5]);
         String idTipologia = r[6];
         int idCategoria = Integer.parseInt(r[4]);
-        String sCategoria = "";
-        if (idTipologia.equals("1")){
-            sCategoria=VariabiliGlobali.getInstance().getCategorieImmagini().get(idCategoria-1);
-        } else {
-            sCategoria=VariabiliGlobali.getInstance().getCategorieVideo().get(idCategoria-1);
-        }
+        StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaID(idTipologia, idCategoria);
+        String sCategoria = sc.getNomeCategoria();
         String sDimensioni = "";
         String[] tipo={"b.", "Kb.", "Mb.", "Gb."};
         int quale = 0;
@@ -108,13 +96,10 @@ public class AdapterMultimedia extends ArrayAdapter
                 long Dimensioni = Long.parseLong(r[2]);
                 String Data = r[3];
                 int idCategoria = Integer.parseInt(r[4]);
-                String sCategoria = "";
-                if (idTipologia.equals("1")){
-                    sCategoria=VariabiliGlobali.getInstance().getCategorieImmagini().get(idCategoria-1);
-                } else {
-                    sCategoria=VariabiliGlobali.getInstance().getCategorieVideo().get(idCategoria-1);
-                }
+                StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaID(idTipologia, idCategoria);
+                String sCategoria = sc.getNomeCategoria();
 
+                VariabiliGlobali.getInstance().getImgCondividi().setVisibility(LinearLayout.VISIBLE);
                 if (idTipologia.equals("1")) {
                     VariabiliGlobali.getInstance().setModalita("PHOTO");
                     VariabiliGlobali.getInstance().setImmagineVisualizzata(prossimo);
@@ -158,7 +143,7 @@ public class AdapterMultimedia extends ArrayAdapter
                 }
 
                 VariabiliGlobali.getInstance().getImgPlayVideo().setVisibility(LinearLayout.GONE);
-                VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.GONE);
+                VariabiliGlobali.getInstance().getLaySettingsPanel().setVisibility(LinearLayout.GONE);
                 VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.VISIBLE);
                 VariabiliGlobali.getInstance().getLayGriglia().setVisibility(LinearLayout.GONE);
                 VariabiliGlobali.getInstance().getImgRefresh().setVisibility(LinearLayout.GONE);

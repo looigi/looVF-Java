@@ -69,14 +69,15 @@ public class Utility {
             String Numero = ccc[4];
 
             if (idCategoria.isEmpty()) {
-                if (Salva) {
-                    idCategoria = Integer.toString(Integer.parseInt(ccc[3]) - 1);
-                } else {
+                // if (Salva) {
                     idCategoria = Integer.toString(Integer.parseInt(ccc[3]));
-                }
+                // } else {
+                //     idCategoria = Integer.toString(Integer.parseInt(ccc[3]));
+                // }
             }
 
-            String Categoria = VariabiliGlobali.getInstance().getCategorieImmagini().get(Integer.parseInt(idCategoria));
+            StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaID("1", Integer.parseInt(idCategoria));
+            String Categoria = sc.getNomeCategoria();
             String Percorsi = VariabiliGlobali.getInstance().getPercorsoURL() + "/" + Categoria + "/" + path;
 
             i.setImage_category(idCategoria);
@@ -110,58 +111,55 @@ public class Utility {
         VariabiliGlobali.getInstance().getRecyclerView().setAdapter(adapter);
     }
 
-    public int TornaIdCategoria(String item) {
-        int q = 0;
-
-        if (VariabiliGlobali.getInstance().getModalita().equals("GRIGLIA")) {
-            for (String s : VariabiliGlobali.getInstance().getCategorieImmagini()) {
-                if (s.equals(item)) {
-                    //VariabiliGlobali.getInstance().setIdCategoriaSceltaImmagini(q);
-                    break;
-                }
-                q++;
-            }
-        } else {
-            if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
-                for (String s : VariabiliGlobali.getInstance().getCategorieVideo()) {
-                    if (s.equals(item)) {
-                        //VariabiliGlobali.getInstance().setIdCategoriaSceltaVideo(q);
-                        break;
-                    }
-                    q++;
-                }
-            } else {
-                for (String s : VariabiliGlobali.getInstance().getCategorieImmagini()) {
-                    if (s.equals(item)) {
-                        //VariabiliGlobali.getInstance().setIdCategoriaSceltaImmagini(q);
-                        break;
-                    }
-                    q++;
-                }
-            }
-        }
-
-        return q;
-    }
-
     public void riempieSpinner() {
         List<String> spinnerArray = new ArrayList<>();
         if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO") ||
                 VariabiliGlobali.getInstance().getModalita().equals("GRIGLIA")) {
-            spinnerArray = VariabiliGlobali.getInstance().getCategorieImmagini();
+            for (StrutturaCategorie s: VariabiliGlobali.getInstance().getCategorieImmagini()) {
+                boolean Ok = true;
+
+                if (s.isProtetta() && !VariabiliGlobali.getInstance().getConfigurazione().isVisuaTutto()) {
+                    Ok = false;
+                }
+                if (Ok) {
+                    spinnerArray.add(s.getNomeCategoria());
+                }
+            }
         } else {
             if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
-                spinnerArray = VariabiliGlobali.getInstance().getCategorieVideo();
+                for (StrutturaCategorie s: VariabiliGlobali.getInstance().getCategorieVideo()) {
+                    boolean Ok = true;
+
+                    if (s.isProtetta() && !VariabiliGlobali.getInstance().getConfigurazione().isVisuaTutto()) {
+                        Ok = false;
+                    }
+                    if (Ok) {
+                        spinnerArray.add(s.getNomeCategoria());
+                    }
+                }
             }
         }
+
         boolean Ok = true;
-        for (String s: spinnerArray) {
-            if (s.equals("Tutto")) {
-                Ok=false;
-                break;
+
+        if (VariabiliGlobali.getInstance().getConfigurazione().isVisuaTutto()) {
+            for (String s : spinnerArray) {
+                if (s.equals("Tutto")) {
+                    Ok = false;
+                    break;
+                }
             }
+        } else {
+            Ok = false;
         }
         if (Ok) {
+            // StrutturaCategorie sc = new StrutturaCategorie();
+
+            // sc.setIdCategoria(999);
+            // sc.setNomeCategoria("Tutto");
+            // sc.setPercorsoCategoria("");
+            // sc.setProtetta(false);
+
             spinnerArray.add("Tutto");
         }
 
@@ -171,38 +169,93 @@ public class Utility {
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         VariabiliGlobali.getInstance().getsItems().setAdapter(adapter);
-        VariabiliGlobali.getInstance().getsItems().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (VariabiliGlobali.getInstance().isCaricataPagina()) {
-                    String item = parent.getItemAtPosition(position).toString();
 
-                    if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
-                        VariabiliGlobali.getInstance().setCategoriaSceltaVideo(item);
-                    } else {
-                        VariabiliGlobali.getInstance().setCategoriaSceltaImmagine(item);
-                    }
-                }
-            }
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        // VariabiliGlobali.getInstance().getsItems().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        //     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        //         if (VariabiliGlobali.getInstance().isCaricataPagina()) {
+        //             String item = parent.getItemAtPosition(position).toString();
+//
+        //             if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
+        //                 VariabiliGlobali.getInstance().setCategoriaSceltaVideo(item);
+//
+        //                 StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaNome("2", item);
+        //                 VariabiliGlobali.getInstance().getConfigurazione().setUltimaCategoriaVideo(sc);
+        //             } else {
+        //                 VariabiliGlobali.getInstance().setCategoriaSceltaImmagine(item);
+//
+        //                 StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaNome("1", item);
+        //                 VariabiliGlobali.getInstance().getConfigurazione().setUltimaCategoriaImmagini(sc);
+        //             }
+//
+        //             db_dati db = new db_dati();
+        //             db.ScriveConfigurazione();
+        //         }
+        //     }
+        //     public void onNothingSelected(AdapterView<?> parent) {
+        //     }
+        // });
 
         // VariabiliGlobali.getInstance().getConfigurazione().setUltimaCategoriaImmagini(VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini());
         // VariabiliGlobali.getInstance().setCategoriaSceltaVideo(VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo());
 
         if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
-            if (!VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo().isEmpty()) {
-                int spinnerPosition = adapter.getPosition(VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo());
-                VariabiliGlobali.getInstance().getsItems().setSelection(spinnerPosition);
-            }
-        } else {
-            if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
-                if (!VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini().isEmpty()) {
-                    int spinnerPosition = adapter.getPosition(VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini());
+            if (VariabiliGlobali.getInstance().getConfigurazione() != null) {
+                if (VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo().getNomeCategoria()==null) {
+                    VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo().setNomeCategoria("");
+                }
+                if (!VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo().getNomeCategoria().isEmpty()) {
+                    int spinnerPosition = adapter.getPosition(VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo().getNomeCategoria());
                     VariabiliGlobali.getInstance().getsItems().setSelection(spinnerPosition);
                 }
             }
+        } else {
+            if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
+                if (VariabiliGlobali.getInstance().getConfigurazione() != null) {
+                    if (VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini().getNomeCategoria()==null) {
+                        VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini().setNomeCategoria("");
+                    }
+                    if (!VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini().getNomeCategoria().isEmpty()) {
+                        int spinnerPosition = adapter.getPosition(VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini().getNomeCategoria());
+                        VariabiliGlobali.getInstance().getsItems().setSelection(spinnerPosition);
+                    }
+                }
+            }
         }
+    }
+
+    public void CaricaConfigurazione() {
+        db_dati db = new db_dati();
+        StrutturaConfig sc = db.CaricaConfigurazione();
+        if (sc != null) {
+            VariabiliGlobali.getInstance().setConfigurazione(sc);
+        } else {
+            sc = new StrutturaConfig();
+            sc.setRandom(true);
+            sc.setVisuaTutto(false);
+
+            StrutturaCategorie sc1 = new StrutturaCategorie();
+            sc1.setIdCategoria(999);
+            sc1.setNomeCategoria("Tutto");
+            sc1.setPercorsoCategoria("");
+            sc1.setProtetta(false);
+
+            sc.setUltimaCategoriaImmagini(sc1);
+            sc.setUltimaCategoriaVideo(sc1);
+
+            VariabiliGlobali.getInstance().setConfigurazione(sc);
+
+            String Ritorno = db.ScriveConfigurazione();
+            if (!Ritorno.isEmpty()) {
+                DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
+                        "ERRORE nel salvataggio della configurazione\n" + Ritorno,
+                        true,
+                        "looVF",
+                        false);
+            }
+        }
+
+        VariabiliGlobali.getInstance().getChkRandom().setChecked(sc.isRandom());
+        VariabiliGlobali.getInstance().getChkVisuaTutto().setChecked(sc.isVisuaTutto());
     }
 
     public String PrendeErroreDaException(Exception e) {
@@ -250,7 +303,7 @@ public class Utility {
                 NomeFile += " data: " + VariabiliGlobali.getInstance().getVideoCaricato().getDataFile();
 
                 VariabiliGlobali.getInstance().getImgPlayVideo().setVisibility(LinearLayout.VISIBLE);
-                VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.GONE);
+                VariabiliGlobali.getInstance().getLaySettingsPanel().setVisibility(LinearLayout.GONE);
                 VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.GONE);
             }
 
@@ -275,7 +328,7 @@ public class Utility {
                     NomeFile += " data: " + VariabiliGlobali.getInstance().getImmagineCaricata().getDataFile();
 
                     VariabiliGlobali.getInstance().getImgPlayVideo().setVisibility(LinearLayout.GONE);
-                    VariabiliGlobali.getInstance().getLaySettings().setVisibility(LinearLayout.GONE);
+                    VariabiliGlobali.getInstance().getLaySettingsPanel().setVisibility(LinearLayout.GONE);
                     VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.VISIBLE);
                 }
 
@@ -482,8 +535,9 @@ public class Utility {
                 VariabiliGlobali.getInstance().setImmagineCaricata(sf);
 
                 String NomeImmagine = sf.getNomeFile().replace("\\", "/");
-                int Categoria = sf.getCategoria() - 1;
-                String sCategoria = VariabiliGlobali.getInstance().getCategorieImmagini().get(Categoria);
+                int Categoria = sf.getCategoria();
+                StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaID("1", Categoria);
+                String sCategoria = sc.getNomeCategoria();
                 NomeImmagine = VariabiliGlobali.getInstance().getPercorsoURL() + "/" + sCategoria + "/" + NomeImmagine;
                 NomeImmagine = NomeImmagine.replace(" ", "%20");
 

@@ -10,13 +10,17 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
 import com.looigi.loovf.AdapterMultimedia;
 import com.looigi.loovf.DialogMessaggio;
 import com.looigi.loovf.R;
+import com.looigi.loovf.StrutturaCategorie;
 import com.looigi.loovf.StrutturaFiles;
 import com.looigi.loovf.Utility;
 import com.looigi.loovf.VariabiliGlobali;
@@ -56,6 +60,31 @@ public class wsRitorno {
                     Utility.getInstance().PrendeUltimoMultimedia(true);
 
                     Utility.getInstance().riempieSpinner();
+
+                    // Crea il listner per il click sullo spinner
+                    VariabiliGlobali.getInstance().getsItems().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            String item = parent.getItemAtPosition(position).toString();
+
+                            if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
+                                VariabiliGlobali.getInstance().setCategoriaSceltaVideo(item);
+
+                                StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaNome("2", item);
+                                VariabiliGlobali.getInstance().getConfigurazione().setUltimaCategoriaVideo(sc);
+                            } else {
+                                VariabiliGlobali.getInstance().setCategoriaSceltaImmagine(item);
+
+                                StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaNome("1", item);
+                                VariabiliGlobali.getInstance().getConfigurazione().setUltimaCategoriaImmagini(sc);
+                            }
+
+                            db_dati db = new db_dati();
+                            db.ScriveConfigurazione();
+                        }
+                        public void onNothingSelected(AdapterView<?> parent) {
+                        }
+                    });
+                    // Crea il listner per il click sullo spinner
 
                     VariabiliGlobali.getInstance().setCaricataPagina(true);
                 }
@@ -108,6 +137,27 @@ public class wsRitorno {
         }
     }
 
+    public void RitornaPermessi(final String Ritorno) {
+        if (Ritorno.toUpperCase().contains("ERROR:")) {
+            DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
+                    Ritorno,
+                    true,
+                    "looVF",
+                    false);
+        } else {
+            Utility.getInstance().CaricaConfigurazione();
+
+            if (Ritorno.equals("S")) {
+                VariabiliGlobali.getInstance().setAmministratore(true);
+                VariabiliGlobali.getInstance().getChkVisuaTutto().setVisibility(LinearLayout.VISIBLE);
+            } else {
+                VariabiliGlobali.getInstance().setAmministratore(false);
+                VariabiliGlobali.getInstance().getChkVisuaTutto().setChecked(false);
+                VariabiliGlobali.getInstance().getChkVisuaTutto().setVisibility(LinearLayout.GONE);
+            }
+        }
+    }
+
     public void EffettuaRicerca(final String Ritorno) {
         if (Ritorno.toUpperCase().contains("ERROR:")) {
             DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
@@ -151,25 +201,33 @@ public class wsRitorno {
                     hSelezionaRiga.removeCallbacks(runRiga);
                     runRiga = null;
 
-                    List<String> cv = new ArrayList();
-                    List<String> ci = new ArrayList();
+                    List<StrutturaCategorie> cv = new ArrayList();
+                    List<StrutturaCategorie> ci = new ArrayList();
 
                     String[] c = Ritorno.split("§");
                     for (String cc: c) {
+                        StrutturaCategorie sc = new StrutturaCategorie();
+                        boolean protetta = false;
+
                         String ccc[] = cc.split(";");
 
+                        sc.setIdCategoria(Integer.parseInt(ccc[0]));
+                        sc.setNomeCategoria(ccc[2].replace("***PV***", ";"));
+                        sc.setPercorsoCategoria("");
+                        if (ccc[3].equals("S")) {
+                            protetta = true;
+                        }
+                        sc.setProtetta(protetta);
+
                         if (ccc[1].equals("1")) {
-                            ci.add(ccc[2].replace("***PV***",";"));
+                            ci.add(sc);
                         } else {
-                            cv.add(ccc[2].replace("***PV***",";"));
+                            cv.add(sc);
                         }
                     }
 
                     VariabiliGlobali.getInstance().setCategorieImmagini(ci);
                     VariabiliGlobali.getInstance().setCategorieVideo(cv);
-
-                    // DBRemoto dbr = new DBRemoto();
-                    // dbr.RitornaQuantiFilesPhoto();
                 }
             }, 50);
         }

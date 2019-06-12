@@ -18,7 +18,8 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
             String vidAddress = sf.getNomeFile().replace("\\", "/");
             int Categoria = sf.getCategoria()-1;
-            String sCategoria = VariabiliGlobali.getInstance().getCategorieVideo().get(Categoria);
+            StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaID("2", Categoria);
+            String sCategoria = sc.getNomeCategoria();
             vidAddress = VariabiliGlobali.getInstance().getPercorsoURL() + "/" + sCategoria + "/" + vidAddress;
 
             Intent intent = new Intent(android.content.Intent.ACTION_VIEW);

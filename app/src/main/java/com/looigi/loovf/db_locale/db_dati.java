@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.looigi.loovf.StrutturaCategorie;
 import com.looigi.loovf.StrutturaConfig;
 import com.looigi.loovf.StrutturaFiles;
 import com.looigi.loovf.Utility;
@@ -60,7 +61,7 @@ public class db_dati {
                 // myDB.execSQL("CREATE INDEX IF NOT EXISTS Categorie_Index ON Dati(Tipologia, idCategoria);");
                 myDB.execSQL("CREATE TABLE IF NOT EXISTS "
                         + "Configurazione "
-                        + " (Random INT(1), UltimaCategoriaImmagini VARCHAR, UltimaCategoriaVideo VARCHAR);");
+                        + " (Random INT(1), UltimaCategoriaImmagini VARCHAR, UltimaCategoriaVideo VARCHAR, VisuaTutto INT(1));");
                 myDB.execSQL("CREATE TABLE IF NOT EXISTS "
                         + "Griglia "
                         + " (idTipologia INT(1), idCategoria INT(2), Progressivo INT(2), Titolo VARCHAR, "+
@@ -205,8 +206,29 @@ public class db_dati {
                     random = false;
                 }
                 Ritorno.setRandom(random);
-                Ritorno.setUltimaCategoriaImmagini(c.getString(1));
-                Ritorno.setUltimaCategoriaVideo(c.getString(2));
+                StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaNome("1", c.getString(1));
+                if (sc.getNomeCategoria() == null) {
+                    sc = new StrutturaCategorie();
+                    sc.setNomeCategoria("Tutto");
+                    sc.setIdCategoria(999);
+                    sc.setProtetta(false);
+                    sc.setPercorsoCategoria("");
+                }
+                Ritorno.setUltimaCategoriaImmagini(sc);
+                sc = VariabiliGlobali.getInstance().RitornaCategoriaDaNome("2", c.getString(2));
+                if (sc.getNomeCategoria() == null) {
+                    sc = new StrutturaCategorie();
+                    sc.setNomeCategoria("Tutto");
+                    sc.setIdCategoria(999);
+                    sc.setProtetta(false);
+                    sc.setPercorsoCategoria("");
+                }
+                Ritorno.setUltimaCategoriaVideo(sc);
+                boolean visuaTutto = true;
+                if (c.getInt(3) == 0) {
+                    visuaTutto = false;
+                }
+                Ritorno.setVisuaTutto(visuaTutto);
             } else {
                 Ritorno = null;
             }
@@ -225,14 +247,20 @@ public class db_dati {
                 random = 1;
             }
 
+            int visuaTutto = 0;
+            if (VariabiliGlobali.getInstance().getConfigurazione().isVisuaTutto()) {
+                visuaTutto = 1;
+            }
+
             try {
                 myDB.execSQL("Delete From Configurazione");
                 myDB.execSQL("INSERT INTO"
                         + " Configurazione"
-                        + " (Random, UltimaCategoriaImmagini, UltimaCategoriaVideo)"
+                        + " (Random, UltimaCategoriaImmagini, UltimaCategoriaVideo, VisuaTutto)"
                         + " VALUES (" + Integer.toString(random) + ", "
                         + "'" + VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini() + "', "
-                        + "'" + VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo() + "' "
+                        + "'" + VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo() + "', "
+                        + " " + Integer.toString(visuaTutto) + " "
                         + ");");
             } catch (SQLException e) {
                 Ok = Utility.getInstance().PrendeErroreDaException(e);

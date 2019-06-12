@@ -50,8 +50,8 @@ public class VariabiliGlobali {
     private StrutturaFiles VideoCaricato;
     private LinearLayout laySettingsPanel;
     private boolean LinguettaAperta = true;
-    private String CategoriaSceltaVideo="Tutto";
-    private String CategoriaSceltaImmagine="Tutto";
+    private String CategoriaSceltaVideo="";
+    private String CategoriaSceltaImmagine="";
     private ImageView imgPlayVideo;
     private boolean CaricataPagina=false;
     private Spinner sItems;

@@ -1,5 +1,6 @@
 package com.looigi.loovf.Soap;
 
+import com.looigi.loovf.DialogMessaggio;
 import com.looigi.loovf.StrutturaCategorie;
 import com.looigi.loovf.VariabiliGlobali;
 
@@ -132,16 +133,24 @@ public class DBRemoto {
 		StrutturaCategorie sc = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini();
 		Categoria = sc.getNomeCategoria();
 
-		String Urletto="RitornaImmaginiPerGriglia?QuanteImm=15&Categoria=" + Categoria;
+		if (!Categoria.isEmpty()) {
+			String Urletto = "RitornaImmaginiPerGriglia?QuanteImm=15&Categoria=" + Categoria;
 
-		GestioneWEBServiceSOAP g = new GestioneWEBServiceSOAP(
-				RadiceWS + ws + Urletto,
-				"RitornaImmaginiPerGriglia",
-				NS,
-				SA,
-				25000,
-				true);
-		g.Esegue();
+			GestioneWEBServiceSOAP g = new GestioneWEBServiceSOAP(
+					RadiceWS + ws + Urletto,
+					"RitornaImmaginiPerGriglia",
+					NS,
+					SA,
+					25000,
+					true);
+			g.Esegue();
+		} else {
+			DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
+					"Selezionare una categoria",
+					true,
+					"looVF",
+					false);
+		}
 	}
 
 	public void RitornaSuccessivoMultimedia() {
@@ -163,16 +172,24 @@ public class DBRemoto {
 				// VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini().getNomeCategoria();
 			}
 		}
-		String Urletto="RitornaSuccessivoMultimedia?idTipologia=" + tip + "&Categoria=" + Categoria;
+		if (!Categoria.isEmpty()) {
+			String Urletto = "RitornaSuccessivoMultimedia?idTipologia=" + tip + "&Categoria=" + Categoria;
 
-		GestioneWEBServiceSOAP g = new GestioneWEBServiceSOAP(
-				RadiceWS + ws + Urletto,
-				"RitornaSuccessivoMultimedia",
-				NS,
-				SA,
-				25000,
-				true);
-		g.Esegue();
+			GestioneWEBServiceSOAP g = new GestioneWEBServiceSOAP(
+					RadiceWS + ws + Urletto,
+					"RitornaSuccessivoMultimedia",
+					NS,
+					SA,
+					25000,
+					true);
+			g.Esegue();
+		} else {
+			DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
+					"Selezionare una categoria",
+					true,
+					"looVF",
+					false);
+		}
 	}
 
 	public void RitornaQuantiFilesVideo() {

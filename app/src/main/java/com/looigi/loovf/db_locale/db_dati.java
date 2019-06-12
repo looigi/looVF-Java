@@ -258,8 +258,8 @@ public class db_dati {
                         + " Configurazione"
                         + " (Random, UltimaCategoriaImmagini, UltimaCategoriaVideo, VisuaTutto)"
                         + " VALUES (" + Integer.toString(random) + ", "
-                        + "'" + VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini() + "', "
-                        + "'" + VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo() + "', "
+                        + "'" + VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini().getNomeCategoria() + "', "
+                        + "'" + VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo().getNomeCategoria() + "', "
                         + " " + Integer.toString(visuaTutto) + " "
                         + ");");
             } catch (SQLException e) {

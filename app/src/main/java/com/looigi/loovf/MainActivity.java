@@ -35,10 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Drawable icona_nessuna = ContextCompat.getDrawable(VariabiliGlobali.getInstance().getContext(), R.drawable.about);
-        VariabiliGlobali.getInstance().getImgPlayVideo().setImageDrawable(icona_nessuna);
-
         ExitActivity.exitApplicationAndRemoveFromRecent(MainActivity.this);
+
         super.onBackPressed();
     }
 
@@ -161,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
         VariabiliGlobali.getInstance().setChkVisuaTutto((CheckBox) findViewById(R.id.chkVisualizzaTutto));
         VariabiliGlobali.getInstance().getChkVisuaTutto().setChecked(false);
         VariabiliGlobali.getInstance().getChkVisuaTutto().setVisibility(LinearLayout.GONE);
+
         VariabiliGlobali.getInstance().getChkVisuaTutto().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliGlobali.getInstance().getConfigurazione().setVisuaTutto(VariabiliGlobali.getInstance().getChkVisuaTutto().isChecked());

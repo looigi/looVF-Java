@@ -113,6 +113,8 @@ public class Utility {
 
     public void riempieSpinner() {
         List<String> spinnerArray = new ArrayList<>();
+        spinnerArray.add("");
+
         if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO") ||
                 VariabiliGlobali.getInstance().getModalita().equals("GRIGLIA")) {
             for (StrutturaCategorie s: VariabiliGlobali.getInstance().getCategorieImmagini()) {
@@ -152,6 +154,7 @@ public class Utility {
         } else {
             Ok = false;
         }
+
         if (Ok) {
             // StrutturaCategorie sc = new StrutturaCategorie();
 
@@ -226,6 +229,7 @@ public class Utility {
     public void CaricaConfigurazione() {
         db_dati db = new db_dati();
         StrutturaConfig sc = db.CaricaConfigurazione();
+
         if (sc != null) {
             VariabiliGlobali.getInstance().setConfigurazione(sc);
         } else {
@@ -239,8 +243,12 @@ public class Utility {
             sc1.setPercorsoCategoria("");
             sc1.setProtetta(false);
 
-            sc.setUltimaCategoriaImmagini(sc1);
-            sc.setUltimaCategoriaVideo(sc1);
+            if (sc.getUltimaCategoriaImmagini()==null || sc.getUltimaCategoriaImmagini().getNomeCategoria().isEmpty()) {
+                sc.setUltimaCategoriaImmagini(sc1);
+            }
+            if (sc.getUltimaCategoriaVideo()==null || sc.getUltimaCategoriaVideo().getNomeCategoria().isEmpty()) {
+                sc.setUltimaCategoriaVideo(sc1);
+            }
 
             VariabiliGlobali.getInstance().setConfigurazione(sc);
 

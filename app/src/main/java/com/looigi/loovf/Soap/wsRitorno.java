@@ -59,6 +59,7 @@ public class wsRitorno {
                     Utility.getInstance().ScriveInformazioni();
                     Utility.getInstance().PrendeUltimoMultimedia(true);
 
+
                     Utility.getInstance().riempieSpinner();
 
                     // Crea il listner per il click sullo spinner
@@ -66,20 +67,22 @@ public class wsRitorno {
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             String item = parent.getItemAtPosition(position).toString();
 
-                            if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
-                                VariabiliGlobali.getInstance().setCategoriaSceltaVideo(item);
+                            if (!item.isEmpty()) {
+                                if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
+                                    VariabiliGlobali.getInstance().setCategoriaSceltaVideo(item);
 
-                                StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaNome("2", item);
-                                VariabiliGlobali.getInstance().getConfigurazione().setUltimaCategoriaVideo(sc);
-                            } else {
-                                VariabiliGlobali.getInstance().setCategoriaSceltaImmagine(item);
+                                    StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaNome("2", item);
+                                    VariabiliGlobali.getInstance().getConfigurazione().setUltimaCategoriaVideo(sc);
+                                } else {
+                                    VariabiliGlobali.getInstance().setCategoriaSceltaImmagine(item);
 
-                                StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaNome("1", item);
-                                VariabiliGlobali.getInstance().getConfigurazione().setUltimaCategoriaImmagini(sc);
+                                    StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaNome("1", item);
+                                    VariabiliGlobali.getInstance().getConfigurazione().setUltimaCategoriaImmagini(sc);
+                                }
+
+                                db_dati db = new db_dati();
+                                db.ScriveConfigurazione();
                             }
-
-                            db_dati db = new db_dati();
-                            db.ScriveConfigurazione();
                         }
                         public void onNothingSelected(AdapterView<?> parent) {
                         }
@@ -145,13 +148,12 @@ public class wsRitorno {
                     "looVF",
                     false);
         } else {
-            Utility.getInstance().CaricaConfigurazione();
-
             if (Ritorno.equals("S")) {
                 VariabiliGlobali.getInstance().setAmministratore(true);
                 VariabiliGlobali.getInstance().getChkVisuaTutto().setVisibility(LinearLayout.VISIBLE);
             } else {
                 VariabiliGlobali.getInstance().setAmministratore(false);
+                VariabiliGlobali.getInstance().getConfigurazione().setVisuaTutto(false);
                 VariabiliGlobali.getInstance().getChkVisuaTutto().setChecked(false);
                 VariabiliGlobali.getInstance().getChkVisuaTutto().setVisibility(LinearLayout.GONE);
             }
@@ -228,6 +230,8 @@ public class wsRitorno {
 
                     VariabiliGlobali.getInstance().setCategorieImmagini(ci);
                     VariabiliGlobali.getInstance().setCategorieVideo(cv);
+
+                    Utility.getInstance().CaricaConfigurazione();
                 }
             }, 50);
         }

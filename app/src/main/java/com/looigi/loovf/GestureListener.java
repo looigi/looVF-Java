@@ -17,7 +17,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
             StrutturaFiles sf = VariabiliGlobali.getInstance().getVideoCaricato();
 
             String vidAddress = sf.getNomeFile().replace("\\", "/");
-            int Categoria = sf.getCategoria()-1;
+            int Categoria = sf.getCategoria();
             StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaID("2", Categoria);
             String sCategoria = sc.getNomeCategoria();
             vidAddress = VariabiliGlobali.getInstance().getPercorsoURL() + "/" + sCategoria + "/" + vidAddress;

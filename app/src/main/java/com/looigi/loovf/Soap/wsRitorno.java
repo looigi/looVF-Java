@@ -69,12 +69,13 @@ public class wsRitorno {
 
                             if (!item.isEmpty()) {
                                 if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
-                                    VariabiliGlobali.getInstance().setCategoriaSceltaVideo(item);
-
                                     StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaNome("2", item);
+                                    // VariabiliGlobali.getInstance().getConfigurazione().setUltimaCategoriaVideo(sc);
+
+                                    // StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaNome("2", item);
                                     VariabiliGlobali.getInstance().getConfigurazione().setUltimaCategoriaVideo(sc);
                                 } else {
-                                    VariabiliGlobali.getInstance().setCategoriaSceltaImmagine(item);
+                                    // VariabiliGlobali.getInstance().getConfigurazione().setUltimaCategoriaImmagini(item);
 
                                     StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaNome("1", item);
                                     VariabiliGlobali.getInstance().getConfigurazione().setUltimaCategoriaImmagini(sc);

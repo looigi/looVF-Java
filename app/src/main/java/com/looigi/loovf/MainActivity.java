@@ -410,7 +410,7 @@ public class MainActivity extends AppCompatActivity {
                     Utility.getInstance().riempieSpinner();
 
                     // String idCategoria = Integer.toString(Utility.getInstance().TornaIdCategoria(VariabiliGlobali.getInstance().getCategoriaSceltaImmagine()));
-                    StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaNome("1", VariabiliGlobali.getInstance().getCategoriaSceltaImmagine());
+                    StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaNome("1", VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini().getNomeCategoria());
                     String Ritorno = db.RitornaRigheGriglia("1", Integer.toString(sc.getIdCategoria()));
 
                     if (Ritorno.isEmpty()) {

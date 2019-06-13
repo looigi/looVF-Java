@@ -60,14 +60,17 @@ public class DBRemoto {
 
 	public void RitornaMultimediaDaID(String id) {
     	String tip = "";
+		StrutturaCategorie sc = new StrutturaCategorie();
     	if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
     		tip = "2";
-		} else {
+ 			sc= VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo();
+    	} else {
 			if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
 				tip = "1";
+				sc= VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini();
 			}
 		}
-		String Urletto="RitornaMultimediaDaId?Tipologia=" + tip + "&idMultimedia=" + id;
+		String Urletto="RitornaMultimediaDaId?idTipologia=" + tip + "&idCategoria=" + Integer.toString(sc.getIdCategoria()) + "&idMultimedia=" + id;
 
 		GestioneWEBServiceSOAP g = new GestioneWEBServiceSOAP(
 				RadiceWS + ws + Urletto,
@@ -164,11 +167,11 @@ public class DBRemoto {
 		}
 		String Categoria = "";
 		if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
-			Categoria = VariabiliGlobali.getInstance().getCategoriaSceltaVideo();
+			Categoria = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo().getNomeCategoria();
 			// VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo().getNomeCategoria();
 		} else {
 			if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
-				Categoria = VariabiliGlobali.getInstance().getCategoriaSceltaImmagine();
+				Categoria = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini().getNomeCategoria();
 				// VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini().getNomeCategoria();
 			}
 		}

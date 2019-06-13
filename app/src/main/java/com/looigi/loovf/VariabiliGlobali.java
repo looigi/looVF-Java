@@ -50,8 +50,8 @@ public class VariabiliGlobali {
     private StrutturaFiles VideoCaricato;
     private LinearLayout laySettingsPanel;
     private boolean LinguettaAperta = true;
-    private String CategoriaSceltaVideo="";
-    private String CategoriaSceltaImmagine="";
+    // private String CategoriaSceltaVideo="";
+    // private String CategoriaSceltaImmagine="";
     private ImageView imgPlayVideo;
     private boolean CaricataPagina=false;
     private Spinner sItems;
@@ -276,21 +276,21 @@ public class VariabiliGlobali {
         this.imgPlayVideo = imgPlayVideo;
     }
 
-    public String getCategoriaSceltaVideo() {
-        return CategoriaSceltaVideo;
-    }
-//
-    public void setCategoriaSceltaVideo(String categoriaScelta) {
-        CategoriaSceltaVideo = categoriaScelta;
-    }
-//
-    public String getCategoriaSceltaImmagine() {
-        return CategoriaSceltaImmagine;
-    }
-//
-    public void setCategoriaSceltaImmagine(String categoriaSceltaImmagine) {
-        CategoriaSceltaImmagine = categoriaSceltaImmagine;
-    }
+    // public String getCategoriaSceltaVideo() {
+    //     return CategoriaSceltaVideo;
+    // }
+////
+    // public void setCategoriaSceltaVideo(String categoriaScelta) {
+    //     CategoriaSceltaVideo = categoriaScelta;
+    // }
+////
+    // public String getCategoriaSceltaImmagine() {
+    //     return CategoriaSceltaImmagine;
+    // }
+////
+    // public void setCategoriaSceltaImmagine(String categoriaSceltaImmagine) {
+    //     CategoriaSceltaImmagine = categoriaSceltaImmagine;
+    // }
 
     public boolean isLinguettaAperta() {
         return LinguettaAperta;

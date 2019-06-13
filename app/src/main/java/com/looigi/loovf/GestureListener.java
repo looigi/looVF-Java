@@ -22,6 +22,8 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
             String sCategoria = sc.getNomeCategoria();
             vidAddress = VariabiliGlobali.getInstance().getPercorsoURL() + "/" + sCategoria + "/" + vidAddress;
 
+            vidAddress = vidAddress.replace(" ", "%20");
+
             Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
             Uri data = Uri.parse(vidAddress);
             String estensione = vidAddress.substring(vidAddress.length()-3,vidAddress.length());

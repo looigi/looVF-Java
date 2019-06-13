@@ -484,6 +484,7 @@ public class Utility {
             // ImageView vidView = VariabiliGlobali.getInstance().getImgPlayVideo();
 
             String ImmVideo = VariabiliGlobali.getInstance().getPercorsoURL() + "/Thumbs/" + Rit[0].replace("\\", "/");
+            ImmVideo = ImmVideo.replace(" ","%20");
 
             Picasso.get().load(ImmVideo).placeholder( R.drawable.progress_animation ).into(VariabiliGlobali.getInstance().getImgPlayVideo());
 

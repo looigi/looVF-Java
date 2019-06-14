@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
 
         VariabiliGlobali.getInstance().setChkVisuaTutto((CheckBox) findViewById(R.id.chkVisualizzaTutto));
         VariabiliGlobali.getInstance().getChkVisuaTutto().setChecked(false);
-        VariabiliGlobali.getInstance().getChkVisuaTutto().setVisibility(LinearLayout.GONE);
+        // VariabiliGlobali.getInstance().getChkVisuaTutto().setVisibility(LinearLayout.GONE);
 
         VariabiliGlobali.getInstance().getChkVisuaTutto().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -171,6 +171,26 @@ public class MainActivity extends AppCompatActivity {
                             "looVF",
                             false);
                 } else {
+                    if (!VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
+                        VariabiliGlobali.getInstance().setModalita("PHOTO");
+
+                        VariabiliGlobali.getInstance().getImgPlayVideo().setVisibility(LinearLayout.GONE);
+                        VariabiliGlobali.getInstance().getLaySettingsPanel().setVisibility(LinearLayout.GONE);
+                        VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.VISIBLE);
+                        VariabiliGlobali.getInstance().getLayGriglia().setVisibility(LinearLayout.GONE);
+                        VariabiliGlobali.getInstance().getImgRefresh().setVisibility(LinearLayout.GONE);
+                        VariabiliGlobali.getInstance().getLayScroller().setVisibility(LinearLayout.VISIBLE);
+
+                        // Utility.getInstance().riempieSpinner();
+
+                        if (VariabiliGlobali.getInstance().getUltimoRitornoImmagine().isEmpty()) {
+                            Utility.getInstance().PrendeUltimoMultimedia(false);
+                        } else {
+                            Utility.getInstance().ScriveInformazioni();
+                            Utility.getInstance().VisualizzaMultimedia(VariabiliGlobali.getInstance().getUltimoRitornoImmagine());
+                        }
+                    }
+
                     Utility.getInstance().riempieSpinner();
                 }
             }
@@ -269,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ImageView mImageScegliCategoria = findViewById(R.id.imgCambiaCategoria);
+        /* ImageView mImageScegliCategoria = findViewById(R.id.imgCambiaCategoria);
         mImageScegliCategoria.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String item = VariabiliGlobali.getInstance().getsItems().getSelectedItem().toString();
@@ -307,7 +327,7 @@ public class MainActivity extends AppCompatActivity {
                     Utility.getInstance().AvanzaMultimedia();
                 }
             }
-        });
+        }); */
 
         if (!VariabiliGlobali.getInstance().isCaricataPagina()) {
             VariabiliGlobali.getInstance().setModalita("PHOTO");
@@ -453,8 +473,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        LinearLayout layVideo = findViewById(R.id.layVideo);
-        layVideo.setOnClickListener(new View.OnClickListener() {
+        VariabiliGlobali.getInstance().setLayTastoVideo((LinearLayout) findViewById(R.id.layVideo));
+        VariabiliGlobali.getInstance().getLayTastoVideo().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliGlobali.getInstance().getLayRicerca().setVisibility(LinearLayout.GONE);
                 VariabiliGlobali.getInstance().getImgCondividi().setVisibility(LinearLayout.VISIBLE);

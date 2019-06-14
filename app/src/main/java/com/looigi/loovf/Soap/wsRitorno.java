@@ -83,6 +83,8 @@ public class wsRitorno {
 
                                 db_dati db = new db_dati();
                                 db.ScriveConfigurazione();
+
+                                Utility.getInstance().AccendeSpegneOggettiInBaseAiPermessi();
                             }
                         }
                         public void onNothingSelected(AdapterView<?> parent) {
@@ -151,12 +153,12 @@ public class wsRitorno {
         } else {
             if (Ritorno.equals("S")) {
                 VariabiliGlobali.getInstance().setAmministratore(true);
-                VariabiliGlobali.getInstance().getChkVisuaTutto().setVisibility(LinearLayout.VISIBLE);
+                // VariabiliGlobali.getInstance().getChkVisuaTutto().setVisibility(LinearLayout.VISIBLE);
             } else {
                 VariabiliGlobali.getInstance().setAmministratore(false);
                 VariabiliGlobali.getInstance().getConfigurazione().setVisuaTutto(false);
                 VariabiliGlobali.getInstance().getChkVisuaTutto().setChecked(false);
-                VariabiliGlobali.getInstance().getChkVisuaTutto().setVisibility(LinearLayout.GONE);
+                // VariabiliGlobali.getInstance().getChkVisuaTutto().setVisibility(LinearLayout.GONE);
             }
         }
     }

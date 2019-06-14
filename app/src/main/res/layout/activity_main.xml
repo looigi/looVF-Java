@@ -176,7 +176,7 @@
             <LinearLayout
                 android:id="@+id/layCategorie"
                 android:orientation="horizontal"
-                android:weightSum="9"
+                android:weightSum="8"
                 android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
                 android:gravity="center_vertical"
                 android:padding="3dp"
@@ -197,12 +197,12 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="5" />
 
-                <ImageView
+                <!-- <ImageView
                     android:id="@+id/imgCambiaCategoria"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:background="@drawable/seleziona"
-                    android:layout_height="45dp" />
+                    android:layout_height="45dp" /> -->
 
                 <ImageView
                     android:id="@+id/imgRicercaFuori"

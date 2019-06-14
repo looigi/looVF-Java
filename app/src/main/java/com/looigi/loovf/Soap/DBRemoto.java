@@ -70,7 +70,9 @@ public class DBRemoto {
 				sc= VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini();
 			}
 		}
-		String Urletto="RitornaMultimediaDaId?idTipologia=" + tip + "&idCategoria=" + Integer.toString(sc.getIdCategoria()) + "&idMultimedia=" + id;
+		String Urletto="RitornaMultimediaDaId?idTipologia=" + tip +
+				"&idCategoria=" + Integer.toString(sc.getIdCategoria()) +
+				"&idMultimedia=" + id;
 
 		GestioneWEBServiceSOAP g = new GestioneWEBServiceSOAP(
 				RadiceWS + ws + Urletto,

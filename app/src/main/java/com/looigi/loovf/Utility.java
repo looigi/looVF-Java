@@ -585,6 +585,20 @@ public class Utility {
         }
     }
 
+    public void AccendeSpegneOggettiInBaseAiPermessi() {
+        if (VariabiliGlobali.getInstance().isAmministratore()) {
+            VariabiliGlobali.getInstance().getChkVisuaTutto().setVisibility(LinearLayout.VISIBLE);
+            if (VariabiliGlobali.getInstance().getConfigurazione().isVisuaTutto()) {
+                VariabiliGlobali.getInstance().getLayTastoVideo().setVisibility(LinearLayout.VISIBLE);
+            } else {
+                VariabiliGlobali.getInstance().getLayTastoVideo().setVisibility(LinearLayout.GONE);
+            }
+        } else{
+            VariabiliGlobali.getInstance().getChkVisuaTutto().setVisibility(LinearLayout.GONE);
+            VariabiliGlobali.getInstance().getLayTastoVideo().setVisibility(LinearLayout.GONE);
+        }
+    }
+
     /* public void LoadVideo(final VideoView mVideoView, String videoUrl, String Titolo, String Categoria, long Dime) {
         // final ProgressDialog pDialog = new ProgressDialog(VariabiliGlobali.getInstance().getContext());
 

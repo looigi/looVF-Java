@@ -73,6 +73,7 @@ public class VariabiliGlobali {
     private String IMEI_IMSI;
     private boolean Amministratore=false;
     private CheckBox chkVisuaTutto;
+    private LinearLayout layTastoVideo;
     // private int idCategoriaSceltaImmagini;
     // private int idCategoriaSceltaVideo;
 
@@ -90,6 +91,14 @@ public class VariabiliGlobali {
 
     public void setFragmentActivityPrincipale(Activity fragmentActivityPrincipale) {
         FragmentActivityPrincipale = fragmentActivityPrincipale;
+    }
+
+    public LinearLayout getLayTastoVideo() {
+        return layTastoVideo;
+    }
+
+    public void setLayTastoVideo(LinearLayout layTastoVideo) {
+        this.layTastoVideo = layTastoVideo;
     }
 
     public CheckBox getChkVisuaTutto() {

@@ -35,7 +35,34 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        // boolean amm = VariabiliGlobali.getInstance().isAmministratore();
+        VariabiliGlobali.getInstance().setAmministratore(false);
+        VariabiliGlobali.getInstance().getConfigurazione().setVisuaTutto(false);
+        Utility.getInstance().AccendeSpegneOggettiInBaseAiPermessi();
+
+        VariabiliGlobali.getInstance().setModalita("PHOTO");
+
+        VariabiliGlobali.getInstance().getImgPlayVideo().setVisibility(LinearLayout.GONE);
+        VariabiliGlobali.getInstance().getLaySettingsPanel().setVisibility(LinearLayout.GONE);
+        VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.VISIBLE);
+        VariabiliGlobali.getInstance().getLayGriglia().setVisibility(LinearLayout.GONE);
+        VariabiliGlobali.getInstance().getImgRefresh().setVisibility(LinearLayout.GONE);
+        VariabiliGlobali.getInstance().getLayScroller().setVisibility(LinearLayout.VISIBLE);
+
+        if (VariabiliGlobali.getInstance().getUltimoRitornoImmagine().isEmpty()) {
+            Utility.getInstance().PrendeUltimoMultimedia(false);
+        } else {
+            Utility.getInstance().ScriveInformazioni();
+            Utility.getInstance().VisualizzaMultimedia(VariabiliGlobali.getInstance().getUltimoRitornoImmagine());
+        }
+
+        Utility.getInstance().riempieSpinner();
+        db_dati db = new db_dati();
+        db.ScriveConfigurazione();
+        // VariabiliGlobali.getInstance().setAmministratore(amm);
+
         ExitActivity.exitApplicationAndRemoveFromRecent(MainActivity.this);
+        finish();
 
         super.onBackPressed();
     }

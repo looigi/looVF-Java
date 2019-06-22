@@ -229,9 +229,13 @@ public class MainActivity extends AppCompatActivity {
                 if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
                     StrutturaFiles nome = VariabiliGlobali.getInstance().getImmagineCaricata();
                     int idCategoria = nome.getCategoria();
-                    StrutturaCategorie Categoria = VariabiliGlobali.getInstance().getCategorieImmagini().get(idCategoria);
+                    // StrutturaCategorie Categoria = VariabiliGlobali.getInstance().getCategorieImmagini().get(idCategoria);
+
+                    StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaID("1", idCategoria);
+                    String Categoria = sc.getNomeCategoria();
+
                     nome.setNomeFile(nome.getNomeFile().replace("\\", "/"));
-                    nome.setNomeFile(VariabiliGlobali.getInstance().getPercorsoURL() + "/" + Categoria.getNomeCategoria() + "/" + nome.getNomeFile());
+                    nome.setNomeFile(VariabiliGlobali.getInstance().getPercorsoURL() + "/" + Categoria + "/" + nome.getNomeFile());
                     // Uri fileUri = Uri.parse(nome.getNomeFile());
 
                     new DownloadFileFromURL("1").execute(nome.getNomeFile());

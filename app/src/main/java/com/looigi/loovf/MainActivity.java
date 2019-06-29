@@ -2,10 +2,12 @@ package com.looigi.loovf;
 
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.PowerManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private Handler hSelezionaRiga;
     private LinearLayout layContenitore;
     private db_dati db;
+    protected PowerManager.WakeLock mWakeLock;
 
     @Override
     public void onBackPressed() {
@@ -77,6 +80,10 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         setContentView(R.layout.activity_main);
+
+        PowerManager pm = (PowerManager) getSystemService(this.POWER_SERVICE);
+        this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "myapp:mywakelocktag");
+        this.mWakeLock.acquire();
 
         Permessi p=new Permessi();
         p.ControllaPermessi(this);

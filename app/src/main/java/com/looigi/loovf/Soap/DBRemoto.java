@@ -139,7 +139,7 @@ public class DBRemoto {
 		Categoria = sc.getNomeCategoria();
 
 		if (!Categoria.isEmpty()) {
-			String Urletto = "RitornaImmaginiPerGriglia?QuanteImm=15&Categoria=" + Categoria;
+			String Urletto = "RitornaImmaginiPerGriglia?QuanteImm=50&Categoria=" + Categoria;
 
 			GestioneWEBServiceSOAP g = new GestioneWEBServiceSOAP(
 					RadiceWS + ws + Urletto,

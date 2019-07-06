@@ -106,7 +106,8 @@ public class DBRemoto {
 				tip = "1";
 			}
 		}
-		String Urletto="EffettuaRicerca?idTipologia=" + tip + "&Categoria=" +Categoria + "&Ricerca=" + Ricerca;
+		String Urletto="EffettuaRicerca?idTipologia=" + tip +
+				"&Categoria=" +Categoria + "&Ricerca=" + Ricerca + "&Quante=100";
 
 		GestioneWEBServiceSOAP g = new GestioneWEBServiceSOAP(
 				RadiceWS + ws + Urletto,

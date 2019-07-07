@@ -7,6 +7,7 @@ import android.os.Looper;
 
 
 import com.looigi.loovf.DialogMessaggio;
+import com.looigi.loovf.GestioneFiles;
 import com.looigi.loovf.Utility;
 import com.looigi.loovf.VariabiliGlobali;
 
@@ -40,6 +41,8 @@ public class GestioneWEBServiceSOAP {
 		this.tOperazione = TipoOperazione;
 		this.ApriDialog = ApriDialog;
 		this.Urletto = urletto;
+
+		VariabiliGlobali.getInstance().setUltimaChiamata(urletto);
 
 		// this.QuantiTentativi = VariabiliStaticheGlobali.getInstance().getDatiGenerali().getConfigurazione().getQuantiTentativi();
 		// this.Tentativo = 0;
@@ -335,10 +338,15 @@ public class GestioneWEBServiceSOAP {
 					String Ritorno = result;
 
 					if (Ritorno.contains("ERROR:")) {
+						GestioneFiles.getInstance().ScriveLog(VariabiliGlobali.getInstance().getUltimaChiamata());
+						GestioneFiles.getInstance().ScriveLog(Ritorno);
+						GestioneFiles.getInstance().ScriveLog("----------------------------------------");
+
 						messErrore = Ritorno;
 						Errore = true;
 					}
 
+					VariabiliGlobali.getInstance().setUltimaChiamata("");
 					ChiudeDialog();
 
 					wsRitorno rRit = new wsRitorno();

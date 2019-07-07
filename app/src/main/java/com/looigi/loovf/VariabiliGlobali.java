@@ -74,6 +74,7 @@ public class VariabiliGlobali {
     private boolean Amministratore=false;
     private CheckBox chkVisuaTutto;
     private LinearLayout layTastoVideo;
+    private String UltimaChiamata;
     // private int idCategoriaSceltaImmagini;
     // private int idCategoriaSceltaVideo;
 
@@ -83,6 +84,14 @@ public class VariabiliGlobali {
 
     public void setContext(Context context) {
         this.context = context;
+    }
+
+    public String getUltimaChiamata() {
+        return UltimaChiamata;
+    }
+
+    public void setUltimaChiamata(String ultimaChiamata) {
+        UltimaChiamata = ultimaChiamata;
     }
 
     public Activity getFragmentActivityPrincipale() {

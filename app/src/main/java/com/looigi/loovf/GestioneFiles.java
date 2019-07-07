@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class GestioneFiles {
@@ -70,6 +71,85 @@ public class GestioneFiles {
                 }
            //  }
         // }, 50);
+    }
+
+    private String PrendeOraAttuale() {
+        String Ritorno="";
+
+        Calendar Oggi = Calendar.getInstance();
+        int Ore=Oggi.get(Calendar.HOUR_OF_DAY);
+        int Minuti=Oggi.get(Calendar.MINUTE);
+        int Secondi=Oggi.get(Calendar.SECOND);
+        int MilliSecondi=Oggi.get(Calendar.MILLISECOND);
+        String sOre=Integer.toString(Ore).trim();
+        String sMinuti=Integer.toString(Minuti).trim();
+        String sSecondi=Integer.toString(Secondi).trim();
+        String sMilliSecondi=Integer.toString(MilliSecondi).trim();
+        if (sOre.length()==1) {
+            sOre="0"+sOre;
+        }
+        if (sMinuti.length()==1) {
+            sMinuti="0"+sMinuti;
+        }
+        if (sSecondi.length()==1) {
+            sSecondi="0"+sSecondi;
+        }
+        if (sMilliSecondi.length()==1) {
+            sMilliSecondi="0"+sMilliSecondi;
+        }
+        if (sMilliSecondi.length()==2) {
+            sMilliSecondi="0"+sMilliSecondi;
+        }
+        Ritorno=sOre+":"+sMinuti+":"+sSecondi+"."+sMilliSecondi;
+
+        return Ritorno;
+    }
+
+    private String PrendeDataAttuale() {
+        String Ritorno="";
+
+        Calendar Oggi = Calendar.getInstance();
+        int Giorno=Oggi.get(Calendar.DAY_OF_MONTH);
+        int Mese=Oggi.get(Calendar.MONTH)+1;
+        int Anno=Oggi.get(Calendar.YEAR);
+        String sGiorno=Integer.toString(Giorno).trim();
+        String sMese=Integer.toString(Mese).trim();
+        String sAnno=Integer.toString(Anno).trim();
+        if (sGiorno.length()==1) {
+            sGiorno="0"+sGiorno;
+        }
+        if (sMese.length()==1) {
+            sMese="0"+sMese;
+        }
+        Ritorno=sGiorno+"/"+sMese+"/"+sAnno;
+
+        return Ritorno;
+    }
+
+    public void ScriveLog(String Messaggio) {
+        CreaCartella(VariabiliGlobali.getInstance().getPercorsoDIR());
+
+        String Datella="";
+        Datella=PrendeDataAttuale()+";"+PrendeOraAttuale()+";";
+
+        String sBody=Datella+Messaggio.replace(";", "_");
+
+        File gpxfile = new File(VariabiliGlobali.getInstance().getPercorsoDIR(), "LogErrori.txt");
+
+        try {
+            gpxfile.mkdirs();
+        } catch (Exception ignored) {
+
+        }
+
+        FileWriter writer;
+        try {
+            writer = new FileWriter(gpxfile,true);
+            writer.append(sBody+"\n");
+            writer.flush();
+            writer.close();
+        } catch (IOException ignored) {
+        }
     }
 
     private void generateNoteOnSD(String Percorso, String sFileName, String sBody) {

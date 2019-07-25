@@ -29,11 +29,15 @@ import com.looigi.loovf.Soap.DBRemoto;
 import com.looigi.loovf.Soap.DownloadFileFromURL;
 import com.looigi.loovf.db_locale.db_dati;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
     private Runnable runRiga;
     private Handler hSelezionaRiga;
     private LinearLayout layContenitore;
     private db_dati db;
+    private boolean CiSonoPermessi;
     protected PowerManager.WakeLock mWakeLock;
 
     @Override
@@ -78,15 +82,35 @@ public class MainActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         getSupportActionBar().hide();
-
         setContentView(R.layout.activity_main);
 
+        Permessi p=new Permessi();
+        CiSonoPermessi = p.ControllaPermessi(this);
+
+        if (CiSonoPermessi) {
+            EsegueEntrata();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        if (!CiSonoPermessi) {
+            int index = 0;
+            Map<String, Integer> PermissionsMap = new HashMap<String, Integer>();
+            for (String permission : permissions) {
+                PermissionsMap.put(permission, grantResults[index]);
+                index++;
+            }
+
+            EsegueEntrata();
+        }
+    }
+
+    private void EsegueEntrata() {
         PowerManager pm = (PowerManager) getSystemService(this.POWER_SERVICE);
         this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "myapp:mywakelocktag");
         this.mWakeLock.acquire();
-
-        Permessi p=new Permessi();
-        p.ControllaPermessi(this);
 
         VariabiliGlobali.getInstance().setContext(this);
         VariabiliGlobali.getInstance().setFragmentActivityPrincipale(this);
@@ -422,9 +446,9 @@ public class MainActivity extends AppCompatActivity {
         GestioneFiles.getInstance().CreaCartella(VariabiliGlobali.getInstance().getPercorsoDIR());
         // File f = new File(VariabiliGlobali.getInstance().getPercorsoDIR() + "/Lista.dat");
         // if (f.exists()) {
-            // String Ritorno = GestioneFiles.getInstance().LeggeFileDiTesto(VariabiliGlobali.getInstance().getPercorsoDIR() + "/Lista.dat");
-            // Utility.getInstance().CreaListaFiles(Ritorno);
-            // f.delete();
+        // String Ritorno = GestioneFiles.getInstance().LeggeFileDiTesto(VariabiliGlobali.getInstance().getPercorsoDIR() + "/Lista.dat");
+        // Utility.getInstance().CreaListaFiles(Ritorno);
+        // f.delete();
 
         //     CaricamentoDati cd = new CaricamentoDati();
         //     cd.IniziaCaricamento();
@@ -456,27 +480,27 @@ public class MainActivity extends AppCompatActivity {
                 // if (!VariabiliGlobali.getInstance().getModalita().equals("GRIGLIA")) {
                 VariabiliGlobali.getInstance().getLayRicerca().setVisibility(LinearLayout.GONE);
                 VariabiliGlobali.getInstance().getImgCondividi().setVisibility(LinearLayout.GONE);
-                    VariabiliGlobali.getInstance().setModalita("GRIGLIA");
+                VariabiliGlobali.getInstance().setModalita("GRIGLIA");
 
-                    VariabiliGlobali.getInstance().getImgPlayVideo().setVisibility(LinearLayout.GONE);
-                    VariabiliGlobali.getInstance().getLaySettingsPanel().setVisibility(LinearLayout.GONE);
-                    VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.GONE);
-                    VariabiliGlobali.getInstance().getLayGriglia().setVisibility(LinearLayout.VISIBLE);
-                    VariabiliGlobali.getInstance().getImgRefresh().setVisibility(LinearLayout.VISIBLE);
-                    VariabiliGlobali.getInstance().getLayScroller().setVisibility(LinearLayout.GONE);
+                VariabiliGlobali.getInstance().getImgPlayVideo().setVisibility(LinearLayout.GONE);
+                VariabiliGlobali.getInstance().getLaySettingsPanel().setVisibility(LinearLayout.GONE);
+                VariabiliGlobali.getInstance().getiView().setVisibility(LinearLayout.GONE);
+                VariabiliGlobali.getInstance().getLayGriglia().setVisibility(LinearLayout.VISIBLE);
+                VariabiliGlobali.getInstance().getImgRefresh().setVisibility(LinearLayout.VISIBLE);
+                VariabiliGlobali.getInstance().getLayScroller().setVisibility(LinearLayout.GONE);
 
-                    Utility.getInstance().riempieSpinner();
+                Utility.getInstance().riempieSpinner();
 
-                    // String idCategoria = Integer.toString(Utility.getInstance().TornaIdCategoria(VariabiliGlobali.getInstance().getCategoriaSceltaImmagine()));
-                    StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaNome("1", VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini().getNomeCategoria());
-                    String Ritorno = db.RitornaRigheGriglia("1", Integer.toString(sc.getIdCategoria()));
+                // String idCategoria = Integer.toString(Utility.getInstance().TornaIdCategoria(VariabiliGlobali.getInstance().getCategoriaSceltaImmagine()));
+                StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaNome("1", VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini().getNomeCategoria());
+                String Ritorno = db.RitornaRigheGriglia("1", Integer.toString(sc.getIdCategoria()));
 
-                    if (Ritorno.isEmpty()) {
-                        DBRemoto dbr = new DBRemoto();
-                        dbr.RitornaImmaginiGriglia();
-                    } else {
-                        Utility.getInstance().CaricaRecyclerView(Ritorno, false);
-                    }
+                if (Ritorno.isEmpty()) {
+                    DBRemoto dbr = new DBRemoto();
+                    dbr.RitornaImmaginiGriglia();
+                } else {
+                    Utility.getInstance().CaricaRecyclerView(Ritorno, false);
+                }
                 // } else {
 
                 // }
@@ -563,7 +587,7 @@ public class MainActivity extends AppCompatActivity {
                 DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
                         "Si vogliono riscaricare tutti i dati ?",
                         false,
-                    "looVF",
+                        "looVF",
                         true);
             }
         });

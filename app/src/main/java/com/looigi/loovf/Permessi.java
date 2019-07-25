@@ -7,7 +7,7 @@ import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 
 public class Permessi {
-    public void ControllaPermessi(Activity context) {
+    public boolean ControllaPermessi(Activity context) {
         int permissionRequestCode1 = 1193;
 
         String[] PERMISSIONS = new String[] {
@@ -15,20 +15,23 @@ public class Permessi {
                 android.Manifest.permission.ACCESS_NETWORK_STATE,
                 android.Manifest.permission.ACCESS_WIFI_STATE,
                 android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.MODIFY_AUDIO_SETTINGS,
-                Manifest.permission.BLUETOOTH,
+                // Manifest.permission.MODIFY_AUDIO_SETTINGS,
+                // Manifest.permission.BLUETOOTH,
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.WAKE_LOCK,
                 android.Manifest.permission.READ_PHONE_STATE,
-                android.Manifest.permission.PROCESS_OUTGOING_CALLS,
-                Manifest.permission.READ_CONTACTS,
-                Manifest.permission.READ_PHONE_STATE,
+                // android.Manifest.permission.PROCESS_OUTGOING_CALLS,
+                // Manifest.permission.READ_CONTACTS,
+                // Manifest.permission.READ_PHONE_STATE,
                 // android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                android.Manifest.permission.MODIFY_AUDIO_SETTINGS,
+                // android.Manifest.permission.MODIFY_AUDIO_SETTINGS,
         };
 
         if(!hasPermissions(context, PERMISSIONS)) {
             ActivityCompat.requestPermissions(context, PERMISSIONS, permissionRequestCode1);
+            return false;
+        } else {
+            return true;
         }
     }
 

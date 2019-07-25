@@ -136,12 +136,6 @@ public class GestioneFiles {
 
         File gpxfile = new File(VariabiliGlobali.getInstance().getPercorsoDIR(), "LogErrori.txt");
 
-        try {
-            gpxfile.mkdirs();
-        } catch (Exception ignored) {
-
-        }
-
         FileWriter writer;
         try {
             writer = new FileWriter(gpxfile,true);

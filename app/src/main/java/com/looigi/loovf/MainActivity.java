@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         // boolean amm = VariabiliGlobali.getInstance().isAmministratore();
-        VariabiliGlobali.getInstance().setAmministratore(false);
-        VariabiliGlobali.getInstance().getConfigurazione().setVisuaTutto(false);
+        // VariabiliGlobali.getInstance().setAmministratore(false);
+        // VariabiliGlobali.getInstance().getConfigurazione().setVisuaTutto(false);
         Utility.getInstance().AccendeSpegneOggettiInBaseAiPermessi();
 
         VariabiliGlobali.getInstance().setModalita("PHOTO");
@@ -251,6 +251,8 @@ public class MainActivity extends AppCompatActivity {
 
                     Utility.getInstance().riempieSpinner();
                 }
+
+                Utility.getInstance().AccendeSpegneOggettiInBaseAiPermessi();
             }
         });
 
@@ -536,6 +538,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         VariabiliGlobali.getInstance().setLayTastoVideo((LinearLayout) findViewById(R.id.layVideo));
+        VariabiliGlobali.getInstance().getLayTastoVideo().setVisibility(LinearLayout.GONE);
         VariabiliGlobali.getInstance().getLayTastoVideo().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliGlobali.getInstance().getLayRicerca().setVisibility(LinearLayout.GONE);

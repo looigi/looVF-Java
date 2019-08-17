@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         // boolean amm = VariabiliGlobali.getInstance().isAmministratore();
         // VariabiliGlobali.getInstance().setAmministratore(false);
         // VariabiliGlobali.getInstance().getConfigurazione().setVisuaTutto(false);
-        Utility.getInstance().AccendeSpegneOggettiInBaseAiPermessi();
+        // Utility.getInstance().AccendeSpegneOggettiInBaseAiPermessi();
 
         VariabiliGlobali.getInstance().setModalita("PHOTO");
 
@@ -229,6 +229,8 @@ public class MainActivity extends AppCompatActivity {
                             "looVF",
                             false);
                 } else {
+                    Utility.getInstance().AccendeSpegneOggettiInBaseAiPermessi();
+
                     if (!VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
                         VariabiliGlobali.getInstance().setModalita("PHOTO");
 
@@ -252,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
                     Utility.getInstance().riempieSpinner();
                 }
 
-                Utility.getInstance().AccendeSpegneOggettiInBaseAiPermessi();
+                // Utility.getInstance().AccendeSpegneOggettiInBaseAiPermessi();
             }
         });
 

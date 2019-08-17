@@ -260,7 +260,7 @@ public class db_dati {
                         + " VALUES (" + Integer.toString(random) + ", "
                         + "'" + VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini().getNomeCategoria() + "', "
                         + "'" + VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo().getNomeCategoria() + "', "
-                        + " " + Integer.toString(visuaTutto) + " "
+                        + "0"
                         + ");");
             } catch (SQLException e) {
                 Ok = Utility.getInstance().PrendeErroreDaException(e);

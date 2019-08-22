@@ -7,6 +7,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.looigi.loovf.Soap.DBRemoto;
@@ -406,6 +407,9 @@ public class Utility {
     public void AvanzaMultimedia() {
         db_dati db = new db_dati();
         boolean Ok = false;
+
+        // Spinner mySpinner = VariabiliGlobali.getInstance().getsItems();
+        // String text = mySpinner.getSelectedItem().toString();
 
         if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
             if (VariabiliGlobali.getInstance().getIndiceVideo() < VariabiliGlobali.getInstance().getVideoVisualizzati().size()-1) {

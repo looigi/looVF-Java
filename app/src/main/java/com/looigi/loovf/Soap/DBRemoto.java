@@ -1,5 +1,7 @@
 package com.looigi.loovf.Soap;
 
+import android.widget.Spinner;
+
 import com.looigi.loovf.DialogMessaggio;
 import com.looigi.loovf.StrutturaCategorie;
 import com.looigi.loovf.VariabiliGlobali;
@@ -168,7 +170,8 @@ public class DBRemoto {
 				tip = "1";
 			}
 		}
-		String Categoria = "";
+
+		/* String Categoria = "";
 		if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
 			Categoria = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo().getNomeCategoria();
 			// VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo().getNomeCategoria();
@@ -177,7 +180,11 @@ public class DBRemoto {
 				Categoria = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini().getNomeCategoria();
 				// VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini().getNomeCategoria();
 			}
-		}
+		} */
+
+		Spinner mySpinner = VariabiliGlobali.getInstance().getsItems();
+		String Categoria = mySpinner.getSelectedItem().toString();
+
 		if (!Categoria.isEmpty()) {
 			String Urletto = "RitornaSuccessivoMultimedia?idTipologia=" + tip + "&Categoria=" + Categoria;
 

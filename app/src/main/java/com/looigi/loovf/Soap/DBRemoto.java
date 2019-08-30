@@ -163,6 +163,9 @@ public class DBRemoto {
 
 	public void RitornaSuccessivoMultimedia() {
 		String tip = "";
+		Spinner mySpinner = VariabiliGlobali.getInstance().getsItems();
+		String Categoria = mySpinner.getSelectedItem().toString();
+
 		if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
 			tip="2";
 		} else {
@@ -181,9 +184,6 @@ public class DBRemoto {
 				// VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini().getNomeCategoria();
 			}
 		} */
-
-		Spinner mySpinner = VariabiliGlobali.getInstance().getsItems();
-		String Categoria = mySpinner.getSelectedItem().toString();
 
 		if (!Categoria.isEmpty()) {
 			String Urletto = "RitornaSuccessivoMultimedia?idTipologia=" + tip + "&Categoria=" + Categoria;

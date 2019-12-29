@@ -59,7 +59,6 @@ public class wsRitorno {
                     Utility.getInstance().ScriveInformazioni();
                     Utility.getInstance().PrendeUltimoMultimedia(true);
 
-
                     Utility.getInstance().riempieSpinner();
 
                     // Crea il listner per il click sullo spinner
@@ -84,13 +83,14 @@ public class wsRitorno {
                                 db_dati db = new db_dati();
                                 db.ScriveConfigurazione();
 
-                                Utility.getInstance().AccendeSpegneOggettiInBaseAiPermessi();
+                                // Utility.getInstance().AccendeSpegneOggettiInBaseAiPermessi();
                             }
                         }
                         public void onNothingSelected(AdapterView<?> parent) {
                         }
                     });
                     // Crea il listner per il click sullo spinner
+                    Utility.getInstance().AccendeSpegneOggettiInBaseAiPermessi();
 
                     VariabiliGlobali.getInstance().setCaricataPagina(true);
                 }
@@ -155,10 +155,11 @@ public class wsRitorno {
                 VariabiliGlobali.getInstance().setAmministratore(true);
                 // VariabiliGlobali.getInstance().getChkVisuaTutto().setVisibility(LinearLayout.VISIBLE);
             } else {
-                // VariabiliGlobali.getInstance().setAmministratore(false);
+                VariabiliGlobali.getInstance().setAmministratore(false);
                 // VariabiliGlobali.getInstance().getConfigurazione().setVisuaTutto(false);
                 // VariabiliGlobali.getInstance().getChkVisuaTutto().setChecked(false);
             }
+            // Utility.getInstance().AccendeSpegneOggettiInBaseAiPermessi();
         }
     }
 
@@ -235,7 +236,7 @@ public class wsRitorno {
 
                     Utility.getInstance().CaricaConfigurazione();
 
-                    VariabiliGlobali.getInstance().setAmministratore(false);
+                    // VariabiliGlobali.getInstance().setAmministratore(false);
                     VariabiliGlobali.getInstance().getConfigurazione().setVisuaTutto(false);
                     VariabiliGlobali.getInstance().getChkVisuaTutto().setChecked(false);
                 }
@@ -251,21 +252,28 @@ public class wsRitorno {
                     "looVF",
                     false);
         } else {
-            long prossimo = Long.parseLong(Ritorno);
+            String[] campi = Ritorno.split(";");
+            long prossimo = Long.parseLong(campi[0]);
+            int categoria = -1;
+            if (campi.length > 1) {
+                categoria = Integer.parseInt(campi[1]);
+            }
             db_dati db = new db_dati();
 
             if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
                 VariabiliGlobali.getInstance().setVideoVisualizzato(prossimo);
+                VariabiliGlobali.getInstance().setCategoriaViusalizzata(categoria);
 
-                db.ScriveVisti(Long.toString(prossimo), VariabiliGlobali.getInstance().getModalita());
+                db.ScriveVisti(Long.toString(prossimo), VariabiliGlobali.getInstance().getModalita(), Integer.toString(categoria));
 
                 VariabiliGlobali.getInstance().getVideoVisualizzati().add(VariabiliGlobali.getInstance().getVideoVisualizzato());
                 VariabiliGlobali.getInstance().setIndiceVideo(VariabiliGlobali.getInstance().getVideoVisualizzati().size() - 1);
             } else {
                 if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
                     VariabiliGlobali.getInstance().setImmagineVisualizzata(prossimo);
+                    VariabiliGlobali.getInstance().setCategoriaViusalizzata(categoria);
 
-                    db.ScriveVisti(Long.toString(prossimo), VariabiliGlobali.getInstance().getModalita());
+                    db.ScriveVisti(Long.toString(prossimo), VariabiliGlobali.getInstance().getModalita(), Integer.toString(categoria));
 
                     VariabiliGlobali.getInstance().getImmaginiVisualizzate().add(VariabiliGlobali.getInstance().getImmagineVisualizzata());
                     VariabiliGlobali.getInstance().setIndiceImmagine(VariabiliGlobali.getInstance().getImmaginiVisualizzate().size() - 1);

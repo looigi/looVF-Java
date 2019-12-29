@@ -31,6 +31,7 @@ public class VariabiliGlobali {
     private long QuantiVideo;
     private long QuanteImmagini;
     private long ImmagineVisualizzata = 0;
+    private int CategoriaViusalizzata = 0;
     private long VideoVisualizzato = 0;
     private String PercorsoDIR= Environment.getExternalStorageDirectory().getPath()+"/LooigiSoft/looVF";
     private String PercorsoURL="http://looigi.no-ip.biz:12345/looVF";
@@ -84,6 +85,14 @@ public class VariabiliGlobali {
 
     public void setContext(Context context) {
         this.context = context;
+    }
+
+    public int getCategoriaViusalizzata() {
+        return CategoriaViusalizzata;
+    }
+
+    public void setCategoriaViusalizzata(int categoriaViusalizzata) {
+        CategoriaViusalizzata = categoriaViusalizzata;
     }
 
     public String getUltimaChiamata() {

@@ -150,7 +150,7 @@ public class AdapterMultimedia extends ArrayAdapter
                 VariabiliGlobali.getInstance().getLayScroller().setVisibility(LinearLayout.VISIBLE);
 
                 db_dati db = new db_dati();
-                db.ScriveVisti(Long.toString(prossimo), VariabiliGlobali.getInstance().getModalita());
+                db.ScriveVisti(Long.toString(prossimo), VariabiliGlobali.getInstance().getModalita(), Integer.toString(idCategoria));
 
                 VariabiliGlobali.getInstance().getLayRicerca().setVisibility(LinearLayout.GONE);
 

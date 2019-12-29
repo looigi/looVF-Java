@@ -52,9 +52,6 @@ public class AdapterRecyclerView extends RecyclerView.Adapter<AdapterRecyclerVie
                 int prossimo=Integer.parseInt(galleryList.get(position).getImage_number());
                 VariabiliGlobali.getInstance().setImmagineVisualizzata(prossimo);
 
-                db_dati db = new db_dati();
-                db.ScriveVisti(Long.toString(prossimo), VariabiliGlobali.getInstance().getModalita());
-
                 VariabiliGlobali.getInstance().getImmaginiVisualizzate().add(VariabiliGlobali.getInstance().getImmagineVisualizzata());
                 VariabiliGlobali.getInstance().setIndiceImmagine(VariabiliGlobali.getInstance().getImmaginiVisualizzate().size() - 1);
 
@@ -80,6 +77,9 @@ public class AdapterRecyclerView extends RecyclerView.Adapter<AdapterRecyclerVie
 
                 Utility.getInstance().riempieSpinner();
                 Utility.getInstance().ScriveInformazioni();
+
+                db_dati db = new db_dati();
+                db.ScriveVisti(Long.toString(prossimo), VariabiliGlobali.getInstance().getModalita(), Integer.toString(sf.getCategoria()));
             }
         });
         super.onBindViewHolder(holder, position, payloads);

@@ -56,7 +56,7 @@ public class InfoOnPhone {
         // Cursor emailCur = null;
         AccountManager accountManager = AccountManager.get(context);
         Account[] accounts = accountManager.getAccountsByType("com.google");
-        if (accounts[0].name != null) {
+        if (accounts.length >0 && accounts[0].name != null) {
             accountName = accounts[0].name;
             // String where = ContactsContract.CommonDataKinds.Email.DATA + " = ?";
             // ArrayList<String> what = new ArrayList<String>();

@@ -265,16 +265,20 @@ public class GestioneWEBServiceSOAP {
 				} else {
 				}
             } catch (SocketTimeoutException e) {
-            	Errore=true;
-				messErrore = Utility.getInstance().PrendeErroreDaException(e);
-            	if (messErrore!=null) {
-            		messErrore=messErrore.toUpperCase().replace("LOOIGI.NO-IP.BIZ","Web Service");
-            	} else {
-            		messErrore="Unknown";
-            	}
-            	result="ERROR: "+messErrore;
-            	messErrore = result;
-				//Utility.getInstance().VisualizzaPOPUP(context, "Errore di socket sul DB:\n" + messErrore, false, 0, false);
+            	if (tOperazione.equals("RitornaFiles")) {
+            		Errore = false;
+				} else {
+					Errore = true;
+					messErrore = Utility.getInstance().PrendeErroreDaException(e);
+					if (messErrore != null) {
+						messErrore = messErrore.toUpperCase().replace("LOOIGI.NO-IP.BIZ", "Web Service");
+					} else {
+						messErrore = "Unknown";
+					}
+					result = "ERROR: " + messErrore;
+					messErrore = result;
+					//Utility.getInstance().VisualizzaPOPUP(context, "Errore di socket sul DB:\n" + messErrore, false, 0, false);
+				}
 			} catch (IOException e) {
             	Errore=true;
 				messErrore = Utility.getInstance().PrendeErroreDaException(e);

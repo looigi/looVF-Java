@@ -31,7 +31,7 @@ public class DBRemoto {
 				"RitornaFiles",
 				NS,
 				SA,
-				1450000,
+				1000,
 				true);
 		g.Esegue();
 	}

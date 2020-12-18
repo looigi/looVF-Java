@@ -31,7 +31,7 @@ public class DBRemoto {
 				"RitornaFiles",
 				NS,
 				SA,
-				1450000,
+				1000,
 				true);
 		g.Esegue();
 	}
@@ -62,18 +62,20 @@ public class DBRemoto {
 
 	public void RitornaMultimediaDaID(String id) {
     	String tip = "";
-		StrutturaCategorie sc = new StrutturaCategorie();
+		// StrutturaCategorie sc = new StrutturaCategorie();
     	if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
     		tip = "2";
- 			sc= VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo();
+ 			// sc = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo();
     	} else {
 			if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
 				tip = "1";
-				sc= VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini();
+				// sc = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini();
 			}
 		}
+    	int categoria = VariabiliGlobali.getInstance().getCategoriaViusalizzata();
+    	String sCategoria = Integer.toString(categoria);
 		String Urletto="RitornaMultimediaDaId?idTipologia=" + tip +
-				"&idCategoria=" + Integer.toString(sc.getIdCategoria()) +
+				"&idCategoria=" + sCategoria +
 				"&idMultimedia=" + id;
 
 		GestioneWEBServiceSOAP g = new GestioneWEBServiceSOAP(
@@ -165,6 +167,7 @@ public class DBRemoto {
 		String tip = "";
 		Spinner mySpinner = VariabiliGlobali.getInstance().getsItems();
 		String Categoria = mySpinner.getSelectedItem().toString();
+		// StrutturaCategorie sc = new StrutturaCategorie();
 
 		if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
 			tip="2";

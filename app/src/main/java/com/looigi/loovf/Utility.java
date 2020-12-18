@@ -353,25 +353,29 @@ public class Utility {
         db.LeggeTutteLeViste();
 
         if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
-            long ultimaImmVista = db.LeggeUltimaVista("PHOTO");
-            if (ultimaImmVista > -1) {
-                VariabiliGlobali.getInstance().setImmagineVisualizzata(ultimaImmVista);
+            String ultimaImmVista = db.LeggeUltimaVista("PHOTO");
+            String[] campi = ultimaImmVista.split(";");
+            if (Integer.parseInt(campi[0]) > -1) {
+                VariabiliGlobali.getInstance().setImmagineVisualizzata(Integer.parseInt(campi[0]));
+                VariabiliGlobali.getInstance().setCategoriaViusalizzata(Integer.parseInt(campi[1]));
 
                 if (ResettaIndice) {
                     VariabiliGlobali.getInstance().setIndiceImmagine(1);
-                    VariabiliGlobali.getInstance().getImmaginiVisualizzate().add(ultimaImmVista);
+                    VariabiliGlobali.getInstance().getImmaginiVisualizzate().add(Long.parseLong(campi[0]));
                 }
             }
             CeUltima=true;
         } else {
             if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
-                long ultimoVideoVisto = db.LeggeUltimaVista("VIDEO");
-                if (ultimoVideoVisto > -1) {
-                    VariabiliGlobali.getInstance().setVideoVisualizzato(ultimoVideoVisto);
+                String ultimoVideoVisto = db.LeggeUltimaVista("VIDEO");
+                String[] campi = ultimoVideoVisto.split(";");
+                if (Integer.parseInt(campi[0]) > -1) {
+                    VariabiliGlobali.getInstance().setVideoVisualizzato(Integer.parseInt(campi[0]));
+                    VariabiliGlobali.getInstance().setCategoriaViusalizzata(Integer.parseInt(campi[1]));
 
                     if (ResettaIndice) {
                         VariabiliGlobali.getInstance().setIndiceVideo(1);
-                        VariabiliGlobali.getInstance().getVideoVisualizzati().add(ultimoVideoVisto);
+                        VariabiliGlobali.getInstance().getVideoVisualizzati().add(Long.parseLong(campi[0]));
                     }
                 }
                 CeUltima = true;
@@ -431,8 +435,10 @@ public class Utility {
                     long prossimo = VariabiliGlobali.getInstance().getVideoVisualizzato();
                     prossimo++;
                     VariabiliGlobali.getInstance().setVideoVisualizzato(prossimo);
+                    StrutturaCategorie sc = new StrutturaCategorie();
+                    sc = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo();
 
-                    db.ScriveVisti(Long.toString(prossimo), VariabiliGlobali.getInstance().getModalita());
+                    db.ScriveVisti(Long.toString(prossimo), VariabiliGlobali.getInstance().getModalita(), Integer.toString(sc.getIdCategoria()));
 
                     VariabiliGlobali.getInstance().getVideoVisualizzati().add(VariabiliGlobali.getInstance().getVideoVisualizzato());
                     VariabiliGlobali.getInstance().setIndiceVideo(VariabiliGlobali.getInstance().getVideoVisualizzati().size() - 1);
@@ -460,8 +466,10 @@ public class Utility {
                         long prossima = VariabiliGlobali.getInstance().getImmagineVisualizzata();
                         prossima++;
                         VariabiliGlobali.getInstance().setImmagineVisualizzata(prossima);
+                        StrutturaCategorie sc = new StrutturaCategorie();
+                        sc = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini();
 
-                        db.ScriveVisti(Long.toString(prossima), VariabiliGlobali.getInstance().getModalita());
+                        db.ScriveVisti(Long.toString(prossima), VariabiliGlobali.getInstance().getModalita(), Integer.toString(sc.getIdCategoria()));
 
                         VariabiliGlobali.getInstance().getImmaginiVisualizzate().add(VariabiliGlobali.getInstance().getImmagineVisualizzata());
                         VariabiliGlobali.getInstance().setIndiceImmagine(VariabiliGlobali.getInstance().getImmaginiVisualizzate().size() - 1);

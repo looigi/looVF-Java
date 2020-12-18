@@ -48,7 +48,7 @@ public class db_dati {
             if (myDB != null) {
                 myDB.execSQL("CREATE TABLE IF NOT EXISTS "
                         + "Visti "
-                        + " (Tipologia VARCHAR, Progressivo INT(7), id INT(7));");
+                        + " (Tipologia VARCHAR, Progressivo INT(7), id INT(7), categoria INT(2));");
                 myDB.execSQL("CREATE INDEX IF NOT EXISTS Visti_Index ON Visti(Tipologia, Progressivo);");
                 // myDB.execSQL("CREATE TABLE IF NOT EXISTS "
                 //         + "Dati "
@@ -270,7 +270,7 @@ public class db_dati {
         return Ok;
     }
 
-    public boolean ScriveVisti(String idMultimedia, String Tipologia) {
+    public boolean ScriveVisti(String idMultimedia, String Tipologia, String Categoria) {
         boolean Ok = true;
 
         // SQLiteDatabase myDB = ApreDB();
@@ -289,8 +289,8 @@ public class db_dati {
                 Progressivo++;
                 myDB.execSQL("INSERT INTO"
                         + " Visti"
-                        + " (Tipologia, Progressivo, id)"
-                        + " VALUES ('" + Tipologia + "', " + Progressivo + ", " + idMultimedia + ");");
+                        + " (Tipologia, Progressivo, id, categoria)"
+                        + " VALUES ('" + Tipologia + "', " + Progressivo + ", " + idMultimedia + ", " + Categoria + ");");
             } catch (SQLException e) {
                 Ok = false;
             }
@@ -299,23 +299,25 @@ public class db_dati {
         return Ok;
     }
 
-    public long LeggeUltimaVista(String Tipologia) {
+    public String LeggeUltimaVista(String Tipologia) {
         long Numero = -1;
+        int Categoria = -1;
 
         // SQLiteDatabase myDB = ApreDB();
         if (myDB != null) {
             // int Progressivo = 0;
 
-            Cursor c = myDB.rawQuery("SELECT id FROM Visti WHERE Tipologia = ? Order By Progressivo Desc",
+            Cursor c = myDB.rawQuery("SELECT id, categoria FROM Visti WHERE Tipologia = ? Order By Progressivo Desc",
                     new String[]{ Tipologia });
             c.moveToFirst();
             if (c.getCount() > 0) {
                 Numero = c.getLong(0);
+                Categoria = c.getInt(1);
             }
             c.close();
         }
 
-        return Numero;
+        return Long.toString(Numero) + ";" + Integer.toString(Categoria);
     }
 
     public long LeggeTutteLeViste() {

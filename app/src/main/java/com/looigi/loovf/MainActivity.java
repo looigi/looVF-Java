@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           String[] permissions, int[] grantResults) {
         if (!CiSonoPermessi) {
             int index = 0;
             Map<String, Integer> PermissionsMap = new HashMap<String, Integer>();

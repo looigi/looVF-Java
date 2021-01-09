@@ -7,7 +7,7 @@ import com.looigi.loovf.StrutturaCategorie;
 import com.looigi.loovf.VariabiliGlobali;
 
 public class DBRemoto {
-	private String RadiceWS = "http://looigi.no-ip.biz:12345/looVF/";
+	private String RadiceWS = "http://looigi.no-ip.biz/looVF/";
 	private String ws = "looVF.asmx/";
 	private String NS="http://looVF.org/";
 	private String SA="http://looVF.org/";
@@ -61,31 +61,49 @@ public class DBRemoto {
 	}
 
 	public void RitornaMultimediaDaID(String id) {
-    	String tip = "";
-		// StrutturaCategorie sc = new StrutturaCategorie();
-    	if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
-    		tip = "2";
- 			// sc = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo();
-    	} else {
-			if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
-				tip = "1";
-				// sc = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini();
+		String tip = "";
+		Spinner mySpinner = VariabiliGlobali.getInstance().getsItems();
+		if (mySpinner != null && mySpinner.getSelectedItem() != null) {
+			String Categoria = mySpinner.getSelectedItem().toString();
+			// StrutturaCategorie sc = new StrutturaCategorie();
+			if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
+				tip = "2";
+				for (int i = 0; i < VariabiliGlobali.getInstance().getCategorieVideo().size(); i++) {
+					if (Categoria == VariabiliGlobali.getInstance().getCategorieVideo().get(i).getNomeCategoria()) {
+						int idCategoria = VariabiliGlobali.getInstance().getCategorieVideo().get(i).getIdCategoria();
+						VariabiliGlobali.getInstance().setCategoriaViusalizzata(idCategoria);
+						break;
+					}
+				}
+				// sc = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo();
+			} else {
+				if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
+					tip = "1";
+					// sc = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini();
+					for (int i = 0; i < VariabiliGlobali.getInstance().getCategorieImmagini().size(); i++) {
+						if (Categoria == VariabiliGlobali.getInstance().getCategorieImmagini().get(i).getNomeCategoria()) {
+							int idCategoria = VariabiliGlobali.getInstance().getCategorieImmagini().get(i).getIdCategoria();
+							VariabiliGlobali.getInstance().setCategoriaViusalizzata(idCategoria);
+							break;
+						}
+					}
+				}
 			}
-		}
-    	int categoria = VariabiliGlobali.getInstance().getCategoriaViusalizzata();
-    	String sCategoria = Integer.toString(categoria);
-		String Urletto="RitornaMultimediaDaId?idTipologia=" + tip +
-				"&idCategoria=" + sCategoria +
-				"&idMultimedia=" + id;
+			int idCategoria = VariabiliGlobali.getInstance().getCategoriaViusalizzata();
 
-		GestioneWEBServiceSOAP g = new GestioneWEBServiceSOAP(
-				RadiceWS + ws + Urletto,
-				"RitornaMultimediaDaId",
-				NS,
-				SA,
-				25000,
-				true);
-		g.Esegue();
+			String Urletto="RitornaMultimediaDaId?idTipologia=" + tip +
+					"&idCategoria=" + idCategoria +
+					"&idMultimedia=" + id;
+
+			GestioneWEBServiceSOAP g = new GestioneWEBServiceSOAP(
+					RadiceWS + ws + Urletto,
+					"RitornaMultimediaDaId",
+					NS,
+					SA,
+					25000,
+					true);
+			g.Esegue();
+		}
 	}
 
 	public void RitornaQuantiFilesPhoto() {
@@ -171,9 +189,23 @@ public class DBRemoto {
 
 		if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
 			tip="2";
+			for (int i = 0; i < VariabiliGlobali.getInstance().getCategorieVideo().size(); i++) {
+				if (Categoria == VariabiliGlobali.getInstance().getCategorieVideo().get(i).getNomeCategoria()) {
+					int idCategoria = VariabiliGlobali.getInstance().getCategorieVideo().get(i).getIdCategoria();
+					VariabiliGlobali.getInstance().setCategoriaViusalizzata(idCategoria);
+					break;
+				}
+			}
 		} else {
 			if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
 				tip = "1";
+				for (int i = 0; i < VariabiliGlobali.getInstance().getCategorieImmagini().size(); i++) {
+					if (Categoria == VariabiliGlobali.getInstance().getCategorieImmagini().get(i).getNomeCategoria()) {
+						int idCategoria = VariabiliGlobali.getInstance().getCategorieImmagini().get(i).getIdCategoria();
+						VariabiliGlobali.getInstance().setCategoriaViusalizzata(idCategoria);
+						break;
+					}
+				}
 			}
 		}
 

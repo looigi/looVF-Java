@@ -12,10 +12,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -320,6 +322,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Spinner sItems = (Spinner) findViewById(R.id.spnCategorie);
         VariabiliGlobali.getInstance().setsItems((Spinner) findViewById(R.id.spnCategorie));
+
         VariabiliGlobali.getInstance().setImgRefresh((ImageView) findViewById(R.id.imgRefreshGriglia));
         VariabiliGlobali.getInstance().getImgRefresh().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -671,4 +674,5 @@ public class MainActivity extends AppCompatActivity {
             }
         },5000);
     }
+
 }

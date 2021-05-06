@@ -375,6 +375,10 @@ public class GestioneWEBServiceSOAP {
 									rRit.RitornaMultimediaDaId(Ritorno);
 									Ancora=false;
 									break;
+								case "EliminaMultimediaDaId":
+									rRit.EliminaMultimediaDaId(Ritorno);
+									Ancora=false;
+									break;
 								case "RitornaCategorie":
 									rRit.RitornaCategorie(Ritorno);
 									Ancora=false;
@@ -421,7 +425,8 @@ public class GestioneWEBServiceSOAP {
 						// 	// Errore... Riprovo ad eseguire la funzione
 					// }
 						DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
-								messErrore, true, "looVF", false);
+								messErrore, true, "looVF", false,
+								"");
 				}
 			}
 			bckAsyncTask = null;

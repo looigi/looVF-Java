@@ -101,7 +101,8 @@ public class Utility {
                         "ERRORE nel salvataggio dei dati della griglia:\n" + rit,
                         true,
                         "looVF",
-                        false);
+                        false,
+                        "");
             }
         }
 
@@ -259,7 +260,8 @@ public class Utility {
                         "ERRORE nel salvataggio della configurazione\n" + Ritorno,
                         true,
                         "looVF",
-                        false);
+                        false,
+                        "");
             }
         }
 

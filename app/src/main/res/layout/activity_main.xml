@@ -413,5 +413,13 @@
             android:layout_width="40dp"
             android:layout_height="40dp" />
 
+        <ImageView
+            android:id="@+id/imgElimina"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="42dp"
+            android:layout_below="@+id/layContenitore"
+            android:src="@drawable/eliminadx" />
+
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

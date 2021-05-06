@@ -190,7 +190,8 @@ public class MainActivity extends AppCompatActivity {
                             "Inserire un parametro di ricerca di almeno 3 caratteri",
                             true,
                             "looVF",
-                            false);
+                            false,
+                            "");
                 } else {
                     StrutturaCategorie Categoria= new StrutturaCategorie();
 
@@ -229,7 +230,8 @@ public class MainActivity extends AppCompatActivity {
                             "ERRORE nel salvataggio della configurazione\n" + Ritorno,
                             true,
                             "looVF",
-                            false);
+                            false,
+                            "");
                 } else {
                     Utility.getInstance().AccendeSpegneOggettiInBaseAiPermessi();
 
@@ -291,6 +293,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        VariabiliGlobali.getInstance().setImgElimina((ImageView) findViewById(R.id.imgElimina));
+        VariabiliGlobali.getInstance().getImgElimina().setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String cosa = "";
+                if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
+                    cosa = "il Video selezionato";
+                } else {
+                    cosa = "l'Immagine selezionata";
+                }
+                DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
+                        "Si vuole eliminare " + cosa + " ?",
+                        false,
+                        "looVF",
+                        true,
+                        "ELIMINA");
+            }
+        });
+
         VariabiliGlobali.getInstance().setLayScroller((LinearLayout) findViewById(R.id.layScroller));
         VariabiliGlobali.getInstance().getLayScroller().setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -311,7 +331,8 @@ public class MainActivity extends AppCompatActivity {
                             "ERRORE nel salvataggio della configurazione\n" + Ritorno,
                             true,
                             "looVF",
-                            false);
+                            false,
+                            "");
                 }
             }
         });
@@ -354,7 +375,8 @@ public class MainActivity extends AppCompatActivity {
                         "DB Compattato",
                         false,
                         "looVF",
-                        false);
+                        false,
+                        "");
             }
         });
 
@@ -596,7 +618,8 @@ public class MainActivity extends AppCompatActivity {
                         "Si vogliono riscaricare tutti i dati ?",
                         false,
                         "looVF",
-                        true);
+                        true,
+                        "REFRESH");
             }
         });
 

@@ -21,6 +21,7 @@ public class DialogMessaggio
     private String Message;
     private boolean Error;
     private String titleDialog;
+    private String daDove;
     private boolean Scelta;
 
     private DialogMessaggio() {
@@ -35,11 +36,12 @@ public class DialogMessaggio
     private Dialog dialog;
 
     //-------- Methods ----------//
-    public void show(Context context, String message, boolean Error, String titleDialog, boolean Scelta)
+    public void show(Context context, String message, boolean Error, String titleDialog, boolean Scelta, String daDove)
     {
         this.Error=Error;
         this.titleDialog=titleDialog;
         this.Scelta = Scelta;
+        this.daDove = daDove;
 
         Message = message;
 
@@ -95,13 +97,31 @@ public class DialogMessaggio
         public void onClick(DialogInterface dialog, int which)
         {
             if (Scelta) {
-                File f = new File(VariabiliGlobali.getInstance().getPercorsoDIR() + "/Lista.dat");
-                if (f.exists()) {
-                    f.delete();
-                }
+                if (daDove == "REFRESH") {
+                    File f = new File(VariabiliGlobali.getInstance().getPercorsoDIR() + "/Lista.dat");
+                    if (f.exists()) {
+                        f.delete();
+                    }
 
-                DBRemoto dbr = new DBRemoto();
-                dbr.RitornaListe();
+                    DBRemoto dbr = new DBRemoto();
+                    dbr.RitornaListe();
+                } else {
+                    if (daDove == "ELIMINA") {
+                        DBRemoto dbr = new DBRemoto();
+
+                        long Quale = -1;
+                        if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
+                            Quale = VariabiliGlobali.getInstance().getVideoVisualizzato();
+                        } else {
+                            if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
+                                Quale = VariabiliGlobali.getInstance().getImmagineVisualizzata();
+                            }
+                        }
+                        if (Quale > -1) {
+                            dbr.EliminaMultimediaDaID(Long.toString(Quale));
+                        }
+                    }
+                }
             }
 
             dialog.cancel();

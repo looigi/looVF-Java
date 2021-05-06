@@ -34,7 +34,7 @@ public class VariabiliGlobali {
     private int CategoriaViusalizzata = 0;
     private long VideoVisualizzato = 0;
     private String PercorsoDIR= Environment.getExternalStorageDirectory().getPath()+"/LooigiSoft/looVF";
-    private String PercorsoURL="http://looigi.no-ip.biz/looVF";
+    private String PercorsoURL="http://looigi.no-ip.biz:97/looVF";
     // private boolean DatiCaricati = false;
     private TextView txtInfo;
     private String Modalita;
@@ -68,6 +68,7 @@ public class VariabiliGlobali {
     private LinearLayout layRicerca;
     private ListView lstRicerca;
     private ImageView imgCondividi;
+    private ImageView imgElimina;
     private CheckBox chkRandom;
     private String TipoTelefono;
     private String Utenza;
@@ -89,6 +90,14 @@ public class VariabiliGlobali {
 
     public int getCategoriaViusalizzata() {
         return CategoriaViusalizzata;
+    }
+
+    public ImageView getImgElimina() {
+        return imgElimina;
+    }
+
+    public void setImgElimina(ImageView imgElimina) {
+        this.imgElimina = imgElimina;
     }
 
     public void setCategoriaViusalizzata(int categoriaViusalizzata) {

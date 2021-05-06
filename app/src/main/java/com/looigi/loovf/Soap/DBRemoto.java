@@ -7,7 +7,7 @@ import com.looigi.loovf.StrutturaCategorie;
 import com.looigi.loovf.VariabiliGlobali;
 
 public class DBRemoto {
-	private String RadiceWS = "http://looigi.no-ip.biz/looVF/";
+	private String RadiceWS = "http://looigi.no-ip.biz:97/looVF/";
 	private String ws = "looVF.asmx/";
 	private String NS="http://looVF.org/";
 	private String SA="http://looVF.org/";
@@ -58,6 +58,52 @@ public class DBRemoto {
 				25000,
 				false);
 		g.Esegue();
+	}
+
+	public void EliminaMultimediaDaID(String id) {
+		String tip = "";
+		Spinner mySpinner = VariabiliGlobali.getInstance().getsItems();
+		if (mySpinner != null && mySpinner.getSelectedItem() != null) {
+			String Categoria = mySpinner.getSelectedItem().toString();
+			// StrutturaCategorie sc = new StrutturaCategorie();
+			if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO")) {
+				tip = "2";
+				for (int i = 0; i < VariabiliGlobali.getInstance().getCategorieVideo().size(); i++) {
+					if (Categoria == VariabiliGlobali.getInstance().getCategorieVideo().get(i).getNomeCategoria()) {
+						int idCategoria = VariabiliGlobali.getInstance().getCategorieVideo().get(i).getIdCategoria();
+						VariabiliGlobali.getInstance().setCategoriaViusalizzata(idCategoria);
+						break;
+					}
+				}
+				// sc = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaVideo();
+			} else {
+				if (VariabiliGlobali.getInstance().getModalita().equals("PHOTO")) {
+					tip = "1";
+					// sc = VariabiliGlobali.getInstance().getConfigurazione().getUltimaCategoriaImmagini();
+					for (int i = 0; i < VariabiliGlobali.getInstance().getCategorieImmagini().size(); i++) {
+						if (Categoria == VariabiliGlobali.getInstance().getCategorieImmagini().get(i).getNomeCategoria()) {
+							int idCategoria = VariabiliGlobali.getInstance().getCategorieImmagini().get(i).getIdCategoria();
+							VariabiliGlobali.getInstance().setCategoriaViusalizzata(idCategoria);
+							break;
+						}
+					}
+				}
+			}
+			int idCategoria = VariabiliGlobali.getInstance().getCategoriaViusalizzata();
+
+			String Urletto="EliminaMultimediaDaId?idTipologia=" + tip +
+					"&idCategoria=" + idCategoria +
+					"&idMultimedia=" + id;
+
+			GestioneWEBServiceSOAP g = new GestioneWEBServiceSOAP(
+					RadiceWS + ws + Urletto,
+					"EliminaMultimediaDaId",
+					NS,
+					SA,
+					25000,
+					true);
+			g.Esegue();
+		}
 	}
 
 	public void RitornaMultimediaDaID(String id) {
@@ -177,7 +223,8 @@ public class DBRemoto {
 					"Selezionare una categoria",
 					true,
 					"looVF",
-					false);
+					false,
+					"");
 		}
 	}
 
@@ -236,7 +283,8 @@ public class DBRemoto {
 					"Selezionare una categoria",
 					true,
 					"looVF",
-					false);
+					false,
+					"");
 		}
 	}
 

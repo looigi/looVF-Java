@@ -45,7 +45,8 @@ public class wsRitorno {
                     Ritorno,
                     true,
                     "looVF",
-                    false);
+                    false,
+                    "");
         } else {
             hSelezionaRiga = new Handler(Looper.getMainLooper());
             hSelezionaRiga.postDelayed(runRiga = new Runnable() {
@@ -104,7 +105,8 @@ public class wsRitorno {
                     Ritorno,
                     true,
                     "looVF",
-                    false);
+                    false,
+                    "");
         } else {
             hSelezionaRiga = new Handler(Looper.getMainLooper());
             hSelezionaRiga.postDelayed(runRiga = new Runnable() {
@@ -128,7 +130,8 @@ public class wsRitorno {
                     Ritorno,
                     true,
                     "looVF",
-                    false);
+                    false,
+                    "");
         } else {
             hSelezionaRiga = new Handler(Looper.getMainLooper());
             hSelezionaRiga.postDelayed(runRiga = new Runnable() {
@@ -143,13 +146,44 @@ public class wsRitorno {
         }
     }
 
+    public void EliminaMultimediaDaId(final String Ritorno) {
+        if (Ritorno.toUpperCase().contains("ERROR:")) {
+            DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
+                    Ritorno,
+                    true,
+                    "looVF",
+                    false,
+                    "");
+        } else {
+            hSelezionaRiga = new Handler(Looper.getMainLooper());
+            hSelezionaRiga.postDelayed(runRiga = new Runnable() {
+                @Override
+                public void run() {
+                    hSelezionaRiga.removeCallbacks(runRiga);
+                    runRiga = null;
+
+                    DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
+                            "Multimedia eliminato",
+                            false,
+                            "looVF",
+                            false,
+                            "");
+
+                    DBRemoto dbr = new DBRemoto();
+                    dbr.RitornaSuccessivoMultimedia();
+                }
+            }, 50);
+        }
+    }
+
     public void RitornaPermessi(final String Ritorno) {
         if (Ritorno.toUpperCase().contains("ERROR:")) {
             DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
                     Ritorno,
                     true,
                     "looVF",
-                    false);
+                    false,
+                    "");
         } else {
             if (Ritorno.equals("S")) {
                 VariabiliGlobali.getInstance().setAmministratore(true);
@@ -169,7 +203,8 @@ public class wsRitorno {
                     Ritorno,
                     true,
                     "looVF",
-                    false);
+                    false,
+                    "");
         } else {
             hSelezionaRiga = new Handler(Looper.getMainLooper());
             hSelezionaRiga.postDelayed(runRiga = new Runnable() {
@@ -197,7 +232,8 @@ public class wsRitorno {
                     Ritorno,
                     true,
                     "looVF",
-                    false);
+                    false,
+                    "");
         } else {
             hSelezionaRiga = new Handler(Looper.getMainLooper());
             hSelezionaRiga.postDelayed(runRiga = new Runnable() {
@@ -250,7 +286,8 @@ public class wsRitorno {
                     "Errore nella lettura del successivo multimedia:\n" + Ritorno,
                     true,
                     "looVF",
-                    false);
+                    false,
+                    "");
         } else {
             String[] campi = Ritorno.split(";");
             long prossimo = Long.parseLong(campi[0]);
@@ -303,13 +340,15 @@ public class wsRitorno {
                     Ritorno,
                     true,
                     "looVF",
-                    false);
+                    false,
+                    "");
         } else {
             DialogMessaggio.getInstance().show(VariabiliGlobali.getInstance().getContext(),
                     "Dati in fase di ricarica dal server.\nChiudere l'applicazione e riprovare ad entrare fra un'ora circa",
                     false,
                     "looVF",
-                    false);
+                    false,
+                    "");
 
             /* hSelezionaRiga = new Handler(Looper.getMainLooper());
             hSelezionaRiga.postDelayed(runRiga = new Runnable() {
@@ -345,7 +384,8 @@ public class wsRitorno {
                     Ritorno,
                     true,
                     "looVF",
-                    false);
+                    false,
+                    "");
         } else {
             Utility.getInstance().CaricaRecyclerView(Ritorno, true);
         }

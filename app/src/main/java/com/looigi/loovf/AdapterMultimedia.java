@@ -63,12 +63,12 @@ public class AdapterMultimedia extends ArrayAdapter
             convertView.setBackgroundColor(Color.argb(255, 230, 230, 230));
         }
 
-        TextView txtId = convertView.findViewById(R.id.idMultimedia);
-        TextView txtNomeMultimedia = convertView.findViewById(R.id.txtNomeMultimedia);
-        TextView txtDimensioni = convertView.findViewById(R.id.txtDimensioni);
-        TextView txtData = convertView.findViewById(R.id.txtData);
-        TextView txtCategoria = convertView.findViewById(R.id.txtCategoria);
-        ImageView imgMultimedia = convertView.findViewById(R.id.imgMultimedia);
+        TextView txtId = (TextView) convertView.findViewById(R.id.idMultimedia);
+        TextView txtNomeMultimedia =(TextView)  convertView.findViewById(R.id.txtNomeMultimedia);
+        TextView txtDimensioni = (TextView) convertView.findViewById(R.id.txtDimensioni);
+        TextView txtData = (TextView) convertView.findViewById(R.id.txtData);
+        TextView txtCategoria = (TextView) convertView.findViewById(R.id.txtCategoria);
+        ImageView imgMultimedia = (ImageView) convertView.findViewById(R.id.imgMultimedia);
 
         txtId.setText(Integer.toString(idMultimedia));
         txtNomeMultimedia.setText(NomeMultimedia);

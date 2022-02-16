@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
         // }
 
         // SEZIONE RICERCA
-        ImageView imgRicercaFuori = findViewById(R.id.imgRicercaFuori);
+        ImageView imgRicercaFuori = (ImageView) findViewById(R.id.imgRicercaFuori);
         imgRicercaFuori.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (VariabiliGlobali.getInstance().getModalita().equals("VIDEO") ||
@@ -180,8 +180,8 @@ public class MainActivity extends AppCompatActivity {
         VariabiliGlobali.getInstance().setLayRicerca((LinearLayout) findViewById(R.id.layRicerca));
         VariabiliGlobali.getInstance().getLayRicerca().setVisibility(LinearLayout.GONE);
         VariabiliGlobali.getInstance().setLstRicerca((ListView) findViewById(R.id.lstRicerca));
-        final EditText edtRicerca = findViewById(R.id.edtRicerca);
-        ImageView imgRicerca = findViewById(R.id.imgRicerca);
+        final EditText edtRicerca = (EditText) findViewById(R.id.edtRicerca);
+        ImageView imgRicerca = (ImageView) findViewById(R.id.imgRicerca);
         imgRicerca.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String ric = edtRicerca.getText().toString().trim();
@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        ImageView imgUscitaRicerca = findViewById(R.id.imgUscitaRicerca);
+        ImageView imgUscitaRicerca = (ImageView) findViewById(R.id.imgUscitaRicerca);
         imgUscitaRicerca.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliGlobali.getInstance().getLayRicerca().setVisibility(LinearLayout.GONE);
@@ -367,7 +367,7 @@ public class MainActivity extends AppCompatActivity {
         //     }
         // });
 
-        Button btnCompatta = findViewById(R.id.cmdCompatta);
+        Button btnCompatta = (Button) findViewById(R.id.cmdCompatta);
         btnCompatta.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 db.CompattaDB();
@@ -457,8 +457,8 @@ public class MainActivity extends AppCompatActivity {
         // mImageAvanti.setVisibility(LinearLayout.VISIBLE);
         // mImageIndietro.setVisibility(LinearLayout.VISIBLE);
 
-        layContenitore = findViewById(R.id.layContenitore);
-        ImageView imgLinguetta = findViewById(R.id.imgLinguetta);
+        layContenitore = (LinearLayout) findViewById(R.id.layContenitore);
+        ImageView imgLinguetta = (ImageView) findViewById(R.id.imgLinguetta);
         imgLinguetta.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (VariabiliGlobali.getInstance().isLinguettaAperta()) {
@@ -503,7 +503,7 @@ public class MainActivity extends AppCompatActivity {
 
         VariabiliGlobali.getInstance().setRecyclerView ((RecyclerView) findViewById(R.id.imageGallery));
 
-        LinearLayout layGriglia = findViewById(R.id.layContGriglia);
+        LinearLayout layGriglia = (LinearLayout) findViewById(R.id.layContGriglia);
         layGriglia.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // if (!VariabiliGlobali.getInstance().getModalita().equals("GRIGLIA")) {
@@ -536,7 +536,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        LinearLayout layPhoto = findViewById(R.id.layPhoto);
+        LinearLayout layPhoto = (LinearLayout) findViewById(R.id.layPhoto);
         layPhoto.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliGlobali.getInstance().getLayRicerca().setVisibility(LinearLayout.GONE);
@@ -593,7 +593,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        LinearLayout laySettings = findViewById(R.id.laySettings);
+        LinearLayout laySettings = (LinearLayout) findViewById(R.id.laySettings);
         laySettings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliGlobali.getInstance().getLayRicerca().setVisibility(LinearLayout.GONE);
@@ -609,7 +609,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        LinearLayout layRefresh = findViewById(R.id.layRefresh);
+        LinearLayout layRefresh = (LinearLayout) findViewById(R.id.layRefresh);
         layRefresh.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliGlobali.getInstance().getLayRicerca().setVisibility(LinearLayout.GONE);
@@ -623,14 +623,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        LinearLayout layAbout = findViewById(R.id.layAbout);
+        LinearLayout layAbout = (LinearLayout) findViewById(R.id.layAbout);
         layAbout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliGlobali.getInstance().getLayRicerca().setVisibility(LinearLayout.GONE);
             }
         });
 
-        TextView txtInfo = findViewById(R.id.txtInfo);
+        TextView txtInfo = (TextView) findViewById(R.id.txtInfo);
         VariabiliGlobali.getInstance().setTxtInfo(txtInfo);
 
         // if (VariabiliGlobali.getInstance().isDatiCaricati()) {

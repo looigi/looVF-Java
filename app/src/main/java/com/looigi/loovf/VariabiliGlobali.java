@@ -34,7 +34,7 @@ public class VariabiliGlobali {
     private int CategoriaViusalizzata = 0;
     private long VideoVisualizzato = 0;
     private String PercorsoDIR= Environment.getExternalStorageDirectory().getPath()+"/LooigiSoft/looVF";
-    private String PercorsoURL="http://looigi.no-ip.biz:97/looVF";
+    private String PercorsoURL="http://looigi.ddns.net:1051";
     // private boolean DatiCaricati = false;
     private TextView txtInfo;
     private String Modalita;

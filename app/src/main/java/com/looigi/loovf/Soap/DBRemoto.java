@@ -7,7 +7,7 @@ import com.looigi.loovf.StrutturaCategorie;
 import com.looigi.loovf.VariabiliGlobali;
 
 public class DBRemoto {
-	private String RadiceWS = "http://looigi.no-ip.biz:97/looVF/";
+	private String RadiceWS = "http://looigi.ddns.net:1050/";
 	private String ws = "looVF.asmx/";
 	private String NS="http://looVF.org/";
 	private String SA="http://looVF.org/";

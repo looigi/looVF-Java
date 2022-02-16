@@ -497,7 +497,7 @@ public class Utility {
             String[] Rit = Ritorno.split("§");
             // ImageView vidView = VariabiliGlobali.getInstance().getImgPlayVideo();
 
-            String ImmVideo = VariabiliGlobali.getInstance().getPercorsoURL() + "/Thumbs/" + Rit[0].replace("\\", "/");
+            String ImmVideo = VariabiliGlobali.getInstance().getPercorsoURL() + "/Thumbs/" + Rit[0]; // .replace("\\", "/");
             ImmVideo = ImmVideo.replace(" ","%20");
 
             Picasso.get().load(ImmVideo).placeholder( R.drawable.progress_animation ).into(VariabiliGlobali.getInstance().getImgPlayVideo());
@@ -557,7 +557,7 @@ public class Utility {
                 sf.setCategoria(Integer.parseInt(c[3]));
                 VariabiliGlobali.getInstance().setImmagineCaricata(sf);
 
-                String NomeImmagine = sf.getNomeFile().replace("\\", "/");
+                String NomeImmagine = sf.getNomeFile(); // .replace("\\", "/");
                 int Categoria = sf.getCategoria();
                 StrutturaCategorie sc = VariabiliGlobali.getInstance().RitornaCategoriaDaID("1", Categoria);
                 String sCategoria = sc.getNomeCategoria();

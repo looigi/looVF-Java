@@ -51,7 +51,7 @@ public class DialogMessaggio
     private void create(Context context)
     {
         View inflate = View.inflate(context, R.layout.dialog_messaggio, null);
-        TextView txtLog = inflate.findViewById(R.id.dialog_tp_log);
+        TextView txtLog = (TextView) inflate.findViewById(R.id.dialog_tp_log);
 
         txtLog.setText(Message);
 
